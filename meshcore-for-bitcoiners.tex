@@ -121,22 +121,28 @@
 \end{frame}
 
 % The flip side of source routing: a real message and the path it travelled.
-\begin{frame}{How a message reaches me — known repeaters relay it}
-  \vfill
+% Content is top-aligned (not vfill-centred) so the captions sit directly under
+% the images, not pushed down to the slide edge.
+\begin{frame}{How a message reaches me}
+  \vspace{0.8em}
   \centering
-  \begin{minipage}[t]{0.46\paperwidth}%
+  \begin{minipage}[t]{0.44\paperwidth}%
     \centering
-    \includegraphics[width=0.46\paperwidth,keepaspectratio]{meshcore-app-coffee-message}\par
-    \vskip0.8em
+    \includegraphics[width=0.44\paperwidth,keepaspectratio]{meshcore-app-coffee-message}\par
+    \vskip0.7em
     {\footnotesize A single message on the public \textbf{\#coffee} channel,
      opened to show its metadata: path-hash size, SNR, and the hop count it
      picked up crossing the mesh.}%
   \end{minipage}%
   \hspace{2.5em}%
-  \screenshotcard{meshcore-app-path-7hops}{%
-    \dots\ and a delivery path traced hop by hop: each \emph{known repeater}
-    that relayed a message (\emph{Nachricht wurde wiederholt}), from sender
-    to me.}%
+  \begin{minipage}[t]{0.30\paperwidth}%
+    \centering
+    \includegraphics[height=0.46\paperheight,keepaspectratio]{meshcore-app-path-7hops}\par
+    \vskip0.7em
+    {\footnotesize \dots\ and a delivery path traced hop by hop: each
+     \emph{known repeater} that relayed a message
+     (\emph{Nachricht wurde wiederholt}), from sender to me.}%
+  \end{minipage}%
   \vfill
 \end{frame}
 
