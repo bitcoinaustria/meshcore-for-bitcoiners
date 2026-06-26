@@ -14,6 +14,20 @@
 \newcommand{\bridgeslide}[4]{%
   \comparisonslide{#1}{Bitcoin}{#2}{MeshCore}{#3}{Where it breaks}{#4}}
 
+% Talk-specific: app / website screenshots, to break up the theory with a look
+% at the real thing. Phone screenshots are tall (portrait), so each is shown as
+% a "card" — the image with a short caption beneath. Cards are narrow, so two
+% (or more) sit side by side on one slide; add more as they arrive.
+%   \screenshotcard[width]{image}{caption}
+\newcommand{\screenshotcard}[3][0.30\paperwidth]{%
+  \begin{minipage}[t]{#1}%
+    \centering
+    \includegraphics[height=0.50\paperheight,keepaspectratio]{#2}\par
+    \vskip0.6em
+    {\footnotesize #3\par}%
+  \end{minipage}%
+}
+
 \title{MeshCore for Bitcoiners}
 \subtitle{Permissionless communication — from money to radio}
 \author{Harald Schilly — Bitcoin Austria}
@@ -87,6 +101,50 @@
 
 % A real packet route traced across Austria, captured from the observer.
 \fullbleedslide[A packet routed across Austria \;\textbullet\; logger-at.meshcore.observer]{observer-package-across-austria-20260626}
+
+% Break up the theory with a look at the real app: watch it, chat, plan a link.
+\begin{frame}{Live on the mesh}
+  \vfill
+  \centering
+  \screenshotcard[0.28\paperwidth]{meshcore-observer-live-map-vienna}{%
+    The observer's live map: 828 nodes, packets arcing across Vienna in
+    real time.}%
+  \hspace{1.4em}%
+  \screenshotcard[0.28\paperwidth]{meshcore-app-test-channel}{%
+    The public \textbf{\#test} channel: signed adverts and \emph{ping}\,/\,%
+    \emph{pong} probes scrolling by.}%
+  \hspace{1.4em}%
+  \screenshotcard[0.28\paperwidth]{meshcore-app-line-of-sight-vienna}{%
+    Line-of-sight planner: terrain and Fresnel zone between two repeaters
+    (6.7\,km in Vienna).}%
+  \vfill
+\end{frame}
+
+% The flip side of source routing: a real message and the path it travelled.
+% Content is top-aligned (not vfill-centred) so the captions sit directly under
+% the images, not pushed down to the slide edge.
+\begin{frame}{How a message reaches me}
+  \vspace{0.8em}
+  \centering
+  \begin{minipage}[t]{0.44\paperwidth}%
+    \centering
+    \includegraphics[width=0.44\paperwidth,keepaspectratio]{meshcore-app-coffee-message}\par
+    \vskip0.7em
+    {\footnotesize A single message on the public \textbf{\#coffee} channel,
+     opened to show its metadata: path-hash size, SNR, and the hop count it
+     picked up crossing the mesh.}%
+  \end{minipage}%
+  \hspace{2.5em}%
+  \begin{minipage}[t]{0.30\paperwidth}%
+    \centering
+    \includegraphics[height=0.46\paperheight,keepaspectratio]{meshcore-app-path-7hops}\par
+    \vskip0.7em
+    {\footnotesize \dots\ and a delivery path traced hop by hop: each
+     \emph{known repeater} that relayed a message
+     (\emph{Nachricht wurde wiederholt}), from sender to me.}%
+  \end{minipage}%
+  \vfill
+\end{frame}
 
 % ---------------------------------------------------------------- core thesis
 \begin{frame}{The core thesis}
