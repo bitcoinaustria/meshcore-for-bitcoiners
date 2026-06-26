@@ -188,15 +188,20 @@
 % ---------------------------------------------------------------- facts
 \fillerslide[Use these — they're checked]{Verified facts}
 
-\begin{frame}{Crypto, checked}
-  \begin{itemize}
-    \item \textbf{Curves:} Ed25519 (signing) + X25519 (ECDH) — \emph{not} secp256k1
-    \item \textbf{Identity:} 32-byte private + 32-byte public key, persistent
-    \item \textbf{Routing prefix:} 1 byte originally (254 IDs → collisions);
-      1–3 bytes since firmware 1.14+
-    \item \textbf{Encryption:} group channels use AES-256-CTR with a PSK; the
-      public channel uses a well-known weak key (convenience, not security)
-  \end{itemize}
+\begin{frame}{The crypto, side by side}
+  \centering
+  \comparisontable{Bitcoin}{MeshCore}{%
+    Curve(s)      & secp256k1               & Ed25519 + X25519 \\
+    Identity      & address = hash(pubkey)  & pubkey prefix (1--3\,B) \\
+    Signatures    & every transaction       & adverts only \\
+    Encryption    & none (all public)       & X25519 (DMs), AES-256 (groups) \\
+    The key's job & authorize spending      & protect content / identity \\
+    Address reuse & rotated (HD wallets)    & sticky, stay discoverable \\
+  }
+
+  \vspace{0.8em}
+  {\footnotesize Routing prefix: 1 byte originally (collisions); 1--3 bytes
+  since firmware 1.14+.}
 \end{frame}
 
 \fillerslide[%
