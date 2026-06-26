@@ -27,21 +27,6 @@
     {\footnotesize #3\par}%
   \end{minipage}%
 }
-% A placeholder card, same footprint as a phone screenshot — a dashed frame
-% saying more are coming. Swap it for a real \screenshotcard once captured.
-\newcommand{\screenshotsoon}[1][0.30\paperwidth]{%
-  \begin{minipage}[t]{#1}%
-    \centering
-    \begin{tikzpicture}
-      \node[draw=baBlack!30, dashed, line width=1pt, rounded corners,
-            minimum width=0.16\paperwidth, minimum height=0.54\paperheight,
-            align=center, text=baBlack!45, font=\small]
-        {more\\screenshots\\soon\,\dots};
-    \end{tikzpicture}\par
-    \vskip0.6em
-    {\footnotesize\color{baBlack!45}(placeholder)\par}%
-  \end{minipage}%
-}
 
 \title{MeshCore for Bitcoiners}
 \subtitle{Permissionless communication — from money to radio}
@@ -117,7 +102,7 @@
 % A real packet route traced across Austria, captured from the observer.
 \fullbleedslide[A packet routed across Austria \;\textbullet\; logger-at.meshcore.observer]{observer-package-across-austria-20260626}
 
-% Break up the theory with a look at the real app. More screenshots to come.
+% Break up the theory with a look at the real app: the chat and the planner.
 \begin{frame}{Live on the mesh — the {\color{baRed}\#test} channel}
   \vfill
   \centering
@@ -129,6 +114,26 @@
   \screenshotcard{meshcore-app-line-of-sight-vienna}{%
     Line-of-sight planner: terrain and Fresnel zone between two repeaters
     in Vienna (6.7\,km) — checking a link before you climb the roof.}%
+  \vfill
+\end{frame}
+
+% The flip side of source routing: a real message and the path it travelled.
+\begin{frame}{How a message reaches me — known repeaters relay it}
+  \vfill
+  \centering
+  \begin{minipage}[t]{0.46\paperwidth}%
+    \centering
+    \includegraphics[width=0.46\paperwidth,keepaspectratio]{meshcore-app-coffee-message}\par
+    \vskip0.8em
+    {\footnotesize A single message on the public \textbf{\#coffee} channel,
+     opened to show its metadata: path-hash size, SNR, and the hop count it
+     picked up crossing the mesh.}%
+  \end{minipage}%
+  \hspace{2.5em}%
+  \screenshotcard{meshcore-app-path-7hops}{%
+    \dots\ and a delivery path traced hop by hop: each \emph{known repeater}
+    that relayed a message (\emph{Nachricht wurde wiederholt}), from sender
+    to me.}%
   \vfill
 \end{frame}
 
