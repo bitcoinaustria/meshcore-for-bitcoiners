@@ -22,7 +22,7 @@
 \newcommand{\screenshotcard}[3][0.30\paperwidth]{%
   \begin{minipage}[t]{#1}%
     \centering
-    \includegraphics[height=0.54\paperheight,keepaspectratio]{#2}\par
+    \includegraphics[height=0.50\paperheight,keepaspectratio]{#2}\par
     \vskip0.6em
     {\footnotesize #3\par}%
   \end{minipage}%
@@ -102,18 +102,21 @@
 % A real packet route traced across Austria, captured from the observer.
 \fullbleedslide[A packet routed across Austria \;\textbullet\; logger-at.meshcore.observer]{observer-package-across-austria-20260626}
 
-% Break up the theory with a look at the real app: the chat and the planner.
-\begin{frame}{Live on the mesh — the {\color{baRed}\#test} channel}
+% Break up the theory with a look at the real app: watch it, chat, plan a link.
+\begin{frame}{Live on the mesh}
   \vfill
   \centering
-  \screenshotcard{meshcore-app-test-channel}{%
-    The public \textbf{\#test} channel: signed adverts, \emph{ping}\,/\,%
-    \emph{pong} reachability probes, and a hop count on every message — the
-    live mesh, talking to itself.}%
-  \hspace{3em}%
-  \screenshotcard{meshcore-app-line-of-sight-vienna}{%
+  \screenshotcard[0.28\paperwidth]{meshcore-observer-live-map-vienna}{%
+    The observer's live map: 828 nodes, packets arcing across Vienna in
+    real time.}%
+  \hspace{1.4em}%
+  \screenshotcard[0.28\paperwidth]{meshcore-app-test-channel}{%
+    The public \textbf{\#test} channel: signed adverts and \emph{ping}\,/\,%
+    \emph{pong} probes scrolling by.}%
+  \hspace{1.4em}%
+  \screenshotcard[0.28\paperwidth]{meshcore-app-line-of-sight-vienna}{%
     Line-of-sight planner: terrain and Fresnel zone between two repeaters
-    in Vienna (6.7\,km) — checking a link before you climb the roof.}%
+    (6.7\,km in Vienna).}%
   \vfill
 \end{frame}
 
