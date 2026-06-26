@@ -1,0 +1,54 @@
+name: Build PDF
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/*.tex'
+      - 'pix/**'
+      - 'makefile'
+      - '.github/workflows/build.yml'
+      - '.gitmodules'
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository (with the theme submodule)
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive   # theme/ = Bitcoin Austria beamer style (public)
+
+      - name: Install LaTeX + tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            texlive-xetex \
+            texlive-latex-base \
+            texlive-latex-recommended \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            latexmk \
+            make \
+            inkscape \
+            xvfb
+
+      - name: Build the presentation
+        run: |
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+          make build
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: meshcore-for-bitcoiners-pdf
+          path: meshcore-for-bitcoiners.pdf
+          retention-days: 30

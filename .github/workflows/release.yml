@@ -1,0 +1,56 @@
+name: Release PDF
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write   # needed to create the release
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository (with the theme submodule)
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Install LaTeX + tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            texlive-xetex \
+            texlive-latex-base \
+            texlive-latex-recommended \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            latexmk \
+            make \
+            inkscape \
+            xvfb
+
+      - name: Build the presentation
+        run: |
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+          make build
+
+      - name: Create release with the PDF
+        uses: softprops/action-gh-release@v3
+        with:
+          files: meshcore-for-bitcoiners.pdf
+          name: MeshCore for Bitcoiners ${{ github.ref_name }}
+          body: |
+            PDF build of "MeshCore for Bitcoiners" (${{ github.ref_name }}).
+
+            Automatically generated from the LaTeX source.
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

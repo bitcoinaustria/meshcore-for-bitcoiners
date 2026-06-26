@@ -1,0 +1,40 @@
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.idx
+*.ilg
+*.ind
+*.lof
+*.log
+*.lot
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+*.xdv
+*.dvi
+
+# Build output dir (if we use latexmk -outdir)
+build/
+out/
+
+# Editor / OS cruft
+*.swp
+*~
+.DS_Store
+build.log
+
+# Python caches (generate-images/)
+__pycache__/
+
+# Keep the final PDF out of git (it's a release artifact).
+# pix/*.pdf generated from SVG sources is also covered by this.
+# (Force-add with `git add -f` if you ever need to commit a PDF figure.)
+*.pdf
