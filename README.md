@@ -69,5 +69,6 @@ deck preamble.
 
 ## License
 
-Presentation content: © Bitcoin Austria. The beamer theme and the Blinker font
-are licensed in the [theme repository](https://github.com/bitcoinaustria/latex-beamer-style-2026).
+**Apache-2.0** (see `LICENSE`), © Bitcoin Austria. The beamer theme and the
+Blinker font are licensed (Apache-2.0 / SIL OFL 1.1) in the
+[theme repository](https://github.com/bitcoinaustria/latex-beamer-style-2026).
