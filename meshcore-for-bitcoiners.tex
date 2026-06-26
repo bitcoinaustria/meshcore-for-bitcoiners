@@ -15,7 +15,7 @@
   \comparisonslide{#1}{Bitcoin}{#2}{MeshCore}{#3}{Where it breaks}{#4}}
 
 \title{MeshCore for Bitcoiners}
-\subtitle{Permissionless identity — from money to radio}
+\subtitle{Permissionless communication — from money to radio}
 \author{Harald Schilly — Bitcoin Austria}
 \date{\today}
 
@@ -24,6 +24,69 @@
 \begin{frame}[plain,noframenumbering]
   \titlepage
 \end{frame}
+
+% ============================================================ what is MeshCore?
+% Bitcoiners don't know MeshCore — introduce it before drawing the parallels.
+\fillerslide[A radio mesh you can join without asking]{What is MeshCore?}
+
+\begin{frame}{Messaging without the network}
+  \begin{itemize}
+    \item Off-grid text messaging over long-range \textbf{LoRa} radio —
+      no internet, no cell tower, no SIM
+    \item Open-source firmware running on cheap LoRa boards
+    \item Uses \textbf{licence-free} ISM radio bands — worldwide, region by
+      region (EU 868\,MHz; US/AU 915\,MHz; \dots)
+  \end{itemize}
+  \vfill
+  \begin{alertblock}{The EU angle}
+    On these bands \emph{anyone} may transmit — no licence, no registration, no
+    fee. You only respect the power and duty-cycle limits.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Where it comes from}
+  \begin{itemize}
+    \item Grew out of the \textbf{Meshtastic} world — then rebuilt from scratch
+    \item Created by \textbf{Scott Powell} in \textbf{late 2024};
+      web/mobile clients by Liam Cottle
+    \item Andy Kirby — early tester and promoter (YouTube)
+    \item A separate network — \emph{not} interoperable with Meshtastic
+    \item Project home: \textbf{meshcore.io}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{The hardware — tens of euros, not hundreds}
+  \begin{itemize}
+    \item \textbf{Companion} (your device: screen + Bluetooth) — SenseCAP
+      \textbf{T1000-E}, credit-card size with GPS, $\sim$\,40\,EUR
+    \item \textbf{Portable with a display} — Heltec LoRa\,32 V3 (OLED,
+      $\sim$\,20\,EUR), Seeed Wio Tracker L1 Pro (screen, GPS, case)
+    \item \textbf{Repeater} — SenseCAP Solar Node \textbf{P1-Pro}: 5\,W solar +
+      battery, runs for days off-grid, pole-mounted; antenna + device
+      $\sim$\,130\,EUR
+    \item \textbf{Build your own} — Heltec / RAK WisBlock boards
+  \end{itemize}
+\end{frame}
+
+% MeshCore (red, the subject) vs Meshtastic — generic comparison, not \bridgeslide
+\comparisonslide{MeshCore vs Meshtastic}%
+  {MeshCore}{%
+    \begin{itemize}
+      \item Role-based: companion / repeater / room server
+      \item \textbf{Source-routed} along discovered paths
+      \item Quieter, more scalable mesh
+    \end{itemize}}%
+  {Meshtastic}{%
+    \begin{itemize}
+      \item Easy to join, phone-first
+      \item Flood-based — every node rebroadcasts
+      \item Gets noisy as it grows
+    \end{itemize}}%
+  {Same cheap hardware}{%
+    Same boards, same chips — a different firmware and routing philosophy.}
+
+% A real packet route traced across Austria, captured from the observer.
+\fullbleedslide[A packet routed across Austria \;\textbullet\; logger-at.meshcore.observer]{observer-package-across-austria-20260626}
 
 % ---------------------------------------------------------------- core thesis
 \begin{frame}{The core thesis}
