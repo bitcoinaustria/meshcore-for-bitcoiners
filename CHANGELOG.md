@@ -21,6 +21,13 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 ## [Unreleased]
 
 ### Added
+- **"What is a region code, and why?"** — a plain-language setup slide before the
+  region-transport-code bridge. The audience are Bitcoiners new to MeshCore, so
+  this explains the concept first: flooding wastes airtime → a *region* is an
+  agreed name (e.g. `at-w`) hashed into a shared key → every packet carries a
+  2-byte transport code → repeaters relay only matching codes, geofencing the
+  mesh by agreement (no registry, no coordinates). Sets up the SIGHASH bridge
+  that follows (the code commits to the encrypted payload).
 - **"What Bitcoin's consensus buys --- and MeshCore skips"** — a new four-slide
   section (divider + four `\bridgeslide`s) flowing from one insight: Bitcoin
   defends a scarce asset, so it pays for heavy consensus machinery; MeshCore
@@ -80,6 +87,13 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
   `meshcore-decoder` library, and LocalMesh's encryption details).
 
 ### Fixed
+- **Dropped stray German text on "How a message reaches me".** The path caption
+  had a German parenthetical (*"Nachricht wurde wiederholt"*) left over from the
+  screenshot; removed for an English-language deck.
+- **"A hashtag room is a brainwallet" slide no longer overflows.** It had a
+  redundant intro line, a 6-row table, a footnote, and an alertblock — too much
+  vertical content, pushing off the bottom. Trimmed to a 5-row table and folded
+  the brute-force/AES facts into the alertblock.
 - **Crypto table: group channels are AES-128, not AES-256.** Verified against
   the MeshCore firmware and the `meshcore-decoder` library (`AES-128-ECB` + an
   HMAC-SHA256 MAC) and the "Hitchhiker's Guide to MeshCore Cryptography". The

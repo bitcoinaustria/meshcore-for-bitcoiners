@@ -140,8 +140,7 @@
     \includegraphics[height=0.46\paperheight,keepaspectratio]{meshcore-app-path-7hops}\par
     \vskip0.7em
     {\footnotesize \dots\ and a delivery path traced hop by hop: each
-     \emph{known repeater} that relayed a message
-     (\emph{Nachricht wurde wiederholt}), from sender to me.}%
+     \emph{known repeater} that relayed the message, from sender to me.}%
   \end{minipage}%
   \vfill
 \end{frame}
@@ -327,28 +326,21 @@
 
 \begin{frame}{A hashtag room is a brainwallet}
   \centering
-  The human-readable \textbf{name is the key} --- same construction, same
-  failure mode as a Bitcoin brainwallet.
-  \vspace{0.5em}
   \comparisontable{Bitcoin brainwallet}{MeshCore \#room}{%
-    Key from            & \texttt{SHA256(passphrase)} & \texttt{SHA256(\#name)[:16]} \\
-    Input               & low-entropy phrase          & short word (\texttt{\#vienna}) \\
-    Salt / key-stretch  & none                        & none \\
-    Same input          & $\to$ same key everywhere   & $\to$ same key everywhere \\
-    Public oracle       & the blockchain              & the broadcast packet \\
-    Failure mode        & funds swept in seconds      & read by anyone who guesses \\
+    Key from           & \texttt{SHA256(passphrase)} & \texttt{SHA256(\#name)[:16]} \\
+    Input              & low-entropy phrase          & short word (\texttt{\#vienna}) \\
+    Salt / stretching  & none                        & none \\
+    Public oracle      & the blockchain              & the broadcast packet \\
+    Failure            & swept in seconds            & anyone who guesses reads it \\
   }
-  \vspace{0.4em}
-  {\footnotesize Names are lowercase, $\le$\,30 chars --- every room name under
-  7 characters falls in $\sim$90\,s on a laptop GPU ($>$\,100\,M keys/s). It is a
-  dictionary attack, \textbf{not} an AES break: AES-128 is untouched, the entropy
-  is the \emph{name}.}
   \vfill
   \begin{alertblock}{The deep point --- a free verification oracle}
-    Both systems hand the attacker a public way to \emph{check} an offline guess:
-    the chain says ``this address holds coins,'' the broadcast says ``this key
-    decodes to a message.'' Offline guessing \emph{plus} public verification ---
-    that is what makes both catastrophic.
+    Both hand the attacker a public way to \emph{check} an offline guess: the
+    chain says ``this address holds coins,'' the broadcast says ``this key decodes
+    to a message.'' Offline guessing \emph{plus} public verification is what makes
+    both catastrophic --- \textbf{not} an AES break (AES-128 is untouched; the
+    entropy is the \emph{name}). Every \#room name under 7 chars falls in
+    $\sim$90\,s on a laptop GPU.
   \end{alertblock}
 \end{frame}
 
@@ -478,6 +470,27 @@
 % payload, so repeaters filter by region without decrypting. Symmetric and only
 % 2 bytes wide => a routing/airtime filter, not a signature.
 \fillerslide[Borders agreed by name, enforced per hop]{The region transport code}
+
+% Plain-language setup before the bridge: the audience doesn't know MeshCore, so
+% explain what a region code is and why it exists before drawing the SIGHASH bridge.
+\begin{frame}{What is a region code, and why?}
+  \begin{itemize}
+    \item MeshCore \textbf{floods} adverts and path discovery. Unchecked, traffic
+      from far away wastes everyone's scarce airtime
+    \item A \textbf{region} is just an agreed name --- e.g.\ \texttt{at-w} for
+      western Austria. Hash the name and everyone there shares a \textbf{region key}
+    \item Every packet carries a 2-byte \textbf{transport code} derived from that
+      key; a repeater relays a packet only if the code matches its own region
+    \item The mesh is thus \textbf{geofenced by agreement} --- no registry, no
+      coordinates, no permission: just a name the locals share
+  \end{itemize}
+  \vfill
+  \begin{alertblock}{The neat part}
+    The code is computed over the \emph{encrypted} payload, so repeaters filter by
+    region \textbf{without decrypting} --- and because it commits to the packet's
+    bytes, it behaves like a SIGHASH. That bridge is next.
+  \end{alertblock}
+\end{frame}
 
 \bridgeslide{The region rides inside the message}{%
   \begin{itemize}
