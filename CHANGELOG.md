@@ -21,6 +21,13 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 ## [Unreleased]
 
 ### Added
+- **Closing call to action: "Join the Bitcoin channels on MeshCore."** A
+  concrete join prompt just before the "Thank you" slide, listing the channels
+  the audience can join on the spot: `#bitcoin` (no region, mesh-wide),
+  `#bitcoin-at` (region `at`, Austria), and `#bitcoin-wien` (region `at-w`,
+  Vienna). Reinforces the region-code concept (no region = mesh-wide; a region
+  scopes the flood). Also corrected the region-code slide's `at-w` gloss from
+  "western Austria" to **Vienna**, to match these channel names.
 - **Backup slide: "Anatomy of a MeshCore packet"** — an *optional* deep-dive on
   the on-wire format (`[header][transport codes?][path_len][path][payload]`,
   ≤255 B; header bits = route/payload type + version; 1-byte path hashes; payload
