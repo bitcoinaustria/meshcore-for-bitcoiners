@@ -21,6 +21,15 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 ## [Unreleased]
 
 ### Added
+- **Backup slide: "Anatomy of a MeshCore packet"** — an *optional* deep-dive on
+  the on-wire format (`[header][transport codes?][path_len][path][payload]`,
+  ≤255 B; header bits = route/payload type + version; 1-byte path hashes; payload
+  ≤184 B, advert is Ed25519-signed, group/text is channel-hash + 2-byte MAC +
+  AES-128). Placed after the "Thank you" closing as a `[noframenumbering]` backup
+  so it can be **skipped for a non-technical audience** and shown only on demand —
+  self-contained, so skipping it breaks nothing. Ties together the region code,
+  the 1–3 byte routing prefix, and the AES-128/MAC facts. Verified against
+  `docs.meshcore.io/packet_format`, DeepWiki 7.1, and `michaelhart/meshcore-decoder`.
 - **Intro rework for the target audience (technical Bitcoiners new to MeshCore).**
   Added an opening **"The one-line version"** hook slide right after the
   "What is MeshCore?" divider: a one-line mental model ("Bitcoin's move, applied
