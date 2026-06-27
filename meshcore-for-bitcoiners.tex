@@ -497,8 +497,9 @@
   \begin{itemize}
     \item MeshCore \textbf{floods} adverts and path discovery. Unchecked, traffic
       from far away wastes everyone's scarce airtime
-    \item A \textbf{region} is just an agreed name --- e.g.\ \texttt{at-w} for
-      western Austria. Hash the name and everyone there shares a \textbf{region key}
+    \item A \textbf{region} is just an agreed name --- e.g.\ \texttt{at} for
+      Austria, \texttt{at-w} for Vienna. Hash the name and everyone there shares
+      a \textbf{region key}
     \item Every packet carries a 2-byte \textbf{transport code} derived from that
       key; a repeater relays a packet only if the code matches its own region
     \item The mesh is thus \textbf{geofenced by agreement} --- no registry, no
@@ -585,6 +586,25 @@
       \end{itemize}
     \end{column}
   \end{columns}
+\end{frame}
+
+% Closing call to action: concrete Bitcoin channels the audience can join right
+% now. Ties back to the region-transport-code slide (a region is just an agreed
+% name: "at" = Austria, "at-w" = Vienna; no region = mesh-wide).
+\begin{frame}{Join the Bitcoin channels on MeshCore}
+  Same name, same key --- just type the channel name to join.
+  \vskip1.2em
+  \begin{itemize}
+    \item \texttt{\#bitcoin} --- no region (mesh-wide)
+    \item \texttt{\#bitcoin-at} --- region \texttt{at} (Austria)
+    \item \texttt{\#bitcoin-wien} --- region \texttt{at-w} (Vienna)
+  \end{itemize}
+  \vfill
+  \begin{alertblock}{Pick your scope}
+    Plain \texttt{\#bitcoin} reaches the whole mesh; the regional channels add a
+    \textbf{region code} so repeaters relay them only locally --- less airtime,
+    same permissionless join.
+  \end{alertblock}
 \end{frame}
 
 \fillerslide[%
