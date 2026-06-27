@@ -21,6 +21,24 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 ## [Unreleased]
 
 ### Added
+- **"Hashtag rooms are brainwallets"** — a new two-slide module (divider +
+  two frames) on the most audience-recognizable Bitcoin parallel in the deck.
+  A MeshCore `#room` derives its AES-128 key straight from the room name
+  (`SHA256("#"+name)[:16]` — no salt, no key-stretching), which is structurally
+  a Bitcoin **brainwallet** (`SHA256(passphrase)`). A side-by-side table makes
+  the match: human-chosen low-entropy input, no stretching, deterministic, and —
+  the deep point — a **free public verification oracle** (the blockchain for the
+  brainwallet, the broadcast packet for the room) that turns offline guessing
+  catastrophic. Concrete stat: every room name under 7 chars falls in ~90 s on a
+  laptop GPU (100M+ keys/s); it's a dictionary attack, **not** an AES break.
+  The honest divergence is voiced: lower stakes (confidentiality, not theft) and
+  hashtag rooms are world-readable *by design* — which actually flatters MeshCore
+  (it labels the room public; for private traffic use X25519/Ed25519 DMs or
+  private channels with long random hex keys). Verified against the MeshCore
+  source and the "Hitchhiker's Guide to MeshCore Cryptography".
+- **WebGPU hashtag-room brute-forcer** added to the references slide
+  (`jkingsman/meshcore-hashtag-cracker`) — the demonstrated tool behind the
+  brainwallet slide's brute-force claim.
 - **"Double SHA256 — but not mining"** — a new crypto section on the channel
   hash. The channel name is hashed, cropped to 16 bytes, and hashed again
   (`SHA256(SHA256(name)[:16])`), which *looks* like Bitcoin's double-SHA256.
@@ -77,6 +95,8 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 - **Sanity-check the 10% / 500 mW figure** against the current Austrian
   frequency plan before saying it out loud — it's verified against CEPT/ETSI
   sources but worth a final cross-check on stage night.
+- **Decide: live-demo vs screenshot** the WebGPU hashtag-room brute-forcer on
+  the brainwallet slide — live is higher-impact but depends on venue wifi/time.
 - Develop further from the draft — this is still a working draft built from
   `handoff-20260626.md`.
 

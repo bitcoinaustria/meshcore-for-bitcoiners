@@ -312,6 +312,63 @@
   \end{alertblock}
 \end{frame}
 
+% ---------------------------------------------------------- brainwallet rooms
+% A #hashtag room derives its AES-128 key straight from the room name:
+% key = SHA256("#" + name)[:16] (consistent with the channel-hash slide above).
+% No salt, no stretching -> a brainwallet. VERIFIED against the MeshCore source
+% and jacksbrain.com "Hitchhiker's Guide to MeshCore Cryptography": room names
+% are lowercase alphanumerics + hyphens, <=30 chars; every name under 7 chars is
+% exhaustively brute-forced in ~90 s on a 2023 laptop GPU (100M+ keys/s). A
+% public WebGPU brute-forcer exists: github.com/jkingsman/meshcore-hashtag-cracker
+% (added to the references slide). NOT an AES break -- AES-128 is untouched; the
+% effective security is the entropy of the *name*. Hashtag rooms are world-
+% readable *by design* (the honest divergence from the Bitcoin footgun).
+\fillerslide[The name is the key --- a familiar footgun]{Hashtag rooms are brainwallets}
+
+\begin{frame}{A hashtag room is a brainwallet}
+  \centering
+  The human-readable \textbf{name is the key} --- same construction, same
+  failure mode as a Bitcoin brainwallet.
+  \vspace{0.5em}
+  \comparisontable{Bitcoin brainwallet}{MeshCore \#room}{%
+    Key from            & \texttt{SHA256(passphrase)} & \texttt{SHA256(\#name)[:16]} \\
+    Input               & low-entropy phrase          & short word (\texttt{\#vienna}) \\
+    Salt / key-stretch  & none                        & none \\
+    Same input          & $\to$ same key everywhere   & $\to$ same key everywhere \\
+    Public oracle       & the blockchain              & the broadcast packet \\
+    Failure mode        & funds swept in seconds      & read by anyone who guesses \\
+  }
+  \vspace{0.4em}
+  {\footnotesize Names are lowercase, $\le$\,30 chars --- every room name under
+  7 characters falls in $\sim$90\,s on a laptop GPU ($>$\,100\,M keys/s). It is a
+  dictionary attack, \textbf{not} an AES break: AES-128 is untouched, the entropy
+  is the \emph{name}.}
+  \vfill
+  \begin{alertblock}{The deep point --- a free verification oracle}
+    Both systems hand the attacker a public way to \emph{check} an offline guess:
+    the chain says ``this address holds coins,'' the broadcast says ``this key
+    decodes to a message.'' Offline guessing \emph{plus} public verification ---
+    that is what makes both catastrophic.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{\dots\ but public \emph{by design}}
+  \begin{itemize}
+    \item \textbf{Lower stakes:} a brainwallet loses \emph{value}, irreversibly;
+      a hashtag room loses \emph{confidentiality} (eavesdropping), not coins.
+    \item \textbf{And it flatters MeshCore:} hashtag rooms are labelled
+      \textbf{world-readable by design} --- ``no key to remember'' is the feature,
+      not a hidden footgun. MeshCore \emph{tells} you the room is public.
+    \item \textbf{Know which layer is public:} private traffic gets real crypto
+      --- X25519\,/\,Ed25519 DMs, or private channels with long random hex keys.
+  \end{itemize}
+  \vfill
+  \begin{alertblock}{The line}
+    You wouldn't put your coins in \texttt{SHA256(``correct horse'')}. Don't put
+    your secrets in \texttt{\#vienna}.
+  \end{alertblock}
+\end{frame}
+
 % --------------------------------------------------------------- region codes
 % The region "transport code" is an HMAC of the region key over the packet
 % payload, truncated to 2 bytes; repeaters recompute it per hop to decide
@@ -392,6 +449,8 @@
           --- crypto-complete packet decoder
         \item \href{https://www.localmesh.nl/en/meshcore-encryption-details/}{localmesh.nl}
           --- encryption details (AES-128, not AES-256)
+        \item \href{https://github.com/jkingsman/meshcore-hashtag-cracker}{jkingsman/meshcore-hashtag-cracker}
+          --- WebGPU brute-forcer for \#hashtag-room keys
       \end{itemize}
     \end{column}
   \end{columns}
