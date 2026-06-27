@@ -21,6 +21,15 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 ## [Unreleased]
 
 ### Added
+- **"ASICs --- and the LoRa radio chip"** — a new `\bridgeslide` after the
+  "not mining" slide, answering the natural Bitcoiner question *"does LoRa have
+  ASICs too?"* It does: the LoRa PHY (chirp spread spectrum) runs in a dedicated
+  radio IC — Semtech's **SX1262** (the modem is in hardware; the MCU just hands
+  it bytes; ~µA asleep), the same chip in the deck's Heltec LoRa 32 V3. The
+  analogy *breaks* on the **reason**: a mining ASIC wins a competitive PoW race
+  (more efficiency → more reward, difficulty follows), while the SX1262 is
+  fixed-function and just saves power — no contest, the ceiling is physics and
+  the duty cycle. Verified against Semtech's SX1261/SX1262 product docs.
 - **Closing call to action: "Join the Bitcoin channels on MeshCore."** A
   concrete join prompt just before the "Thank you" slide, listing the channels
   the audience can join on the spot: `#bitcoin` (no region, mesh-wide),
