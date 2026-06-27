@@ -1,76 +1,54 @@
 # MeshCore for Bitcoiners
 
-A LaTeX **Beamer** presentation — a Bitcoin Austria talk drawing the structural
-parallels between **Bitcoin** and **MeshCore** (LoRa mesh networking), and
-honestly naming where each analogy breaks.
+A LaTeX **Beamer** talk (Bitcoin Austria) drawing the structural parallels
+between **Bitcoin** and **MeshCore** — off-grid, permissionless messaging over
+long-range **LoRa** radio — and honestly naming where each analogy breaks.
 
-Built with the [Bitcoin Austria beamer style](https://github.com/bitcoinaustria/latex-beamer-style-2026),
-included here as a **git submodule** at `theme/`.
+The through-line: *Bitcoin made money permissionless by replacing institutional
+identity with a self-generated keypair; MeshCore makes **communication**
+permissionless the same way.* But Bitcoin defends a scarce asset while MeshCore
+relays only fleeting messages, so the two diverge in instructive ways — and the
+talk leans into those breaks rather than glossing over them.
 
-> ## ⚠️ This repo uses a git submodule — you must check it out
->
-> The theme lives in `theme/` as a submodule. A plain `git clone` leaves it
-> **empty**, and the build fails with a missing-package error
-> (`theme/bitcoin-austria.sty not found`). Do one of:
->
-> ```bash
-> # when cloning:
-> git clone --recurse-submodules git@github.com:bitcoinaustria/meshcore-for-bitcoiners.git
->
-> # or, in an existing clone:
-> git submodule update --init --recursive
-> ```
+**Audience:** technically inclined Bitcoiners who don't (yet) know MeshCore.
 
-## Build
+## What the talk covers
 
-Requires **XeLaTeX** + `latexmk` (and `inkscape` only if you add SVG figures to
-`pix/`). From the repo root:
+**Intro — what MeshCore even is**
 
-```bash
-make            # -> meshcore-for-bitcoiners.pdf
-make view       # build and open
-make watch      # continuous rebuild
-make clean      # remove build artifacts
-```
+- The one-line version, and why a Bitcoiner should care; messaging without a
+  network, on licence-free ISM bands
+- The hardware (tens of euros) and how MeshCore differs from Meshtastic
+  (source-routed, not flood-based)
+- A real packet routed across Austria, plus live app / observer screenshots
 
-`make` checks that the submodule is present and gives a clear hint if it isn't.
+**The parallels** — each paired with an honest *"where it breaks"*:
 
-## Releases
+- **Identity is a keypair** — a self-issued identity replaces the SIM / call sign
+- **The signing model** — the same keypair, opposite jobs (Ed25519 adverts,
+  X25519 DMs)
+- **Throughput** — Bitcoin's block-size cap vs the EU 868 MHz duty cycle, a
+  *regulatory* throttle
+- **Lightning** — routing along discovered paths, and bootstrap-then-jump-layers
+- **Crypto facts** — secp256k1 vs Ed25519 / X25519, side by side
+- **Double SHA256 — but not mining** — the channel-hash construction
+- **Hashtag rooms are brainwallets** — name-derived keys and the public-oracle trap
+- **What Bitcoin's consensus buys — and MeshCore skips** — Sybil resistance,
+  incentives, state, and time / ordering
+- **The region transport code** — geofencing the flood, bridged to SIGHASH
+- **The 2-byte routing hard fork** — a backward-incompatible wire-format change
+- **Backup:** anatomy of a MeshCore packet (source-routing, not flooding)
 
-Pushing a tag matching `v*` triggers CI to build the PDF and publish it as a
-**GitHub Release** (`.github/workflows/release.yml`):
+See [`CHANGELOG.md`](CHANGELOG.md) for how the talk evolved release to release.
 
-```bash
-git tag v1.0 && git push origin v1.0
-```
+## Build & develop
 
-Every push/PR to `main` also builds the PDF and uploads it as a CI artifact
-(`.github/workflows/build.yml`).
-
-See [`CHANGELOG.md`](CHANGELOG.md) for what changed in each version.
-
-## Layout
-
-```
-meshcore-for-bitcoiners.tex   the deck (entry point)
-theme/                        submodule: Bitcoin Austria beamer style
-pix/                          figures (PNG/PDF; or SVG, auto-converted)
-generate-images/              uv project: AI image generation (fal.ai + Replicate)
-makefile                      build / view / watch / clean
-.github/workflows/            CI: build on push, release on tag
-handoff-20260626.md           brainstorm notes the talk is based on
-SPECS.md                      project specs
-```
-
-## Content
-
-`meshcore-for-bitcoiners.tex` is a working **draft** developed from
-`handoff-20260626.md`. The talk-specific `\bridgeslide{title}{bitcoin}{meshcore}{where-it-breaks}`
-macro (a thin wrapper over the theme's `\comparisonslide`) is defined in the
-deck preamble.
+This is a XeLaTeX deck, with the Bitcoin Austria theme included as a **git
+submodule**. See **[BUILDING.md](BUILDING.md)** for cloning (mind the
+submodule!), building the PDF, the repo layout, and how releases work.
 
 ## License
 
-**Apache-2.0** (see `LICENSE`), © Bitcoin Austria. The beamer theme and the
-Blinker font are licensed (Apache-2.0 / SIL OFL 1.1) in the
+**Apache-2.0** (see [`LICENSE`](LICENSE)), © Bitcoin Austria. The beamer theme
+and the Blinker font are licensed (Apache-2.0 / SIL OFL 1.1) in the
 [theme repository](https://github.com/bitcoinaustria/latex-beamer-style-2026).
