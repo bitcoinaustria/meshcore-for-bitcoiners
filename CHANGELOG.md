@@ -46,7 +46,7 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
   HMAC-SHA256 MAC) and the "Hitchhiker's Guide to MeshCore Cryptography". The
   `handoff` note that said "AES-256 in CTR mode" was wrong on both the key size
   and the mode.
-- **"Stamped into the message, not onto it"** — a slide on MeshCore's region
+- **"The region rides inside the message"** — a slide on MeshCore's region
   *transport code*. The 2-byte region code is an `HMAC-SHA256` of the region key
   (`SHA256(region name)[:16]`) over the packet payload, truncated to a
   little-endian uint16; repeaters recompute it per hop, over the *encrypted*
