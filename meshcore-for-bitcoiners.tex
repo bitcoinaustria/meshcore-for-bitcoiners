@@ -202,13 +202,22 @@
 % ---------------------------------------------------------------- throughput
 \fillerslide[A chosen constraint, not a weakness]{Throughput}
 
-% TODO (verify before stage): exact EU 868 duty-cycle % and sub-band (~869 MHz).
+% EU 868 duty cycle VERIFIED (CEPT/ERC 70-03 + ETSI EN 300 220-2; implemented in
+% Austria via the national frequency plan). MeshCore's EU default 869.525 MHz
+% falls in the 869.4--869.65 MHz sub-band ("P"/g3) => 10% duty cycle, up to
+% 500 mW (+27 dBm) ERP. (The lower 868.0--868.6 MHz sub-band is only 1% at
+% 25 mW — MeshCore deliberately picks the generous one.) Sources: The Things
+% Network "Regional limitations of RF use"; rf.guru "Meshtastic, MeshCore,
+% 868 MHz and the Ham Radio Trap"; disk91.com 868 MHz regulation overview.
+% NOTE: still sanity-check against the current AT frequency plan before stage.
 \bridgeslide{The throttle is imposed, not a failure}{%
   \begin{itemize}
     \item Block size is a \textbf{consensus} cap
   \end{itemize}}{%
   \begin{itemize}
-    \item The LoRa duty cycle is a \textbf{regulatory} cap (EU 868\,MHz band)
+    \item The LoRa duty cycle is a \textbf{regulatory} cap (EU/AT 868\,MHz)
+    \item Default \textbf{869.525\,MHz} sits in the 869.4--869.65\,MHz sub-band:
+      \textbf{10\%} airtime, up to 500\,mW ERP
   \end{itemize}}{%
   In both cases the throttle is imposed, not ``they couldn't do more'' — and a
   deliberate cap is exactly what forces a second layer to exist.}
@@ -303,6 +312,161 @@
   \end{alertblock}
 \end{frame}
 
+% ---------------------------------------------------------- brainwallet rooms
+% A #hashtag room derives its AES-128 key straight from the room name:
+% key = SHA256("#" + name)[:16] (consistent with the channel-hash slide above).
+% No salt, no stretching -> a brainwallet. VERIFIED against the MeshCore source
+% and jacksbrain.com "Hitchhiker's Guide to MeshCore Cryptography": room names
+% are lowercase alphanumerics + hyphens, <=30 chars; every name under 7 chars is
+% exhaustively brute-forced in ~90 s on a 2023 laptop GPU (100M+ keys/s). A
+% public WebGPU brute-forcer exists: github.com/jkingsman/meshcore-hashtag-cracker
+% (added to the references slide). NOT an AES break -- AES-128 is untouched; the
+% effective security is the entropy of the *name*. Hashtag rooms are world-
+% readable *by design* (the honest divergence from the Bitcoin footgun).
+\fillerslide[The name is the key --- a familiar footgun]{Hashtag rooms are brainwallets}
+
+\begin{frame}{A hashtag room is a brainwallet}
+  \centering
+  The human-readable \textbf{name is the key} --- same construction, same
+  failure mode as a Bitcoin brainwallet.
+  \vspace{0.5em}
+  \comparisontable{Bitcoin brainwallet}{MeshCore \#room}{%
+    Key from            & \texttt{SHA256(passphrase)} & \texttt{SHA256(\#name)[:16]} \\
+    Input               & low-entropy phrase          & short word (\texttt{\#vienna}) \\
+    Salt / key-stretch  & none                        & none \\
+    Same input          & $\to$ same key everywhere   & $\to$ same key everywhere \\
+    Public oracle       & the blockchain              & the broadcast packet \\
+    Failure mode        & funds swept in seconds      & read by anyone who guesses \\
+  }
+  \vspace{0.4em}
+  {\footnotesize Names are lowercase, $\le$\,30 chars --- every room name under
+  7 characters falls in $\sim$90\,s on a laptop GPU ($>$\,100\,M keys/s). It is a
+  dictionary attack, \textbf{not} an AES break: AES-128 is untouched, the entropy
+  is the \emph{name}.}
+  \vfill
+  \begin{alertblock}{The deep point --- a free verification oracle}
+    Both systems hand the attacker a public way to \emph{check} an offline guess:
+    the chain says ``this address holds coins,'' the broadcast says ``this key
+    decodes to a message.'' Offline guessing \emph{plus} public verification ---
+    that is what makes both catastrophic.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{\dots\ but public \emph{by design}}
+  \begin{itemize}
+    \item \textbf{Lower stakes:} a brainwallet loses \emph{value}, irreversibly;
+      a hashtag room loses \emph{confidentiality} (eavesdropping), not coins.
+    \item \textbf{And it flatters MeshCore:} hashtag rooms are labelled
+      \textbf{world-readable by design} --- ``no key to remember'' is the feature,
+      not a hidden footgun. MeshCore \emph{tells} you the room is public.
+    \item \textbf{Know which layer is public:} private traffic gets real crypto
+      --- X25519\,/\,Ed25519 DMs, or private channels with long random hex keys.
+  \end{itemize}
+  \vfill
+  \begin{alertblock}{The line}
+    You wouldn't put your coins in \texttt{SHA256(``correct horse'')}. Don't put
+    your secrets in \texttt{\#vienna}.
+  \end{alertblock}
+\end{frame}
+
+% ============================ what Bitcoin's consensus buys, and MeshCore skips
+% A four-slide section flowing from one insight: Bitcoin defends a scarce asset
+% (coins), so it pays for heavy consensus machinery (PoW/Sybil resistance, one
+% global order, permanent state); MeshCore defends nothing scarce -- it relays
+% fleeting messages -- so it needs none of it. Each slide is one face of that.
+\fillerslide[No scarce asset, no heavy machinery]{What Bitcoin's consensus buys --- and MeshCore skips}
+
+% #1 Sybil resistance -- answers the question the "not mining" slide opens.
+\fillerslide[Permissionless without proof-of-work]{Sybil resistance}
+
+\bridgeslide{What proof-of-work buys}{%
+  \begin{itemize}
+    \item PoW makes identity / participation deliberately \textbf{costly}
+    \item That cost \emph{is} the security: Sybil resistance, global ordering,
+      permanent state
+    \item You spend energy to earn a say
+  \end{itemize}}{%
+  \begin{itemize}
+    \item Identity is \textbf{free} --- an Ed25519 keypair, generated offline, in
+      unlimited number
+    \item No proof-of-work, no cost to participate
+    \item Anyone can flood adverts
+  \end{itemize}}{%
+  No cryptographic Sybil resistance. The only brakes are \textbf{physical}
+  (airtime / duty cycle, RF range --- spam self-limits) and \textbf{social}
+  (repeater ACLs, admin passwords). MeshCore needs no PoW because it defends no
+  scarce asset --- the worst case is wasted airtime, not theft.}
+
+% #2 Incentives -- paid security vs a volunteer commons.
+\fillerslide[Who runs the infrastructure --- and why]{Incentives}
+
+\bridgeslide{Paid security vs.\ a volunteer commons}{%
+  \begin{itemize}
+    \item Miners are \textbf{paid} --- block subsidy + fees
+    \item Scarce block space $\to$ a \textbf{fee market} (a price)
+    \item Incentives solve the free-rider problem
+  \end{itemize}}{%
+  \begin{itemize}
+    \item Repeater operators are \textbf{unpaid} --- pure goodwill
+    \item Scarce airtime $\to$ \textbf{social etiquette}: don't spam Public,
+      use \#test, keep advert intervals conservative
+    \item No price, no reward
+  \end{itemize}}{%
+  Bitcoin engineers incentives so the network sustains itself without trust;
+  MeshCore leans on volunteers and norms --- a commons with no fee market. It
+  works at today's scale, but nothing \emph{economic} defends it against the
+  tragedy of the commons.}
+
+% #3 State -- permanent ledger vs fleeting broadcast.
+\fillerslide[Permanent ledger vs.\ fleeting broadcast]{State}
+
+\bridgeslide{Consensus state vs.\ the moment}{%
+  \begin{itemize}
+    \item A permanent, globally agreed ledger
+    \item Confirmed once $\to$ there forever, verifiable by anyone, later
+  \end{itemize}}{%
+  \begin{itemize}
+    \item Channel messages exist \textbf{only as they are transmitted}
+    \item Offline when it's sent $\to$ you miss it, silently, with no indication
+    \item Room servers add \emph{optional} short-term history
+  \end{itemize}}{%
+  Bitcoin's whole purpose is durable shared state; MeshCore channels deliberately
+  keep none. Different goals --- you can't ``re-sync'' a missed channel message
+  the way a node replays the chain from genesis. (DMs can ACK, and
+  identities/contacts do persist --- the contrast is \emph{channels}, not all of
+  MeshCore.)}
+
+% #4 Time -- ordering without a global clock. VERIFIED (see note below); the
+% rule is scoped to ADVERTS, not arbitrary packets.
+% VERIFIED against the MeshCore firmware behaviour via two sources independent of
+% the "Hitchhiker's Guide" blog: DeepWiki's firmware annotation (ripplebiz/
+% MeshCore 10.3 Troubleshooting) -- "Timestamp must be greater than
+% last_advert_timestamp. If not, advert is rejected as possible replay attack"
+% (src/helpers/BaseChatMesh.cpp) -- and the official FAQ (docs/faq.md), which
+% documents the clock-not-set failure mode (a node with the wrong time stops
+% appearing in discovery). IMPORTANT SCOPE FIX vs the brief: the forward-in-time
+% rule is enforced on a node's *adverts* (self-announcements), keyed per pubkey
+% by last_advert_timestamp -- NOT on every data packet. Slide reworded to say
+% "adverts" so the claim stays watertight.
+\fillerslide[Ordering without a global clock]{Time}
+
+\bridgeslide{Two ways to agree on ``after''}{%
+  \begin{itemize}
+    \item One chain orders \textbf{everything}, globally
+    \item That total order is exactly what makes double-spend impossible
+  \end{itemize}}{%
+  \begin{itemize}
+    \item A node's \textbf{adverts} must move \textbf{forward in time}: a repeater
+      rejects one whose timestamp is $\le$ the last it saw for that key
+      (\texttt{last\_advert\_timestamp}) --- a per-sender anti-replay rule
+    \item Reset your radio with the wrong clock $\to$ your adverts are silently
+      dropped and you stop appearing on the mesh
+  \end{itemize}}{%
+  Bitcoin builds one \emph{global} order (essential against double-spend);
+  MeshCore enforces only \emph{per-sender} local order on adverts. There's no
+  global ``which came first'' across senders --- with no asset to double-spend,
+  it doesn't need one.}
+
 % --------------------------------------------------------------- region codes
 % The region "transport code" is an HMAC of the region key over the packet
 % payload, truncated to 2 bytes; repeaters recompute it per hop to decide
@@ -383,6 +547,8 @@
           --- crypto-complete packet decoder
         \item \href{https://www.localmesh.nl/en/meshcore-encryption-details/}{localmesh.nl}
           --- encryption details (AES-128, not AES-256)
+        \item \href{https://github.com/jkingsman/meshcore-hashtag-cracker}{jkingsman/meshcore-hashtag-cracker}
+          --- WebGPU brute-forcer for \#hashtag-room keys
       \end{itemize}
     \end{column}
   \end{columns}

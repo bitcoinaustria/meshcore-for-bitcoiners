@@ -21,6 +21,45 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 ## [Unreleased]
 
 ### Added
+- **"What Bitcoin's consensus buys --- and MeshCore skips"** — a new four-slide
+  section (divider + four `\bridgeslide`s) flowing from one insight: Bitcoin
+  defends a scarce asset, so it pays for heavy consensus machinery; MeshCore
+  defends nothing scarce (fleeting messages), so it skips all of it. The four
+  faces:
+  - **Sybil resistance** — permissionless *without* proof-of-work. Answers the
+    "so where's the security?" the mining slide opens: identity is a free
+    Ed25519 keypair; the only brakes are physical (airtime/range) and social
+    (repeater ACLs, admin passwords). No scarce asset → no PoW needed.
+  - **Incentives** — paid miners (subsidy + fees, a fee market) vs. unpaid
+    repeater operators on goodwill and etiquette; a commons with no fee market.
+  - **State** — a permanent global ledger vs. channel messages that exist only
+    as transmitted (offline = missed silently). Scoped to *channels* — DMs ACK
+    and identities/contacts persist.
+  - **Time** — one global order (what stops double-spend) vs. MeshCore's
+    per-sender rule that **adverts must move forward in time**
+    (`last_advert_timestamp`); a wrong clock after a reset gets your adverts
+    silently dropped. **Verified** against the firmware behaviour via two sources
+    independent of the "Hitchhiker's Guide" blog (DeepWiki's firmware annotation
+    + the official FAQ's clock-not-set failure mode), and the claim was
+    **scope-corrected** from "packets" to "adverts" so it stays watertight.
+- **"Hashtag rooms are brainwallets"** — a new two-slide module (divider +
+  two frames) on the most audience-recognizable Bitcoin parallel in the deck.
+  A MeshCore `#room` derives its AES-128 key straight from the room name
+  (`SHA256("#"+name)[:16]` — no salt, no key-stretching), which is structurally
+  a Bitcoin **brainwallet** (`SHA256(passphrase)`). A side-by-side table makes
+  the match: human-chosen low-entropy input, no stretching, deterministic, and —
+  the deep point — a **free public verification oracle** (the blockchain for the
+  brainwallet, the broadcast packet for the room) that turns offline guessing
+  catastrophic. Concrete stat: every room name under 7 chars falls in ~90 s on a
+  laptop GPU (100M+ keys/s); it's a dictionary attack, **not** an AES break.
+  The honest divergence is voiced: lower stakes (confidentiality, not theft) and
+  hashtag rooms are world-readable *by design* — which actually flatters MeshCore
+  (it labels the room public; for private traffic use X25519/Ed25519 DMs or
+  private channels with long random hex keys). Verified against the MeshCore
+  source and the "Hitchhiker's Guide to MeshCore Cryptography".
+- **WebGPU hashtag-room brute-forcer** added to the references slide
+  (`jkingsman/meshcore-hashtag-cracker`) — the demonstrated tool behind the
+  brainwallet slide's brute-force claim.
 - **"Double SHA256 — but not mining"** — a new crypto section on the channel
   hash. The channel name is hashed, cropped to 16 bytes, and hashed again
   (`SHA256(SHA256(name)[:16])`), which *looks* like Bitcoin's double-SHA256.
@@ -64,10 +103,21 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
   has no consensus or ledger to fork — it's a coordinated firmware upgrade, not
   a persistent chain split.
 
+### Changed
+- **Throughput slide now states the EU/Austria duty-cycle figure.** Resolves the
+  long-standing `TODO`: MeshCore's EU default **869.525 MHz** falls in the
+  **869.4–869.65 MHz** sub-band, which CEPT/ERC 70-03 (and ETSI EN 300 220-2,
+  implemented in Austria) allows at a **10% duty cycle** and up to **500 mW
+  (+27 dBm) ERP** — the generous high-power sub-band, not the 1%/25 mW one lower
+  in the band. The "throttle is imposed, not a failure" framing stays; it now
+  has a concrete number behind it.
+
 ### To do before stage
-- **Verify the EU 868 MHz duty-cycle figure** before stating a number out loud
-  (throughput slide is intentionally kept qualitative for now; there's a `TODO`
-  comment in the `.tex` at the throughput section).
+- **Sanity-check the 10% / 500 mW figure** against the current Austrian
+  frequency plan before saying it out loud — it's verified against CEPT/ETSI
+  sources but worth a final cross-check on stage night.
+- **Decide: live-demo vs screenshot** the WebGPU hashtag-room brute-forcer on
+  the brainwallet slide — live is higher-impact but depends on venue wifi/time.
 - Develop further from the draft — this is still a working draft built from
   `handoff-20260626.md`.
 
