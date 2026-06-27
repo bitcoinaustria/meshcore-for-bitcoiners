@@ -20,10 +20,30 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added
+- **"Double SHA256 — but not mining"** — a new crypto section on the channel
+  hash. The channel name is hashed, cropped to 16 bytes, and hashed again
+  (`SHA256(SHA256(name)[:16])`), which *looks* like Bitcoin's double-SHA256.
+  A side-by-side table contrasts the MeshCore channel hash, Bitcoin's
+  txid/block-ID, and Bitcoin **mining** (construction, computed-once vs nonce
+  search, difficulty target, purpose) to show the mining analogy breaks: no
+  nonce search, no target, no contest. Names the parallel that *does* hold —
+  a short one-way commitment plus truncation as a namespace trade-off (HASH160,
+  txid prefixes), the same tension as the 1 B → 1–3 B routing prefix.
+- **"The 2-byte routing hard fork"** — the firmware 1.14+ multi-byte routing
+  prefix is backward-incompatible: old firmware can't parse the new
+  adverts/path hashes, so it's framed as a hard fork. Where it breaks: MeshCore
+  has no consensus or ledger to fork — it's a coordinated firmware upgrade, not
+  a persistent chain split.
+
 ### To do before stage
 - **Verify the EU 868 MHz duty-cycle figure** before stating a number out loud
   (throughput slide is intentionally kept qualitative for now; there's a `TODO`
   comment in the `.tex` at the throughput section).
+- **Verify the exact channel-hash construction** before stating it on stage —
+  AES key size for group channels (the crypto table says AES-256) and which
+  byte(s) of the outer hash become the published channel id (`TODO` comment in
+  the `.tex` at the channel-hash section).
 - Develop further from the draft — this is still a working draft built from
   `handoff-20260626.md`.
 

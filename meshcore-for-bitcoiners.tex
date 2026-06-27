@@ -262,6 +262,67 @@
   since firmware 1.14+.}
 \end{frame}
 
+% ---------------------------------------------------------------- channel hash
+% A Bitcoiner spots SHA256-twice in the channel hash and reaches for "mining".
+% Same primitive, different game — make the distinction, then name the parallel
+% that *does* hold (commitment + truncation trade-off).
+% TODO (verify before stage): exact channel-hash construction — AES key size
+% for group channels (the table above says AES-256), and which byte(s) of the
+% outer hash become the published channel id. Don't over-specify on stage.
+\fillerslide[Same primitive, a different game]{Double SHA256 --- but not mining}
+
+\begin{frame}{Joining \texttt{\#bitcoin-at}: SHA256, twice, cropped}
+  \texttt{SHA256(SHA256(name)[:16])} --- hash the channel name, \textbf{crop} to
+  16 bytes, hash again, end in a tiny public channel id. First pass: a KDF
+  (name\,$\to$\,AES key); second: a commitment (a short id for that key). Two
+  SHA256 rounds \emph{look} like Bitcoin --- but this is not mining.
+  \vfill
+  \centering\small
+  \setlength{\tabcolsep}{8pt}\renewcommand{\arraystretch}{1.3}%
+  \begin{tabular}{@{}lccc@{}}
+    \toprule
+      & \textcolor{baRed}{\textbf{MeshCore}} & \multicolumn{2}{c}{\textbf{Bitcoin}} \\
+    \cmidrule(lr){3-4}
+      & channel hash & txid / block id & \textbf{mining} \\
+    \midrule
+      Construction      & SHA256 + crop + SHA256 & SHA256d (full) & SHA256d (full) \\
+      Computed          & once, fixed            & once, fixed    & \textbf{nonce search} \\
+      Difficulty target & no                     & no             & \textbf{yes} \\
+      Purpose           & id / commitment        & id / commitment & proof-of-work \\
+    \bottomrule
+  \end{tabular}
+  \vfill
+  \begin{alertblock}{The parallel that holds}
+    No nonce search, no target, no contest --- so not mining. The real Bitcoin
+    echo is \textbf{a short one-way commitment plus truncation as a namespace
+    trade-off} --- like HASH160 addresses or txid prefixes, shorter is cheaper
+    but collides sooner, the same tension as the 1\,B\,$\to$\,1--3\,B prefix.
+  \end{alertblock}
+\end{frame}
+
+% ------------------------------------------------------------------- hard fork
+% The firmware 1.14+ multi-byte routing prefix is backward-incompatible: a
+% genuine "hard fork" framing — with the honest caveat that there is no chain
+% to actually split.
+\fillerslide[Break the wire format, split the network]{The 2-byte routing hard fork}
+
+\bridgeslide{A backward-incompatible rule change}{%
+  \begin{itemize}
+    \item A \textbf{hard fork} changes the rules so old software rejects the new
+      format
+    \item Old and new nodes can no longer agree --- the network splits unless
+      everyone upgrades
+  \end{itemize}}{%
+  \begin{itemize}
+    \item Firmware \textbf{1.14+} widens the routing prefix from 1 byte to
+      1--3 bytes
+    \item Old firmware cannot parse the new adverts / path hashes --- you must
+      upgrade to stay on the mesh
+  \end{itemize}}{%
+  MeshCore has no consensus and no ledger to fork: this is a coordinated
+  firmware upgrade, not a persistent chain split. ``Hard fork'' names the
+  backward incompatibility --- not a permanent divergence you could mine on.}
+
 \fillerslide[%
   \href{https://meshcore.io}{meshcore.io}\quad\textbullet\quad
   \href{https://logger-at.meshcore.observer}{logger-at.meshcore.observer}%
