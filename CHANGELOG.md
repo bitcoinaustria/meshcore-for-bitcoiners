@@ -25,7 +25,11 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
   the on-wire format (`[header][transport codes?][path_len][path][payload]`,
   ≤255 B; header bits = route/payload type + version; 1-byte path hashes; payload
   ≤184 B, advert is Ed25519-signed, group/text is channel-hash + 2-byte MAC +
-  AES-128). Placed after the "Thank you" closing as a `[noframenumbering]` backup
+  AES-128). Foregrounds the **core idea**: each relay *appends its own short
+  router ID* to the path as it forwards, so the path *is* the route — a direct
+  message carries the exact list of router IDs and only those repeaters relay it.
+  That's **routing, not flooding** (vs Meshtastic rebroadcasting everywhere).
+  Placed after the "Thank you" closing as a `[noframenumbering]` backup
   so it can be **skipped for a non-technical audience** and shown only on demand —
   self-contained, so skipping it breaks nothing. Ties together the region code,
   the 1–3 byte routing prefix, and the AES-128/MAC facts. Verified against
