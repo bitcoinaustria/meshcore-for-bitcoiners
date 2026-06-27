@@ -20,6 +20,50 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added
+- **"Double SHA256 — but not mining"** — a new crypto section on the channel
+  hash. The channel name is hashed, cropped to 16 bytes, and hashed again
+  (`SHA256(SHA256(name)[:16])`), which *looks* like Bitcoin's double-SHA256.
+  A side-by-side table contrasts the MeshCore channel hash, Bitcoin's
+  txid/block-ID, and Bitcoin **mining** (construction, computed-once vs nonce
+  search, difficulty target, purpose) to show the mining analogy breaks: no
+  nonce search, no target, no contest. Names the parallel that *does* hold —
+  a short one-way commitment plus truncation as a namespace trade-off (HASH160,
+  txid prefixes), the same tension as the 1 B → 1–3 B routing prefix.
+  Construction verified against the MeshCore source: for a `#room`, the AES-128
+  key is `SHA256("#room")[:16]` and the channel id is the first byte of
+  `SHA256(key)` — so the double-hash-with-cropping framing is exact.
+
+- **"References & further reading"** — a new penultimate slide collecting the
+  links behind the deck: project home/docs/firmware source, the Austrian packet
+  observer, and the internals/crypto sources (DeepWiki annotated internals incl.
+  region filtering, the "Hitchhiker's Guide to MeshCore Cryptography", the
+  `meshcore-decoder` library, and LocalMesh's encryption details).
+
+### Fixed
+- **Crypto table: group channels are AES-128, not AES-256.** Verified against
+  the MeshCore firmware and the `meshcore-decoder` library (`AES-128-ECB` + an
+  HMAC-SHA256 MAC) and the "Hitchhiker's Guide to MeshCore Cryptography". The
+  `handoff` note that said "AES-256 in CTR mode" was wrong on both the key size
+  and the mode.
+- **"The region rides inside the message"** — a slide on MeshCore's region
+  *transport code*. The 2-byte region code is an `HMAC-SHA256` of the region key
+  (`SHA256(region name)[:16]`) over the packet payload, truncated to a
+  little-endian uint16; repeaters recompute it per hop, over the *encrypted*
+  payload, to decide whether to relay (geofencing the flood — no key exchange,
+  no registry, agreement on the region name is the whole protocol). Bridged to
+  Bitcoin **SIGHASH**: a signature commits to the transaction, so authorization
+  is bound to the content and can't be lifted onto another message. Where it
+  breaks: the region "key" is public-ish (anyone who knows the name can forge)
+  and only 2 bytes wide — a flood-scoping/airtime filter, not a real signature;
+  it binds *scope* to content, not *authorship*. Verified against the MeshCore
+  source (`meshcore-decoder` `region-transport.ts`; DeepWiki region-filtering).
+- **"The 2-byte routing hard fork"** — the firmware 1.14+ multi-byte routing
+  prefix is backward-incompatible: old firmware can't parse the new
+  adverts/path hashes, so it's framed as a hard fork. Where it breaks: MeshCore
+  has no consensus or ledger to fork — it's a coordinated firmware upgrade, not
+  a persistent chain split.
+
 ### To do before stage
 - **Verify the EU 868 MHz duty-cycle figure** before stating a number out loud
   (throughput slide is intentionally kept qualitative for now; there's a `TODO`
