@@ -30,6 +30,16 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
   nonce search, no target, no contest. Names the parallel that *does* hold —
   a short one-way commitment plus truncation as a namespace trade-off (HASH160,
   txid prefixes), the same tension as the 1 B → 1–3 B routing prefix.
+  Construction verified against the MeshCore source: for a `#room`, the AES-128
+  key is `SHA256("#room")[:16]` and the channel id is the first byte of
+  `SHA256(key)` — so the double-hash-with-cropping framing is exact.
+
+### Fixed
+- **Crypto table: group channels are AES-128, not AES-256.** Verified against
+  the MeshCore firmware and the `meshcore-decoder` library (`AES-128-ECB` + an
+  HMAC-SHA256 MAC) and the "Hitchhiker's Guide to MeshCore Cryptography". The
+  `handoff` note that said "AES-256 in CTR mode" was wrong on both the key size
+  and the mode.
 - **"The 2-byte routing hard fork"** — the firmware 1.14+ multi-byte routing
   prefix is backward-incompatible: old firmware can't parse the new
   adverts/path hashes, so it's framed as a hard fork. Where it breaks: MeshCore
@@ -40,10 +50,6 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 - **Verify the EU 868 MHz duty-cycle figure** before stating a number out loud
   (throughput slide is intentionally kept qualitative for now; there's a `TODO`
   comment in the `.tex` at the throughput section).
-- **Verify the exact channel-hash construction** before stating it on stage —
-  AES key size for group channels (the crypto table says AES-256) and which
-  byte(s) of the outer hash become the published channel id (`TODO` comment in
-  the `.tex` at the channel-hash section).
 - Develop further from the draft — this is still a working draft built from
   `handoff-20260626.md`.
 

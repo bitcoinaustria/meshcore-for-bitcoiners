@@ -252,7 +252,7 @@
     Curve(s)      & secp256k1               & Ed25519 + X25519 \\
     Identity      & address = hash(pubkey)  & pubkey prefix (1--3\,B) \\
     Signatures    & every transaction       & adverts only \\
-    Encryption    & none (all public)       & X25519 (DMs), AES-256 (groups) \\
+    Encryption    & none (all public)       & X25519 (DMs), AES-128 (groups) \\
     The key's job & authorize spending      & protect content / identity \\
     Address reuse & rotated (HD wallets)    & sticky, stay discoverable \\
   }
@@ -266,16 +266,19 @@
 % A Bitcoiner spots SHA256-twice in the channel hash and reaches for "mining".
 % Same primitive, different game — make the distinction, then name the parallel
 % that *does* hold (commitment + truncation trade-off).
-% TODO (verify before stage): exact channel-hash construction — AES key size
-% for group channels (the table above says AES-256), and which byte(s) of the
-% outer hash become the published channel id. Don't over-specify on stage.
+% Construction VERIFIED against MeshCore source (firmware + michaelhart/
+% meshcore-decoder, src/crypto/channel-crypto.ts; "Hitchhiker's Guide to
+% MeshCore Cryptography"): for a "#room", key = SHA256("#room")[:16] (the
+% AES-128 key), channel id = SHA256(key)[0] (first byte). Cipher is AES-128-ECB
+% (+ HMAC-SHA256 MAC) — NOT AES-256/CTR.
 \fillerslide[Same primitive, a different game]{Double SHA256 --- but not mining}
 
 \begin{frame}{Joining \texttt{\#bitcoin-at}: SHA256, twice, cropped}
   \texttt{SHA256(SHA256(name)[:16])} --- hash the channel name, \textbf{crop} to
-  16 bytes, hash again, end in a tiny public channel id. First pass: a KDF
-  (name\,$\to$\,AES key); second: a commitment (a short id for that key). Two
-  SHA256 rounds \emph{look} like Bitcoin --- but this is not mining.
+  16 bytes (the AES-128 key), hash again, take the first byte as a tiny public
+  channel id. First pass: a KDF (name\,$\to$\,AES-128 key); second: a commitment
+  (a short id for that key). Two SHA256 rounds \emph{look} like Bitcoin --- but
+  this is not mining.
   \vfill
   \centering\small
   \setlength{\tabcolsep}{8pt}\renewcommand{\arraystretch}{1.3}%
