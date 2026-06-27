@@ -39,6 +39,10 @@ it and prints this hint.
 Tag `v*` → CI builds the PDF and creates a GitHub Release. Push/PR to `main`
 builds the PDF as a CI artifact. CI checks out submodules (`submodules: recursive`).
 
+Latest: **v0.3** (2026-06-27). Record every release in `CHANGELOG.md` — it's a
+changelog for the *slides* (what changed on stage), so update it whenever you
+cut a tag.
+
 ## Notes
 
 - The deck is a **draft** based on `handoff-20260626.md`; develop further.

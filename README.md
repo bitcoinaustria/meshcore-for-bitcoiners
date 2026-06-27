@@ -47,6 +47,8 @@ git tag v1.0 && git push origin v1.0
 Every push/PR to `main` also builds the PDF and uploads it as a CI artifact
 (`.github/workflows/build.yml`).
 
+See [`CHANGELOG.md`](CHANGELOG.md) for what changed in each version.
+
 ## Layout
 
 ```
