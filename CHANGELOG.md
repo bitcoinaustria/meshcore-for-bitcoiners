@@ -34,6 +34,12 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
   key is `SHA256("#room")[:16]` and the channel id is the first byte of
   `SHA256(key)` — so the double-hash-with-cropping framing is exact.
 
+- **"References & further reading"** — a new penultimate slide collecting the
+  links behind the deck: project home/docs/firmware source, the Austrian packet
+  observer, and the internals/crypto sources (DeepWiki annotated internals incl.
+  region filtering, the "Hitchhiker's Guide to MeshCore Cryptography", the
+  `meshcore-decoder` library, and LocalMesh's encryption details).
+
 ### Fixed
 - **Crypto table: group channels are AES-128, not AES-256.** Verified against
   the MeshCore firmware and the `meshcore-decoder` library (`AES-128-ECB` + an
