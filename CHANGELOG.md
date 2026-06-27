@@ -21,6 +21,15 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 ## [Unreleased]
 
 ### Added
+- **Intro rework for the target audience (technical Bitcoiners new to MeshCore).**
+  Added an opening **"The one-line version"** hook slide right after the
+  "What is MeshCore?" divider: a one-line mental model ("Bitcoin's move, applied
+  to talking" — self-issued identity, peer relay) plus a **"Why a Bitcoiner
+  should care"** callout (licensed spectrum, KYC'd telcos, the network as
+  chokepoint — MeshCore routes around all three) *before* the mechanics. Also
+  pulled the **"packet routed across Austria"** full-bleed visual up to right
+  after "Messaging without the network", so the audience sees the real thing
+  works early instead of after the Meshtastic comparison.
 - **"What is a region code, and why?"** — a plain-language setup slide before the
   region-transport-code bridge. The audience are Bitcoiners new to MeshCore, so
   this explains the concept first: flooding wastes airtime → a *region* is an

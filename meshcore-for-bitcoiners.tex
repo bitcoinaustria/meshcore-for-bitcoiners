@@ -43,6 +43,25 @@
 % Bitcoiners don't know MeshCore — introduce it before drawing the parallels.
 \fillerslide[A radio mesh you can join without asking]{What is MeshCore?}
 
+% Hook slide: open with the one-line mental model + why a Bitcoiner should care,
+% BEFORE the mechanics. Audience are technical Bitcoiners new to MeshCore.
+\begin{frame}{The one-line version}
+  \begin{itemize}
+    \item \textbf{It's Bitcoin's move, applied to talking:} a self-issued
+      identity instead of an account, peers relaying instead of infrastructure
+    \item Generate a \textbf{keypair} and you're on --- no carrier, no number,
+      no SIM, nobody to ask for permission
+    \item Cheap radios relay each other in a \textbf{mesh}; coverage grows because
+      people join, not because a company builds towers
+  \end{itemize}
+  \vfill
+  \begin{alertblock}{Why a Bitcoiner should care}
+    Spectrum is licensed, telcos are KYC gatekeepers, and the network itself is
+    the chokepoint. MeshCore routes around all three --- censorship-resistant,
+    self-sovereign comms that still work when the grid is down.
+  \end{alertblock}
+\end{frame}
+
 \begin{frame}{Messaging without the network}
   \begin{itemize}
     \item Off-grid text messaging over long-range \textbf{LoRa} radio —
@@ -57,6 +76,10 @@
     fee. You only respect the power and duty-cycle limits.
   \end{alertblock}
 \end{frame}
+
+% Show the real thing early: a packet that actually routed across Austria, so
+% the audience sees it works before we get into the how.
+\fullbleedslide[A packet routed across Austria \;\textbullet\; logger-at.meshcore.observer]{observer-package-across-austria-20260626}
 
 \begin{frame}{Where it comes from}
   \begin{itemize}
@@ -98,9 +121,6 @@
     \end{itemize}}%
   {Same cheap hardware}{%
     Same boards, same chips — a different firmware and routing philosophy.}
-
-% A real packet route traced across Austria, captured from the observer.
-\fullbleedslide[A packet routed across Austria \;\textbullet\; logger-at.meshcore.observer]{observer-package-across-austria-20260626}
 
 % Break up the theory with a look at the real app: watch it, chat, plan a link.
 \begin{frame}{Live on the mesh}
