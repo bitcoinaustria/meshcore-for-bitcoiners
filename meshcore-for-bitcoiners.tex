@@ -202,13 +202,22 @@
 % ---------------------------------------------------------------- throughput
 \fillerslide[A chosen constraint, not a weakness]{Throughput}
 
-% TODO (verify before stage): exact EU 868 duty-cycle % and sub-band (~869 MHz).
+% EU 868 duty cycle VERIFIED (CEPT/ERC 70-03 + ETSI EN 300 220-2; implemented in
+% Austria via the national frequency plan). MeshCore's EU default 869.525 MHz
+% falls in the 869.4--869.65 MHz sub-band ("P"/g3) => 10% duty cycle, up to
+% 500 mW (+27 dBm) ERP. (The lower 868.0--868.6 MHz sub-band is only 1% at
+% 25 mW — MeshCore deliberately picks the generous one.) Sources: The Things
+% Network "Regional limitations of RF use"; rf.guru "Meshtastic, MeshCore,
+% 868 MHz and the Ham Radio Trap"; disk91.com 868 MHz regulation overview.
+% NOTE: still sanity-check against the current AT frequency plan before stage.
 \bridgeslide{The throttle is imposed, not a failure}{%
   \begin{itemize}
     \item Block size is a \textbf{consensus} cap
   \end{itemize}}{%
   \begin{itemize}
-    \item The LoRa duty cycle is a \textbf{regulatory} cap (EU 868\,MHz band)
+    \item The LoRa duty cycle is a \textbf{regulatory} cap (EU/AT 868\,MHz)
+    \item Default \textbf{869.525\,MHz} sits in the 869.4--869.65\,MHz sub-band:
+      \textbf{10\%} airtime, up to 500\,mW ERP
   \end{itemize}}{%
   In both cases the throttle is imposed, not ``they couldn't do more'' — and a
   deliberate cap is exactly what forces a second layer to exist.}

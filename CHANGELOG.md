@@ -64,10 +64,19 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
   has no consensus or ledger to fork — it's a coordinated firmware upgrade, not
   a persistent chain split.
 
+### Changed
+- **Throughput slide now states the EU/Austria duty-cycle figure.** Resolves the
+  long-standing `TODO`: MeshCore's EU default **869.525 MHz** falls in the
+  **869.4–869.65 MHz** sub-band, which CEPT/ERC 70-03 (and ETSI EN 300 220-2,
+  implemented in Austria) allows at a **10% duty cycle** and up to **500 mW
+  (+27 dBm) ERP** — the generous high-power sub-band, not the 1%/25 mW one lower
+  in the band. The "throttle is imposed, not a failure" framing stays; it now
+  has a concrete number behind it.
+
 ### To do before stage
-- **Verify the EU 868 MHz duty-cycle figure** before stating a number out loud
-  (throughput slide is intentionally kept qualitative for now; there's a `TODO`
-  comment in the `.tex` at the throughput section).
+- **Sanity-check the 10% / 500 mW figure** against the current Austrian
+  frequency plan before saying it out loud — it's verified against CEPT/ETSI
+  sources but worth a final cross-check on stage night.
 - Develop further from the draft — this is still a working draft built from
   `handoff-20260626.md`.
 
