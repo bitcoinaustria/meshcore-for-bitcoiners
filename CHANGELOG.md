@@ -21,6 +21,27 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 ## [Unreleased]
 
 ### Added
+- **"What Bitcoin's consensus buys --- and MeshCore skips"** — a new four-slide
+  section (divider + four `\bridgeslide`s) flowing from one insight: Bitcoin
+  defends a scarce asset, so it pays for heavy consensus machinery; MeshCore
+  defends nothing scarce (fleeting messages), so it skips all of it. The four
+  faces:
+  - **Sybil resistance** — permissionless *without* proof-of-work. Answers the
+    "so where's the security?" the mining slide opens: identity is a free
+    Ed25519 keypair; the only brakes are physical (airtime/range) and social
+    (repeater ACLs, admin passwords). No scarce asset → no PoW needed.
+  - **Incentives** — paid miners (subsidy + fees, a fee market) vs. unpaid
+    repeater operators on goodwill and etiquette; a commons with no fee market.
+  - **State** — a permanent global ledger vs. channel messages that exist only
+    as transmitted (offline = missed silently). Scoped to *channels* — DMs ACK
+    and identities/contacts persist.
+  - **Time** — one global order (what stops double-spend) vs. MeshCore's
+    per-sender rule that **adverts must move forward in time**
+    (`last_advert_timestamp`); a wrong clock after a reset gets your adverts
+    silently dropped. **Verified** against the firmware behaviour via two sources
+    independent of the "Hitchhiker's Guide" blog (DeepWiki's firmware annotation
+    + the official FAQ's clock-not-set failure mode), and the claim was
+    **scope-corrected** from "packets" to "adverts" so it stays watertight.
 - **"Hashtag rooms are brainwallets"** — a new two-slide module (divider +
   two frames) on the most audience-recognizable Bitcoin parallel in the deck.
   A MeshCore `#room` derives its AES-128 key straight from the room name

@@ -369,6 +369,104 @@
   \end{alertblock}
 \end{frame}
 
+% ============================ what Bitcoin's consensus buys, and MeshCore skips
+% A four-slide section flowing from one insight: Bitcoin defends a scarce asset
+% (coins), so it pays for heavy consensus machinery (PoW/Sybil resistance, one
+% global order, permanent state); MeshCore defends nothing scarce -- it relays
+% fleeting messages -- so it needs none of it. Each slide is one face of that.
+\fillerslide[No scarce asset, no heavy machinery]{What Bitcoin's consensus buys --- and MeshCore skips}
+
+% #1 Sybil resistance -- answers the question the "not mining" slide opens.
+\fillerslide[Permissionless without proof-of-work]{Sybil resistance}
+
+\bridgeslide{What proof-of-work buys}{%
+  \begin{itemize}
+    \item PoW makes identity / participation deliberately \textbf{costly}
+    \item That cost \emph{is} the security: Sybil resistance, global ordering,
+      permanent state
+    \item You spend energy to earn a say
+  \end{itemize}}{%
+  \begin{itemize}
+    \item Identity is \textbf{free} --- an Ed25519 keypair, generated offline, in
+      unlimited number
+    \item No proof-of-work, no cost to participate
+    \item Anyone can flood adverts
+  \end{itemize}}{%
+  No cryptographic Sybil resistance. The only brakes are \textbf{physical}
+  (airtime / duty cycle, RF range --- spam self-limits) and \textbf{social}
+  (repeater ACLs, admin passwords). MeshCore needs no PoW because it defends no
+  scarce asset --- the worst case is wasted airtime, not theft.}
+
+% #2 Incentives -- paid security vs a volunteer commons.
+\fillerslide[Who runs the infrastructure --- and why]{Incentives}
+
+\bridgeslide{Paid security vs.\ a volunteer commons}{%
+  \begin{itemize}
+    \item Miners are \textbf{paid} --- block subsidy + fees
+    \item Scarce block space $\to$ a \textbf{fee market} (a price)
+    \item Incentives solve the free-rider problem
+  \end{itemize}}{%
+  \begin{itemize}
+    \item Repeater operators are \textbf{unpaid} --- pure goodwill
+    \item Scarce airtime $\to$ \textbf{social etiquette}: don't spam Public,
+      use \#test, keep advert intervals conservative
+    \item No price, no reward
+  \end{itemize}}{%
+  Bitcoin engineers incentives so the network sustains itself without trust;
+  MeshCore leans on volunteers and norms --- a commons with no fee market. It
+  works at today's scale, but nothing \emph{economic} defends it against the
+  tragedy of the commons.}
+
+% #3 State -- permanent ledger vs fleeting broadcast.
+\fillerslide[Permanent ledger vs.\ fleeting broadcast]{State}
+
+\bridgeslide{Consensus state vs.\ the moment}{%
+  \begin{itemize}
+    \item A permanent, globally agreed ledger
+    \item Confirmed once $\to$ there forever, verifiable by anyone, later
+  \end{itemize}}{%
+  \begin{itemize}
+    \item Channel messages exist \textbf{only as they are transmitted}
+    \item Offline when it's sent $\to$ you miss it, silently, with no indication
+    \item Room servers add \emph{optional} short-term history
+  \end{itemize}}{%
+  Bitcoin's whole purpose is durable shared state; MeshCore channels deliberately
+  keep none. Different goals --- you can't ``re-sync'' a missed channel message
+  the way a node replays the chain from genesis. (DMs can ACK, and
+  identities/contacts do persist --- the contrast is \emph{channels}, not all of
+  MeshCore.)}
+
+% #4 Time -- ordering without a global clock. VERIFIED (see note below); the
+% rule is scoped to ADVERTS, not arbitrary packets.
+% VERIFIED against the MeshCore firmware behaviour via two sources independent of
+% the "Hitchhiker's Guide" blog: DeepWiki's firmware annotation (ripplebiz/
+% MeshCore 10.3 Troubleshooting) -- "Timestamp must be greater than
+% last_advert_timestamp. If not, advert is rejected as possible replay attack"
+% (src/helpers/BaseChatMesh.cpp) -- and the official FAQ (docs/faq.md), which
+% documents the clock-not-set failure mode (a node with the wrong time stops
+% appearing in discovery). IMPORTANT SCOPE FIX vs the brief: the forward-in-time
+% rule is enforced on a node's *adverts* (self-announcements), keyed per pubkey
+% by last_advert_timestamp -- NOT on every data packet. Slide reworded to say
+% "adverts" so the claim stays watertight.
+\fillerslide[Ordering without a global clock]{Time}
+
+\bridgeslide{Two ways to agree on ``after''}{%
+  \begin{itemize}
+    \item One chain orders \textbf{everything}, globally
+    \item That total order is exactly what makes double-spend impossible
+  \end{itemize}}{%
+  \begin{itemize}
+    \item A node's \textbf{adverts} must move \textbf{forward in time}: a repeater
+      rejects one whose timestamp is $\le$ the last it saw for that key
+      (\texttt{last\_advert\_timestamp}) --- a per-sender anti-replay rule
+    \item Reset your radio with the wrong clock $\to$ your adverts are silently
+      dropped and you stop appearing on the mesh
+  \end{itemize}}{%
+  Bitcoin builds one \emph{global} order (essential against double-spend);
+  MeshCore enforces only \emph{per-sender} local order on adverts. There's no
+  global ``which came first'' across senders --- with no asset to double-spend,
+  it doesn't need one.}
+
 % --------------------------------------------------------------- region codes
 % The region "transport code" is an HMAC of the region key over the packet
 % payload, truncated to 2 bytes; repeaters recompute it per hop to decide
