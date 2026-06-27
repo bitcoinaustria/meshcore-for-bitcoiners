@@ -43,6 +43,25 @@
 % Bitcoiners don't know MeshCore — introduce it before drawing the parallels.
 \fillerslide[A radio mesh you can join without asking]{What is MeshCore?}
 
+% Hook slide: open with the one-line mental model + why a Bitcoiner should care,
+% BEFORE the mechanics. Audience are technical Bitcoiners new to MeshCore.
+\begin{frame}{The one-line version}
+  \begin{itemize}
+    \item \textbf{It's Bitcoin's move, applied to talking:} a self-issued
+      identity instead of an account, peers relaying instead of infrastructure
+    \item Generate a \textbf{keypair} and you're on --- no carrier, no number,
+      no SIM, nobody to ask for permission
+    \item Cheap radios relay each other in a \textbf{mesh}; coverage grows because
+      people join, not because a company builds towers
+  \end{itemize}
+  \vfill
+  \begin{alertblock}{Why a Bitcoiner should care}
+    Spectrum is licensed, telcos are KYC gatekeepers, and the network itself is
+    the chokepoint. MeshCore routes around all three --- censorship-resistant,
+    self-sovereign comms that still work when the grid is down.
+  \end{alertblock}
+\end{frame}
+
 \begin{frame}{Messaging without the network}
   \begin{itemize}
     \item Off-grid text messaging over long-range \textbf{LoRa} radio —
@@ -57,6 +76,10 @@
     fee. You only respect the power and duty-cycle limits.
   \end{alertblock}
 \end{frame}
+
+% Show the real thing early: a packet that actually routed across Austria, so
+% the audience sees it works before we get into the how.
+\fullbleedslide[A packet routed across Austria \;\textbullet\; logger-at.meshcore.observer]{observer-package-across-austria-20260626}
 
 \begin{frame}{Where it comes from}
   \begin{itemize}
@@ -99,9 +122,6 @@
   {Same cheap hardware}{%
     Same boards, same chips — a different firmware and routing philosophy.}
 
-% A real packet route traced across Austria, captured from the observer.
-\fullbleedslide[A packet routed across Austria \;\textbullet\; logger-at.meshcore.observer]{observer-package-across-austria-20260626}
-
 % Break up the theory with a look at the real app: watch it, chat, plan a link.
 \begin{frame}{Live on the mesh}
   \vfill
@@ -140,8 +160,7 @@
     \includegraphics[height=0.46\paperheight,keepaspectratio]{meshcore-app-path-7hops}\par
     \vskip0.7em
     {\footnotesize \dots\ and a delivery path traced hop by hop: each
-     \emph{known repeater} that relayed a message
-     (\emph{Nachricht wurde wiederholt}), from sender to me.}%
+     \emph{known repeater} that relayed the message, from sender to me.}%
   \end{minipage}%
   \vfill
 \end{frame}
@@ -327,28 +346,21 @@
 
 \begin{frame}{A hashtag room is a brainwallet}
   \centering
-  The human-readable \textbf{name is the key} --- same construction, same
-  failure mode as a Bitcoin brainwallet.
-  \vspace{0.5em}
   \comparisontable{Bitcoin brainwallet}{MeshCore \#room}{%
-    Key from            & \texttt{SHA256(passphrase)} & \texttt{SHA256(\#name)[:16]} \\
-    Input               & low-entropy phrase          & short word (\texttt{\#vienna}) \\
-    Salt / key-stretch  & none                        & none \\
-    Same input          & $\to$ same key everywhere   & $\to$ same key everywhere \\
-    Public oracle       & the blockchain              & the broadcast packet \\
-    Failure mode        & funds swept in seconds      & read by anyone who guesses \\
+    Key from           & \texttt{SHA256(passphrase)} & \texttt{SHA256(\#name)[:16]} \\
+    Input              & low-entropy phrase          & short word (\texttt{\#vienna}) \\
+    Salt / stretching  & none                        & none \\
+    Public oracle      & the blockchain              & the broadcast packet \\
+    Failure            & swept in seconds            & anyone who guesses reads it \\
   }
-  \vspace{0.4em}
-  {\footnotesize Names are lowercase, $\le$\,30 chars --- every room name under
-  7 characters falls in $\sim$90\,s on a laptop GPU ($>$\,100\,M keys/s). It is a
-  dictionary attack, \textbf{not} an AES break: AES-128 is untouched, the entropy
-  is the \emph{name}.}
   \vfill
   \begin{alertblock}{The deep point --- a free verification oracle}
-    Both systems hand the attacker a public way to \emph{check} an offline guess:
-    the chain says ``this address holds coins,'' the broadcast says ``this key
-    decodes to a message.'' Offline guessing \emph{plus} public verification ---
-    that is what makes both catastrophic.
+    Both hand the attacker a public way to \emph{check} an offline guess: the
+    chain says ``this address holds coins,'' the broadcast says ``this key decodes
+    to a message.'' Offline guessing \emph{plus} public verification is what makes
+    both catastrophic --- \textbf{not} an AES break (AES-128 is untouched; the
+    entropy is the \emph{name}). Every \#room name under 7 chars falls in
+    $\sim$90\,s on a laptop GPU.
   \end{alertblock}
 \end{frame}
 
@@ -479,6 +491,27 @@
 % 2 bytes wide => a routing/airtime filter, not a signature.
 \fillerslide[Borders agreed by name, enforced per hop]{The region transport code}
 
+% Plain-language setup before the bridge: the audience doesn't know MeshCore, so
+% explain what a region code is and why it exists before drawing the SIGHASH bridge.
+\begin{frame}{What is a region code, and why?}
+  \begin{itemize}
+    \item MeshCore \textbf{floods} adverts and path discovery. Unchecked, traffic
+      from far away wastes everyone's scarce airtime
+    \item A \textbf{region} is just an agreed name --- e.g.\ \texttt{at-w} for
+      western Austria. Hash the name and everyone there shares a \textbf{region key}
+    \item Every packet carries a 2-byte \textbf{transport code} derived from that
+      key; a repeater relays a packet only if the code matches its own region
+    \item The mesh is thus \textbf{geofenced by agreement} --- no registry, no
+      coordinates, no permission: just a name the locals share
+  \end{itemize}
+  \vfill
+  \begin{alertblock}{The neat part}
+    The code is computed over the \emph{encrypted} payload, so repeaters filter by
+    region \textbf{without decrypting} --- and because it commits to the packet's
+    bytes, it behaves like a SIGHASH. That bridge is next.
+  \end{alertblock}
+\end{frame}
+
 \bridgeslide{The region rides inside the message}{%
   \begin{itemize}
     \item A signature commits to the \textbf{transaction itself} (SIGHASH)
@@ -558,5 +591,40 @@
   \href{https://meshcore.io}{meshcore.io}\quad\textbullet\quad
   \href{https://logger-at.meshcore.observer}{logger-at.meshcore.observer}%
 ]{Thank you}
+
+% ============================================================== backup / appendix
+% Optional deep-dive on the on-wire packet format. Kept AFTER the closing as a
+% backup slide so it can be skipped for a non-technical audience and shown only
+% on demand — it's self-contained, so skipping it breaks nothing in the main
+% talk. It also ties several earlier slides together (region code, the 1--3 byte
+% routing prefix, AES-128 + 2-byte MAC). [noframenumbering] keeps it out of the
+% main slide count. VERIFIED against docs.meshcore.io/packet_format, DeepWiki 7.1
+% "Packet Structure and Types", and michaelhart/meshcore-decoder.
+\begin{frame}[noframenumbering]{Backup --- anatomy of a MeshCore packet}
+  \small
+  \texttt{[\,header\,][\,transport codes?\,][\,path\_len\,][\,path\,][\,payload\,]}
+  \hfill at most \textbf{255\,bytes} --- one LoRa frame
+  \medskip
+  \begin{itemize}
+    \item \textbf{header} (1\,B) --- 2 bits route type, 4 bits payload type
+      (advert, txt, group-text, ack, \dots), 2 bits version
+    \item \textbf{transport codes} (4\,B, optional) --- only on \emph{transport}
+      routes; where the 2-byte \textbf{region code} rides
+    \item \textbf{path} (length byte $+$ up to 64\,B) --- \textbf{the core idea:}
+      each relay \textbf{appends its own short ID} (1--3\,bytes) as it forwards
+    \item \textbf{payload} (up to 184\,B) --- type-specific: an \emph{advert} is
+      Ed25519-signed; a \emph{group / text} message is channel-hash $+$ 2-byte
+      MAC $+$ AES-128 ciphertext
+  \end{itemize}
+  \vfill
+  \begin{alertblock}{This is what makes it routing, not flooding}
+    On a flood the path \emph{records} the relays a packet crossed; a direct
+    message then \emph{carries that exact list} of router IDs, so only those
+    repeaters forward it --- not every node, the way Meshtastic floods. The path
+    \emph{is} the route.
+  \end{alertblock}
+  {\footnotesize Skip unless the room likes wire formats. Sources:
+  \texttt{docs.meshcore.io/packet\_format}, DeepWiki 7.1, \texttt{meshcore-decoder}.}
+\end{frame}
 
 \end{document}
