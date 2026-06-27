@@ -303,6 +303,34 @@
   \end{alertblock}
 \end{frame}
 
+% --------------------------------------------------------------- region codes
+% The region "transport code" is an HMAC of the region key over the packet
+% payload, truncated to 2 bytes; repeaters recompute it per hop to decide
+% whether to relay (geofencing the flood). VERIFIED against MeshCore source
+% (meshcore-decoder src/crypto/region-transport.ts; DeepWiki 7.6 "Region
+% Filtering and Transport Codes"): region key = SHA256(regionName)[:16];
+% code = LE-uint16 of the first 2 bytes of HMAC-SHA256(key, payloadType ||
+% payload), with 0/0xFFFF nudged to 1/0xFFFE. Computed over the ENCRYPTED
+% payload, so repeaters filter by region without decrypting. Symmetric and only
+% 2 bytes wide => a routing/airtime filter, not a signature.
+\fillerslide[Borders agreed by name, enforced per hop]{The region transport code}
+
+\bridgeslide{Stamped into the message, not onto it}{%
+  \begin{itemize}
+    \item A signature commits to the \textbf{transaction itself} (SIGHASH)
+    \item Lift it onto a different tx and it is invalid --- the authorization is
+      bound to the content it authorizes
+  \end{itemize}}{%
+  \begin{itemize}
+    \item The 2-byte region code is an \textbf{HMAC over the packet payload};
+      repeaters recompute it per hop to decide whether to relay
+    \item The region key is just \texttt{SHA256(name)} --- agree on
+      ``\texttt{at-w}'', no key exchange, no registry
+  \end{itemize}}{%
+  Symmetric and public-ish (anyone who knows the region name can forge it), and
+  only 2 bytes wide --- a flood-scoping filter that saves airtime, not a real
+  signature. It binds \emph{scope} to the content, not \emph{authorship}.}
+
 % ------------------------------------------------------------------- hard fork
 % The firmware 1.14+ multi-byte routing prefix is backward-incompatible: a
 % genuine "hard fork" framing — with the honest caveat that there is no chain

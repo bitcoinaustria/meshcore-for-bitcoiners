@@ -40,6 +40,18 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
   HMAC-SHA256 MAC) and the "Hitchhiker's Guide to MeshCore Cryptography". The
   `handoff` note that said "AES-256 in CTR mode" was wrong on both the key size
   and the mode.
+- **"Stamped into the message, not onto it"** — a slide on MeshCore's region
+  *transport code*. The 2-byte region code is an `HMAC-SHA256` of the region key
+  (`SHA256(region name)[:16]`) over the packet payload, truncated to a
+  little-endian uint16; repeaters recompute it per hop, over the *encrypted*
+  payload, to decide whether to relay (geofencing the flood — no key exchange,
+  no registry, agreement on the region name is the whole protocol). Bridged to
+  Bitcoin **SIGHASH**: a signature commits to the transaction, so authorization
+  is bound to the content and can't be lifted onto another message. Where it
+  breaks: the region "key" is public-ish (anyone who knows the name can forge)
+  and only 2 bytes wide — a flood-scoping/airtime filter, not a real signature;
+  it binds *scope* to content, not *authorship*. Verified against the MeshCore
+  source (`meshcore-decoder` `region-transport.ts`; DeepWiki region-filtering).
 - **"The 2-byte routing hard fork"** — the firmware 1.14+ multi-byte routing
   prefix is backward-incompatible: old firmware can't parse the new
   adverts/path hashes, so it's framed as a hard fork. Where it breaks: MeshCore
