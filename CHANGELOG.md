@@ -116,6 +116,10 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
   redundant intro line, a 6-row table, a footnote, and an alertblock — too much
   vertical content, pushing off the bottom. Trimmed to a 5-row table and folded
   the brute-force/AES facts into the alertblock.
+- **Hardware slide: Heltec LoRa 32 V3 price ~20 → ~40 EUR.** The ~20 EUR figure
+  was the bare-board AliExpress price; EU retail for the 868 MHz board is around
+  40 EUR (e.g. Eckstein-Shop.de lists it at €39.95). ~40 EUR is consistent with
+  the deck's other EU-retail figures (T1000-E ~40 EUR, P1-Pro ~130 EUR).
 - **Crypto table: group channels are AES-128, not AES-256.** Verified against
   the MeshCore firmware and the `meshcore-decoder` library (`AES-128-ECB` + an
   HMAC-SHA256 MAC) and the "Hitchhiker's Guide to MeshCore Cryptography". The
