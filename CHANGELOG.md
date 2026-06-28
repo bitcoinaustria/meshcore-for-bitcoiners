@@ -42,6 +42,27 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
   and **"What recurs --- and a promise"**, before "The core thesis", maps the
   recurring Bitcoin primitives and states the deck's honesty contract (every
   parallel drawn rigorously, every break named out loud).
+- **"Your first five minutes on the mesh"** — an onboarding slide before the
+  channel CTA: buy a companion board → install Liam Cottle's app and pair over
+  Bluetooth → keypair generated on first run (back it up) → type a channel name
+  to join. Turns the "permissionless, you just join" thesis into a concrete
+  action the room can take that night.
+
+### Changed
+- **Thesis stated once, as a reveal.** "The core thesis" now opens with a
+  callback ("we opened with the one-liner; here is the precise claim…") so it
+  reads as escalation, not repetition of the hook slide.
+- **Brainwallet slide reframed as a payoff** of the channel-hash slide ("we just
+  saw the room key *is* SHA256 of the name…"); its alertblock trimmed to fit.
+- **"advert" defined at first lean** (the signing model: "a node's signed *here
+  is my key, here I am*"), and the three node **roles glossed** where named
+  (companion = handset, repeater = always-on relay, room server = store-and-forward).
+- **Seed-phrase / key-backup parallel** added to the identity bridge: no seed
+  phrase, the key lives on the device — lose it and you lose the *handle*, but
+  with no value at stake it's a re-announce, not a theft.
+- **"Scarce airtime" turned into a callback** — the region-code slide now ties it
+  back to the duty-cycle budget from the throughput slide, instead of
+  re-introducing the constraint from scratch.
 - **More links on the references slide**, including a new **"Hardware & radio"**
   group: the **Semtech SX1262** (the LoRa radio IC behind the ASIC slide — chirp
   spread spectrum in silicon) and **ST STM32WL** (the same SX126x radio IP on an

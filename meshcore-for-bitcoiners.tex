@@ -131,7 +131,8 @@
 \comparisonslide{MeshCore vs Meshtastic}%
   {MeshCore}{%
     \begin{itemize}
-      \item Role-based: companion / repeater / room server
+      \item Role-based: companion (handset), repeater (always-on
+        relay), room server (store-and-forward)
       \item \textbf{Source-routed} along discovered paths
       \item Quieter, more scalable mesh
     \end{itemize}}%
@@ -214,6 +215,9 @@
 
 % ---------------------------------------------------------------- core thesis
 \begin{frame}{The core thesis}
+  We opened with the one-liner; here is the precise claim the rest of the talk
+  defends.
+  \vskip0.6em
   \begin{itemize}
     \item A self-generated \textbf{keypair} replaces institutional identity.
     \item \textbf{Bitcoin} replaces the bank account — gatekeeper: the bank.
@@ -246,7 +250,9 @@
     \item Verify keys via QR / word list (TOFU)
   \end{itemize}}{%
   HD wallets rotate addresses for privacy; a MeshCore identity is deliberately
-  \emph{sticky} — you want to stay discoverable. No HD equivalent.}
+  \emph{sticky} — you want to stay discoverable. No HD equivalent, and no seed
+  phrase: lose the device and you lose the \emph{handle} — but with no value at
+  stake, a re-announce, not a theft.}
 
 % ---------------------------------------------------------------- signing
 \fillerslide[The elegant twist]{The signing model}
@@ -258,7 +264,8 @@
     \item No valid signature → the transaction does not exist
   \end{itemize}}{%
   \begin{itemize}
-    \item Identity is \textbf{public} (the advert)
+    \item Identity is \textbf{public} (the \textbf{advert} --- a node's signed
+      ``here is my key, here I am'')
     \item The key protects \textbf{content}
     \item Adverts are signed (Ed25519); DMs are encrypted (X25519)
   \end{itemize}}{%
@@ -421,6 +428,9 @@
 \fillerslide[The name is the key --- a familiar footgun]{Hashtag rooms are brainwallets}
 
 \begin{frame}{A hashtag room is a brainwallet}
+  We just saw the room key \emph{is} \texttt{SHA256} of the name --- a Bitcoiner
+  has seen exactly this go wrong.
+  \vskip0.3em
   \centering
   \comparisontable{Bitcoin brainwallet}{MeshCore \#room}{%
     Key from           & \texttt{SHA256(passphrase)} & \texttt{SHA256(\#name)[:16]} \\
@@ -434,9 +444,8 @@
     Both hand the attacker a public way to \emph{check} an offline guess: the
     chain says ``this address holds coins,'' the broadcast says ``this key decodes
     to a message.'' Offline guessing \emph{plus} public verification is what makes
-    both catastrophic --- \textbf{not} an AES break (AES-128 is untouched; the
-    entropy is the \emph{name}). Every \#room name under 7 chars falls in
-    $\sim$90\,s on a laptop GPU.
+    both catastrophic --- \textbf{not} an AES break: the entropy is the
+    \emph{name}. A \#room name under 7 chars falls in $\sim$90\,s on a laptop GPU.
   \end{alertblock}
 \end{frame}
 
@@ -572,7 +581,8 @@
 \begin{frame}{What is a region code, and why?}
   \begin{itemize}
     \item MeshCore \textbf{floods} adverts and path discovery. Unchecked, traffic
-      from far away wastes everyone's scarce airtime
+      from far away wastes everyone's scarce airtime --- the same budget the
+      duty cycle already rations
     \item A \textbf{region} is just an agreed name --- e.g.\ \texttt{at} for
       Austria, \texttt{at-w} for Vienna. Hash the name and everyone there shares
       a \textbf{region key}
@@ -677,6 +687,26 @@
 % Closing call to action: concrete Bitcoin channels the audience can join right
 % now. Ties back to the region-transport-code slide (a region is just an agreed
 % name: "at" = Austria, "at-w" = Vienna; no region = mesh-wide).
+% The payoff: the thesis is "you just join" — so show the four steps to actually
+% get on the mesh, right before the channel CTA.
+\begin{frame}{Your first five minutes on the mesh}
+  \begin{itemize}
+    \item \textbf{Get a companion board} --- e.g.\ a SenseCAP \textbf{T1000-E}
+      ($\sim$40\,EUR), often pre-flashed; otherwise flash it from the browser
+    \item \textbf{Install the app} --- Liam Cottle's MeshCore client
+      (iOS / Android / web) and pair the board over \textbf{Bluetooth}
+    \item \textbf{It generates your keypair on first run} --- that pair \emph{is}
+      your identity. Back it up; nobody else can recover it
+    \item \textbf{Join} --- type a channel name and you're talking: no account,
+      no SIM, no permission
+  \end{itemize}
+  \vfill
+  \begin{alertblock}{That's the whole onboarding}
+    Buy, pair, generate, join --- the permissionless claim is literal: nobody
+    issued you anything, and nothing on the network knew you were coming.
+  \end{alertblock}
+\end{frame}
+
 \begin{frame}{Join the Bitcoin channels on MeshCore}
   Same name, same key --- just type the channel name to join.
   \vskip1.2em
