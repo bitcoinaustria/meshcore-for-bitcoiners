@@ -21,6 +21,11 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 ## [Unreleased]
 
 ### Added
+- **More links on the references slide**, including a new **"Hardware & radio"**
+  group: the **Semtech SX1262** (the LoRa radio IC behind the ASIC slide — chirp
+  spread spectrum in silicon) and **ST STM32WL** (the same SX126x radio IP on an
+  MCU die). Also added **docs.meshcore.io/packet_format** (the on-wire format
+  behind the backup slide) to the internals column.
 - **"ASICs --- and the LoRa radio chip"** — a new `\bridgeslide` after the
   "not mining" slide, answering the natural Bitcoiner question *"does LoRa have
   ASICs too?"* It does: the LoRa PHY (chirp spread spectrum) runs in a dedicated
