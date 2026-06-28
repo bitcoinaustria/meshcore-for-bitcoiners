@@ -81,6 +81,28 @@
 % the audience sees it works before we get into the how.
 \fullbleedslide[A packet routed across Austria \;\textbullet\; logger-at.meshcore.observer]{observer-package-across-austria-20260626}
 
+% The Bitcoiner's reflex after seeing it work: "so what's the catch?" Name the
+% range/bandwidth trade-off now; the throughput bridge later pays it off.
+\begin{frame}{The catch --- kilometres of range, bytes of bandwidth}
+  \begin{itemize}
+    \item \textbf{Long range, tiny pipe:} a single packet can carry \emph{tens}
+      of kilometres line-of-sight --- but at roughly the speed of a 1980s modem.
+      One LoRa frame is at most \textbf{255 bytes}
+    \item \textbf{Store-and-forward, not a phone call:} messages hop repeater to
+      repeater with seconds of latency; you text, you don't stream
+    \item \textbf{Physics, not policy:} the range buys reach by spending
+      bandwidth and time --- and it sips power, so a node runs for days off a
+      small battery or a solar panel
+  \end{itemize}
+  \vfill
+  \begin{alertblock}{The right mental model}
+    Not WhatsApp-over-radio. Think \textbf{a permissionless telegraph} --- short
+    text, long reach, no carrier. The narrow pipe is the price of needing nothing
+    but a cheap radio and line of sight. (We come back to \emph{why} that
+    constraint is a feature.)
+  \end{alertblock}
+\end{frame}
+
 \begin{frame}{Where it comes from}
   \begin{itemize}
     \item Grew out of the \textbf{Meshtastic} world — then rebuilt from scratch
@@ -163,6 +185,31 @@
      \emph{known repeater} that relayed the message, from sender to me.}%
   \end{minipage}%
   \vfill
+\end{frame}
+
+% Make the agenda + the honesty contract explicit before the thesis, so the
+% later "where it breaks" callouts land as a kept promise, not a hedge.
+\begin{frame}{What recurs --- and a promise}
+  You already know the moves. The rest of the talk is the same Bitcoin
+  primitives, in radio:
+  \vskip0.8em
+  \begin{itemize}
+    \item \textbf{A self-issued keypair} is your whole identity --- no issuer, no
+      registration
+    \item \textbf{Signatures and encryption} do the work --- adverts signed,
+      DMs encrypted
+    \item \textbf{A throughput cap you didn't choose} forces a second layer ---
+      sound familiar?
+    \item \textbf{Routing, not flooding} --- find a path, don't shout to everyone
+    \item \textbf{Permissionless by construction} --- you join by generating a
+      key, not by asking
+  \end{itemize}
+  \vfill
+  \begin{alertblock}{The honest contract for the rest of this talk}
+    Every parallel is drawn rigorously --- and every time it \textbf{breaks},
+    I'll say so out loud. MeshCore is not Bitcoin; it's Bitcoin's \emph{instincts}
+    pointed at a different problem. The breaks are where it gets interesting.
+  \end{alertblock}
 \end{frame}
 
 % ---------------------------------------------------------------- core thesis
@@ -302,7 +349,8 @@
 \fillerslide[Same primitive, a different game]{Double SHA256 --- but not mining}
 
 \begin{frame}{Joining \texttt{\#bitcoin-at}: SHA256, twice, cropped}
-  \texttt{SHA256(SHA256(name)[:16])} --- hash the channel name, \textbf{crop} to
+  \texttt{SHA256(SHA256(\#name)[:16])} --- hash the channel name (the \texttt{\#}
+  counts), \textbf{crop} to
   16 bytes (the AES-128 key), hash again, take the first byte as a tiny public
   channel id. First pass: a KDF (name\,$\to$\,AES-128 key); second: a commitment
   (a short id for that key). Two SHA256 rounds \emph{look} like Bitcoin --- but
@@ -550,7 +598,7 @@
   \begin{itemize}
     \item The 2-byte region code is an \textbf{HMAC over the packet payload};
       repeaters recompute it per hop to decide whether to relay
-    \item The region key is just \texttt{SHA256(name)} --- agree on
+    \item The region key is just \texttt{SHA256(name)[:16]} --- agree on
       ``\texttt{at-w}'', no key exchange, no registry
   \end{itemize}}{%
   Symmetric and public-ish (anyone who knows the region name can forge it), and
@@ -561,7 +609,7 @@
 % The firmware 1.14+ multi-byte routing prefix is backward-incompatible: a
 % genuine "hard fork" framing — with the honest caveat that there is no chain
 % to actually split.
-\fillerslide[Break the wire format, split the network]{The 2-byte routing hard fork}
+\fillerslide[Break the wire format, split the network]{The multi-byte routing hard fork}
 
 \bridgeslide{A backward-incompatible rule change}{%
   \begin{itemize}
