@@ -331,6 +331,34 @@
   \end{alertblock}
 \end{frame}
 
+% --------------------------------------------------------------- ASIC / silicon
+% Follows the "not mining" slide: a Bitcoiner asks whether LoRa has ASICs too.
+% It does -- the LoRa PHY (chirp spread spectrum) is implemented in a dedicated
+% radio IC, the Semtech SX1262 (the modem runs in hardware; the MCU just hands it
+% bytes over SPI; ~uA in sleep). VERIFIED: Semtech SX1261/SX1262 datasheet/product
+% pages; the Heltec LoRa 32 V3 in this deck uses an SX1262; ST's STM32WL packs the
+% same SX126x radio IP onto an MCU die. The analogy BREAKS on the reason: a mining
+% ASIC wins a competitive PoW race (more efficiency -> more reward, difficulty
+% follows); the SX1262 is fixed-function and just saves power -- no contest.
+\fillerslide[Same silicon idea, opposite reason]{ASICs --- and the LoRa radio chip}
+
+\bridgeslide{Purpose-built silicon, for opposite reasons}{%
+  \begin{itemize}
+    \item Mining \textbf{ASICs} race to compute SHA256 hashes
+    \item Efficiency wins \textbf{reward} --- an arms race; more hashpower is
+      always better, and difficulty just pulls up to match
+  \end{itemize}}{%
+  \begin{itemize}
+    \item The \textbf{SX1262} radio chip runs chirp spread-spectrum in hardware
+      --- the MCU just hands it bytes over SPI
+    \item Dedicated silicon for \textbf{power}: $\sim\mu$A asleep, so a coin cell
+      lasts; doing the modem on a general CPU would burn far more
+  \end{itemize}}{%
+  Both are purpose-built chips --- but Bitcoin's ASIC wins a \emph{contest} (more
+  efficiency $\to$ more reward), while the SX1262 just \emph{sips power} at a
+  fixed job. No race to win: the ceiling is physics and the duty cycle, not rival
+  hashpower.}
+
 % ---------------------------------------------------------- brainwallet rooms
 % A #hashtag room derives its AES-128 key straight from the room name:
 % key = SHA256("#" + name)[:16] (consistent with the channel-hash slide above).
