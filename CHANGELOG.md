@@ -21,6 +21,13 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 ## [Unreleased]
 
 ### Added
+- **Floating SX1262 chip photo on the ASIC slide**, plus a reusable
+  `\cornerimage[width]{image}` helper to drop a small image into a slide's
+  top-right corner without touching the theme's frame macros (it uses
+  `eso-pic`'s next-page foreground hook, so it works over `\bridgeslide` /
+  `\comparisonslide` too). Handy for breaking up text-heavy slides; called right
+  before a slide macro. First use: a small photo of the Semtech SX1262 on the
+  "ASICs --- and the LoRa radio chip" bridgeslide.
 - **"ASICs --- and the LoRa radio chip"** — a new `\bridgeslide` after the
   "not mining" slide, answering the natural Bitcoiner question *"does LoRa have
   ASICs too?"* It does: the LoRa PHY (chirp spread spectrum) runs in a dedicated

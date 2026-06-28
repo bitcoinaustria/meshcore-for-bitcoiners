@@ -28,6 +28,19 @@
   \end{minipage}%
 }
 
+% Float a small image into a slide's top-right corner WITHOUT touching the
+% theme's frame macros (we can't edit \comparisonslide etc.). eso-pic's starred
+% foreground hook paints only the *next* shipped page, so call \cornerimage
+% immediately BEFORE a slide macro (\bridgeslide, \fillerslide, \begin{frame})
+% to drop a small image on it. Handy to break up text-heavy slides.
+%   \cornerimage[width]{image}      (optional arg = width; default ~2 cm)
+\usepackage{eso-pic}
+\newcommand{\cornerimage}[2][0.13\paperwidth]{%
+  \AddToShipoutPictureFG*{%
+    \put(\LenToUnit{\dimexpr\paperwidth-#1-0.035\paperwidth\relax},%
+         \LenToUnit{\dimexpr\paperheight-#1-0.045\paperheight\relax}){%
+      \includegraphics[width=#1,keepaspectratio]{#2}}}}
+
 \title{MeshCore for Bitcoiners}
 \subtitle{Permissionless communication — from money to radio}
 \author{Harald Schilly — Bitcoin Austria}
@@ -342,6 +355,9 @@
 % follows); the SX1262 is fixed-function and just saves power -- no contest.
 \fillerslide[Same silicon idea, opposite reason]{ASICs --- and the LoRa radio chip}
 
+% Float a small photo of the SX1262 into the top-right corner of the bridgeslide.
+% (Bare name; images resolve via the deck's pix/ graphics path, like the others.)
+\cornerimage{sx1262}
 \bridgeslide{Purpose-built silicon, for opposite reasons}{%
   \begin{itemize}
     \item Mining \textbf{ASICs} race to compute SHA256 hashes
