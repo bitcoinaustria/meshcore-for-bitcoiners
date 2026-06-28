@@ -34,8 +34,12 @@
 % immediately BEFORE a slide macro (\bridgeslide, \fillerslide, \begin{frame})
 % to drop a small image on it. Handy to break up text-heavy slides.
 %   \cornerimage[width]{image}      (optional arg = width; default ~2 cm)
+% NOTE: this helper is being graduated into the theme. We use \providecommand
+% (not \newcommand) so that once the theme defines its own \cornerimage, this
+% deck-local fallback silently yields to it -- no double-definition clash. When
+% the theme ships it, drop this block and the \usepackage{eso-pic} line.
 \usepackage{eso-pic}
-\newcommand{\cornerimage}[2][0.13\paperwidth]{%
+\providecommand{\cornerimage}[2][0.13\paperwidth]{%
   \AddToShipoutPictureFG*{%
     \put(\LenToUnit{\dimexpr\paperwidth-#1-0.035\paperwidth\relax},%
          \LenToUnit{\dimexpr\paperheight-#1-0.045\paperheight\relax}){%
