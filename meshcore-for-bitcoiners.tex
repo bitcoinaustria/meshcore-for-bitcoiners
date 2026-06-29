@@ -155,16 +155,16 @@
 \comparisonslide{MeshCore vs Meshtastic}%
   {MeshCore}{%
     \begin{itemize}
-      \item Role-based: companion (handset), repeater (always-on
+      \item \textbf{Role-based}: companion (handset), repeater (always-on
         relay), room server (store-and-forward)
       \item \textbf{Source-routed} along discovered paths
       \item Quieter, \textbf{more scalable mesh}
     \end{itemize}}%
   {Meshtastic}{%
     \begin{itemize}
-      \item Easy to join, phone-first
-      \item Flood-based — every node rebroadcasts
-      \item Gets noisy as it grows
+      \item Easy to join, \textbf{phone-first}
+      \item \textbf{Flood-based} — every node rebroadcasts
+      \item Gets \textbf{noisy} as it grows
     \end{itemize}}%
   {Same cheap hardware}{%
     Same boards, same chips — a different firmware and routing philosophy.}
@@ -262,16 +262,16 @@
 
 \bridgeslide{Identity is a keypair}{%
   \begin{itemize}
-    \item Self-generated keypair, no issuer
-    \item Address = hash of the public key
-    \item ``Not your keys, not your coins''
-    \item Verify the address out-of-band
+    \item \textbf{Self-generated keypair}, no issuer
+    \item Address = \textbf{hash of the public key}
+    \item \textbf{``Not your keys, not your coins''}
+    \item Verify the address \textbf{out-of-band}
   \end{itemize}}{%
   \begin{itemize}
-    \item Self-generated keypair, on-device
-    \item Routing target = public-key prefix
-    \item ``Not your keys, not your identity''
-    \item Verify keys via QR / word list (TOFU)
+    \item \textbf{Self-generated keypair}, on-device
+    \item Routing target = \textbf{public-key prefix}
+    \item \textbf{``Not your keys, not your identity''}
+    \item Verify keys via \textbf{QR / word list} (TOFU)
   \end{itemize}}{%
   HD wallets rotate addresses for privacy; a MeshCore identity is deliberately
   \emph{sticky} — you want to stay discoverable. No HD equivalent, and no seed
@@ -561,8 +561,8 @@
 
 \bridgeslide{Consensus state vs.\ the moment}{%
   \begin{itemize}
-    \item A permanent, globally agreed ledger
-    \item Confirmed once $\to$ there forever, verifiable by anyone, later
+    \item A \textbf{permanent, globally agreed ledger}
+    \item Confirmed once $\to$ \textbf{there forever}, verifiable by anyone, later
   \end{itemize}}{%
   \begin{itemize}
     \item Channel messages exist \textbf{only as they are transmitted}
@@ -592,7 +592,7 @@
 \bridgeslide{Two ways to agree on ``after''}{%
   \begin{itemize}
     \item One chain orders \textbf{everything}, globally
-    \item That total order is exactly what makes double-spend impossible
+    \item That total order is exactly what makes \textbf{double-spend impossible}
   \end{itemize}}{%
   \begin{itemize}
     \item A node's \textbf{adverts} must move \textbf{forward in time}: a repeater
