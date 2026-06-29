@@ -626,7 +626,8 @@
           traffic from far away wastes everyone's scarce airtime --- the same
           budget the duty cycle already rations
         \item A \textbf{region} is just an agreed name --- e.g.\ \texttt{at} for
-          Austria, \texttt{at-w} for Vienna. Hash the name and everyone there
+          all of Austria, or \texttt{at-west} / \texttt{at-ost} / \texttt{at-sued}
+          for its three macro-regions (right). Hash the name and everyone there
           shares a \textbf{region key}
         \item Every packet carries a 2-byte \textbf{transport code} derived from
           that key; a repeater relays a packet only if the code matches its own
@@ -637,11 +638,10 @@
     \end{column}
     \begin{column}{0.40\textwidth}
       \centering
-      \includegraphics[width=\linewidth]{mcaustria-regions}\\[0.3em]
-      {\scriptsize Austria carved into shared regions ---
+      \includegraphics[width=\linewidth]{austria-regions}\\[0.3em]
+      {\scriptsize Austria's three MeshCore macro-regions ---
        \texttt{at-west} / \texttt{at-ost} / \texttt{at-sued}\\
-       \href{https://meshcore-austria.at}{meshcore-austria.at}
-       \;\textbullet\; map © Westermann Gruppe}
+       region scheme: \href{https://meshcore-austria.at}{meshcore-austria.at}}
     \end{column}
   \end{columns}
   \vfill

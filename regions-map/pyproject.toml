@@ -1,0 +1,12 @@
+[project]
+name = "regions-map"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "geopandas>=1.1.4",
+    "matplotlib>=3.11.0",
+    "pyogrio>=0.13.0",
+    "shapely>=2.1.2",
+]
