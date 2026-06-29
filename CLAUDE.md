@@ -34,6 +34,22 @@ it and prints this hint.
 - `generate-images/` — a `uv` project for AI image generation (fal.ai +
   Replicate). Run with `uv run`; API keys via env `FAL_AI` / `REPLICATE_API`.
 
+## Writing style
+
+- **Bold the load-bearing phrase in every bullet.** Wrap the words the audience
+  should remember in `\textbf{...}` so each slide is skimmable from the back of
+  the room. The bold phrase is the takeaway; the rest is supporting prose.
+- **One highlight per bullet, not five.** Bolding everything emphasises nothing —
+  pick the single key phrase. Use `\emph{...}` (italics) for a lighter, secondary
+  stress (a caveat, an "honest flaw" aside), and reserve `\textbf` for the point.
+- **Keep comparison columns parallel.** On `\bridgeslide` / `\comparisonslide`,
+  bold the matching phrase on *both* the Bitcoin and MeshCore sides so the two
+  columns read as a pair (e.g. `costly` ↔ `free`, `permanent ledger` ↔
+  `only as transmitted`).
+- **One idea per bullet.** Don't join two distinct thoughts with a semicolon —
+  split them into separate bullets (this applies to the "where it breaks" notes
+  too).
+
 ## Releases
 
 Tag `v*` → CI builds the PDF and creates a GitHub Release. Push/PR to `main`
