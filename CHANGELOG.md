@@ -43,8 +43,12 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
   itself (white border removed) so it reads as a tight accent, not a white card.
 - **Regions map on "What is a region code, and why?"** — the slide is now two
   columns (bullets left, map right) showing Austria split into `at-west` /
-  `at-ost` / `at-sued`. The map's white background is blended into the canvas
-  grey to match the chip; credit: map © Westermann Gruppe, via meshcore-austria.at.
+  `at-ost` / `at-sued`. The map is **our own drawing** (`regions-map/`, a uv +
+  geopandas/matplotlib project over public-domain Natural Earth boundaries plus
+  hand-placed region ellipses), rendered to a committed 300-dpi PNG — no
+  third-party map artwork. The bullet + caption use the same
+  `at-west`/`at-ost`/`at-sued` names.
+  Region scheme per meshcore-austria.at.
 - **Two intro slides (from a full deck review).** **"The catch --- kilometres of
   range, bytes of bandwidth"**, right after the packet-across-Austria visual,
   names the long-range / tiny-pipe trade-off up front so the audience drops the
