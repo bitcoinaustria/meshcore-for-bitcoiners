@@ -28,22 +28,9 @@
   \end{minipage}%
 }
 
-% Float a small image into a slide's top-right corner WITHOUT touching the
-% theme's frame macros (we can't edit \comparisonslide etc.). eso-pic's starred
-% foreground hook paints only the *next* shipped page, so call \cornerimage
-% immediately BEFORE a slide macro (\bridgeslide, \fillerslide, \begin{frame})
-% to drop a small image on it. Handy to break up text-heavy slides.
-%   \cornerimage[width]{image}      (optional arg = width; default ~2 cm)
-% NOTE: this helper is being graduated into the theme. We use \providecommand
-% (not \newcommand) so that once the theme defines its own \cornerimage, this
-% deck-local fallback silently yields to it -- no double-definition clash. When
-% the theme ships it, drop this block and the \usepackage{eso-pic} line.
-\usepackage{eso-pic}
-\providecommand{\cornerimage}[2][0.13\paperwidth]{%
-  \AddToShipoutPictureFG*{%
-    \put(\LenToUnit{\dimexpr\paperwidth-#1-0.035\paperwidth\relax},%
-         \LenToUnit{\dimexpr\paperheight-#1-0.045\paperheight\relax}){%
-      \includegraphics[width=#1,keepaspectratio]{#2}}}}
+% \cornerimage is now provided by the theme (bitcoin-austria.sty) — it floats a
+% small image into a slide corner over everything, with a default top clearance
+% that sits below the headline/page-number band. Call it right before a slide.
 
 \title{MeshCore for Bitcoiners}
 \subtitle{Permissionless communication — from money to radio}
