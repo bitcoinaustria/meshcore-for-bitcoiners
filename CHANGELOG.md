@@ -21,6 +21,18 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 ## [Unreleased]
 
 ### Added
+- **A fork-history beat: "Where it comes from — and the fork."** The origin slide
+  now covers the **2026 MeshCore split** — promoter Andy Kirby filed for the
+  *MeshCore* trademark and pushed undisclosed AI-rewritten apps, the core team
+  broke with him and kept shipping at `meshcore.io` (Kirby kept the old `.co.uk`).
+  Framed for a Bitcoin crowd as a **brand-capture attempt the community routes
+  around**, with a `bitcoin.com`-pushed-its-fork-as-"Bitcoin" callback. Verified:
+  [blog.meshcore.io](https://blog.meshcore.io/2026/04/23/the-split),
+  [meshcoreeurope.org](https://meshcoreeurope.org/en/blog/2026-04-27-meshcore-splits-over-trademark-ai-code-and-team-breakdown/).
+- **Speaker-delivery cues** (as `% SPEAKER` comments): open on the grid-down
+  question to the room, a live-demo beat on "Live on the mesh", the 6-seconds-of-
+  airtime reveal on throughput, and the fork-slide punchline. The closing CTA now
+  **calls back** to the opening question (`#bitcoin-wien is already up`).
 - **Second aspect ratio: 4:3.** The deck now also builds at **4:3** for legacy
   projectors, alongside the **16:9** default — same content, one source. The
   ratio is parameterised (`\baAspect`, default `169`); `make both` builds both,
@@ -30,6 +42,28 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
   first.
 
 ### Changed
+- **Full content + consistency review pass.** Tightened pacing and sharpened the
+  analogies after a slide-by-slide review:
+  - *Less repetition up front:* three thesis restatements ("one-line version" /
+    "what recurs" / "the core thesis") merged into one **"The precise claim — and
+    a promise"** setup slide, so the deck reaches the first parallel sooner.
+  - *De-cluttered the consensus section:* dropped the four per-topic dividers
+    (Sybil / Incentives / State / Time) and folded each topic into its bridge
+    title — the section was a stack of title cards; now it's four flowing bridges
+    under one umbrella divider (reworded as a question).
+  - *Ends on the call to action:* **References moved into the appendix**
+    (`noframenumbering`) so the talk closes on "join the channels", not a link dump.
+  - *Honest "where it breaks" sharpened:* the region code is now called **forgeable
+    / not a real signature** (no flags, no signer, no authorship); **group-channel
+    messages can't prove *which* sender** (spoofable authorship, scoped to channels —
+    DMs/adverts still authenticate); Lightning gains the **discovery disanalogy**
+    and a **TOFU-anchor** note; identity names the **hash-vs-truncated-prefix**
+    asymmetry; Sybil reframed "**none needed**"; the multi-byte "hard fork" reframed
+    as *leave the laggards behind* (TLS 1.2→1.3, not a live chain split).
+  - *Style:* parallel **bold pairs** on the compare slides, no competing
+    double-bolds, em-dashes standardized to `---`, `at-w` (Vienna) disambiguated
+    from `at-west` (macro-region) and German suffixes glossed (verified at
+    [meshcore-austria.at](https://meshcore-austria.at)).
 - **Theme submodule bumped `4d10439` → `c0fd54b`**: adds 16:9/4:3 aspect-ratio
   support and, prompted by the overflow we hit below, **auto-scales typography
   on narrow (4:3-class) formats** (tighter lists + gentle paperwidth-driven
@@ -38,6 +72,19 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
   escape hatch for any still-too-dense slide.
 
 ### Fixed
+- **Throughput numbers corrected (both web-verified).** Bitcoin's rate now reads
+  **~3–5 tx/s ≈ 200–300 tx/min** (the old "~3–7 / 200–400" overshot:
+  3000 tx ÷ 600 s ≈ 5 tx/s). The MeshCore per-node ceiling reads **~4–24 msgs/min**
+  (was ~4–25), and the frequency label is now the documented **869.525 MHz**
+  EU/UK Narrow preset (was a non-standard 869.618) — the SF8 / BW 62.5 kHz / CR 4/8
+  on the slide match it, and it stays in the 10%-duty 869.4–869.65 MHz sub-band.
+- **EU 868 MHz duty cycle verified and the TODO closed** across `SPECS.md`,
+  `CLAUDE.md` and `handoff-20260626.md`: **10%** on the 869.4–869.65 MHz "P"
+  sub-band, up to 500 mW ERP
+  ([TTN](https://www.thethingsnetwork.org/docs/lorawan/regional-limitations-of-rf-use/),
+  [disk91](https://www.disk91.com/2017/technology/internet-of-things-technology/all-what-you-need-to-know-about-regulation-on-rf-868mhz-for-lpwan/)).
+  The handoff's stale **AES-256-CTR** claim was also corrected to the verified
+  **AES-128-ECB + 2-byte HMAC-SHA256**.
 - **Two slides overflowed on the 4:3 canvas** (both clean at 16:9). "Live on the
   mesh" wrapped its third screenshot card to a second row that ran off the
   bottom — cards trimmed `0.28\paperwidth` → `0.27\paperwidth` so all three fit
