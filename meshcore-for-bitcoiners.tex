@@ -745,11 +745,17 @@
 \begin{frame}{Join the Bitcoin channels on MeshCore}
   Same name, same key --- just type the channel name to join.
   \vskip1.2em
-  \begin{itemize}
-    \item \texttt{\#bitcoin} --- no region (mesh-wide)
-    \item \texttt{\#bitcoin-at} --- region \texttt{at} (Austria)
-    \item \texttt{\#bitcoin-wien} --- region \texttt{at-w} (Vienna)
-  \end{itemize}
+  \centering
+  \setlength{\tabcolsep}{12pt}\renewcommand{\arraystretch}{1.4}%
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+      \textbf{Channel} & \textbf{Region} & \textbf{Reach} \\
+    \midrule
+      \texttt{\#bitcoin}      & ---           & whole mesh (no region) \\
+      \texttt{\#bitcoin-at}   & \texttt{at}   & Austria \\
+      \texttt{\#bitcoin-wien} & \texttt{at-w} & Vienna \\
+    \bottomrule
+  \end{tabular}
   \vfill
   \begin{alertblock}{Pick your scope}
     Plain \texttt{\#bitcoin} reaches the whole mesh; the regional channels add a
