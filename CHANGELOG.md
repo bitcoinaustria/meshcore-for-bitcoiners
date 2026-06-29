@@ -71,6 +71,8 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
   on the payoff *"a radio mesh you can join without asking"*). Also bolded the
   "censorship-resistant, self-sovereign comms…" line. Tuned the region-map
   ellipses (Salzburg covered; at-west smaller/south; at-sued rotated).
+- **Closing slide's 2nd link** now points to **meshcore-austria.at** (the local
+  community) instead of the observer (which is still linked on the references slide).
 - **Throughput slide now quantified.** "The throttle is imposed, not a failure"
   gives real ceilings: Bitcoin ≈ 200–400 tx/min (network-wide), MeshCore ≈ 4–25
   msgs/min *per node* under the 10% duty cycle (AT preset 869.618 MHz, SF 8,
