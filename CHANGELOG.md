@@ -35,6 +35,16 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
   hashes" (the obsolete pre-1.14 width).
 
 ### Added
+- **Floating SX1262 chip photo on the ASIC slide** — uses the theme's new
+  `\cornerimage` helper (theme submodule bumped) to float a small image into a
+  slide's top-right corner, over the theme's frame macros (`\bridgeslide` /
+  `\comparisonslide`), sitting below the headline/page-number band so it never
+  hides the page number. The chip photo (`pix/sx1262.jpg`) is cropped to the chip
+  itself (white border removed) so it reads as a tight accent, not a white card.
+- **Regions map on "What is a region code, and why?"** — the slide is now two
+  columns (bullets left, map right) showing Austria split into `at-west` /
+  `at-ost` / `at-sued`. The map's white background is blended into the canvas
+  grey to match the chip; credit: map © Westermann Gruppe, via meshcore-austria.at.
 - **Two intro slides (from a full deck review).** **"The catch --- kilometres of
   range, bytes of bandwidth"**, right after the packet-across-Austria visual,
   names the long-range / tiny-pipe trade-off up front so the audience drops the
@@ -42,13 +52,19 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
   and **"What recurs --- and a promise"**, before "The core thesis", maps the
   recurring Bitcoin primitives and states the deck's honesty contract (every
   parallel drawn rigorously, every break named out loud).
-- **"Your first five minutes on the mesh"** — an onboarding slide before the
-  channel CTA: buy a companion board → install Liam Cottle's app and pair over
-  Bluetooth → keypair generated on first run (back it up) → type a channel name
-  to join. Turns the "permissionless, you just join" thesis into a concrete
-  action the room can take that night.
+- **"Your first five minutes on the mesh"** — an onboarding slide placed right
+  after the cheap-hardware intro as a practical example: buy a companion board →
+  install Liam Cottle's app and pair over Bluetooth → keypair generated on first
+  run (back it up) → type a channel name to join. Turns the "permissionless, you
+  just join" thesis into a concrete action the room can take that night.
 
 ### Changed
+- **Throughput slide now quantified.** "The throttle is imposed, not a failure"
+  gives real ceilings: Bitcoin ≈ 200–400 tx/min (network-wide), MeshCore ≈ 4–25
+  msgs/min *per node* under the 10% duty cycle (AT preset 869.618 MHz, SF 8,
+  BW 62.5 kHz, CR 4/8; LoRa time-on-air 0.25–1.6 s per message). The callout
+  notes MeshCore's airtime is shared across the channel, so the real ceiling is
+  lower. (Resolves the long-standing EU-868 duty-cycle TODO.)
 - **Thesis stated once, as a reveal.** "The core thesis" now opens with a
   callback ("we opened with the one-liner; here is the precise claim…") so it
   reads as escalation, not repetition of the hook slide.

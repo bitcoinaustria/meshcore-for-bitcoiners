@@ -28,6 +28,10 @@
   \end{minipage}%
 }
 
+% \cornerimage is now provided by the theme (bitcoin-austria.sty) — it floats a
+% small image into a slide corner over everything, with a default top clearance
+% that sits below the headline/page-number band. Call it right before a slide.
+
 \title{MeshCore for Bitcoiners}
 \subtitle{Permissionless communication — from money to radio}
 \author{Harald Schilly — Bitcoin Austria}
@@ -125,6 +129,26 @@
       $\sim$\,130\,EUR
     \item \textbf{Build your own} — Heltec / RAK WisBlock boards
   \end{itemize}
+\end{frame}
+
+% Practical example, right after "the hardware is cheap": the four steps to
+% actually get on the mesh that night — buy, pair, generate, join.
+\begin{frame}{Your first five minutes on the mesh}
+  \begin{itemize}
+    \item \textbf{Get a companion board} --- e.g.\ a SenseCAP \textbf{T1000-E}
+      ($\sim$40\,EUR), often pre-flashed; otherwise flash it from the browser
+    \item \textbf{Install the app} --- Liam Cottle's MeshCore client
+      (iOS / Android / web) and pair the board over \textbf{Bluetooth}
+    \item \textbf{It generates your keypair on first run} --- that pair \emph{is}
+      your identity. Back it up; nobody else can recover it
+    \item \textbf{Join} --- type a channel name and you're talking: no account,
+      no SIM, no permission
+  \end{itemize}
+  \vfill
+  \begin{alertblock}{That's the whole onboarding}
+    Buy, pair, generate, join --- the permissionless claim is literal: nobody
+    issued you anything, and nothing on the network knew you were coming.
+  \end{alertblock}
 \end{frame}
 
 % MeshCore (red, the subject) vs Meshtastic — generic comparison, not \bridgeslide
@@ -283,17 +307,29 @@
 % Network "Regional limitations of RF use"; rf.guru "Meshtastic, MeshCore,
 % 868 MHz and the Ham Radio Trap"; disk91.com 868 MHz regulation overview.
 % NOTE: still sanity-check against the current AT frequency plan before stage.
+% Throughput numbers (estimation, both sides):
+%  Bitcoin: ~2,000-3,000 tx/block, 1 block/10 min => ~3-7 tx/s ~= 200-400 tx/min.
+%  MeshCore (AT preset 869.618 MHz, SF8, BW62.5 kHz, CR 4/8): LoRa time-on-air
+%  (Semtech ToA: 8-sym preamble, explicit header, CRC, DE=0) for a 16 B short
+%  text ~0.25 s, 64 B ~0.64 s, 184 B full packet ~1.62 s; lighter coding 4/5
+%  trims ~1/3 (16 B ~0.19 s ... 184 B ~1.05 s). 10% duty cycle = 6 s airtime/min/node
+%  => ~24/min (short) down to ~4/min (full packet); ~30/min for tiny pings @4/5.
 \bridgeslide{The throttle is imposed, not a failure}{%
   \begin{itemize}
-    \item Block size is a \textbf{consensus} cap
+    \item Block size is a \textbf{consensus} cap: one block every $\sim$10\,min
+    \item $\sim$2{,}000--3{,}000 tx/block $\Rightarrow$ $\sim$3--7\,tx/s
+      $\approx$ \textbf{200--400 tx/min}, network-wide
   \end{itemize}}{%
   \begin{itemize}
-    \item The LoRa duty cycle is a \textbf{regulatory} cap (EU/AT 868\,MHz)
-    \item Default \textbf{869.525\,MHz} sits in the 869.4--869.65\,MHz sub-band:
-      \textbf{10\%} airtime, up to 500\,mW ERP
+    \item Duty cycle is a \textbf{regulatory} cap: \textbf{10\%} airtime on the
+      869.4--869.65\,MHz sub-band \,(AT: 869.618\,MHz, SF\,8, BW\,62.5\,kHz, CR\,4/8)
+    \item One msg $\approx$ 0.25--1.6\,s on air (short text $\to$ full 184\,B);
+      10\% $=$ 6\,s airtime/min $\Rightarrow$ \textbf{$\sim$4--25 msgs/min per node}
   \end{itemize}}{%
-  In both cases the throttle is imposed, not ``they couldn't do more'' — and a
-  deliberate cap is exactly what forces a second layer to exist.}
+  Bitcoin's rate is one \emph{global} ledger; MeshCore's is \emph{per node} on a
+  \textbf{shared} channel --- many nodes split the same airtime, so the real
+  ceiling is lower. Either way the throttle is imposed, not ``they couldn't do
+  more'' --- and a deliberate cap is exactly what forces a second layer to exist.}
 
 % ---------------------------------------------------------------- lightning
 \fillerslide[Two distinct analogies — keep them separate]{Lightning Network}
@@ -397,6 +433,10 @@
 % follows); the SX1262 is fixed-function and just saves power -- no contest.
 \fillerslide[Same silicon idea, opposite reason]{ASICs --- and the LoRa radio chip}
 
+% Float a small photo of the SX1262 high in the top-right corner of the
+% bridgeslide — small enough to sit up by the title/page number, not over the
+% MeshCore column. (Bare name; resolves via the deck's pix/ graphics path.)
+\cornerimage[width=0.10\paperwidth,topclear=20pt]{sx1262}
 \bridgeslide{Purpose-built silicon, for opposite reasons}{%
   \begin{itemize}
     \item Mining \textbf{ASICs} race to compute SHA256 hashes
@@ -579,18 +619,31 @@
 % Plain-language setup before the bridge: the audience doesn't know MeshCore, so
 % explain what a region code is and why it exists before drawing the SIGHASH bridge.
 \begin{frame}{What is a region code, and why?}
-  \begin{itemize}
-    \item MeshCore \textbf{floods} adverts and path discovery. Unchecked, traffic
-      from far away wastes everyone's scarce airtime --- the same budget the
-      duty cycle already rations
-    \item A \textbf{region} is just an agreed name --- e.g.\ \texttt{at} for
-      Austria, \texttt{at-w} for Vienna. Hash the name and everyone there shares
-      a \textbf{region key}
-    \item Every packet carries a 2-byte \textbf{transport code} derived from that
-      key; a repeater relays a packet only if the code matches its own region
-    \item The mesh is thus \textbf{geofenced by agreement} --- no registry, no
-      coordinates, no permission: just a name the locals share
-  \end{itemize}
+  \begin{columns}[T]
+    \begin{column}{0.58\textwidth}
+      \begin{itemize}
+        \item MeshCore \textbf{floods} adverts and path discovery. Unchecked,
+          traffic from far away wastes everyone's scarce airtime --- the same
+          budget the duty cycle already rations
+        \item A \textbf{region} is just an agreed name --- e.g.\ \texttt{at} for
+          Austria, \texttt{at-w} for Vienna. Hash the name and everyone there
+          shares a \textbf{region key}
+        \item Every packet carries a 2-byte \textbf{transport code} derived from
+          that key; a repeater relays a packet only if the code matches its own
+          region
+        \item The mesh is thus \textbf{geofenced by agreement} --- no registry,
+          no coordinates, no permission: just a name the locals share
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.40\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{mcaustria-regions}\\[0.3em]
+      {\scriptsize Austria carved into shared regions ---
+       \texttt{at-west} / \texttt{at-ost} / \texttt{at-sued}\\
+       \href{https://meshcore-austria.at}{meshcore-austria.at}
+       \;\textbullet\; map © Westermann Gruppe}
+    \end{column}
+  \end{columns}
   \vfill
   \begin{alertblock}{The neat part}
     The code is computed over the \emph{encrypted} payload, so repeaters filter by
@@ -687,26 +740,6 @@
 % Closing call to action: concrete Bitcoin channels the audience can join right
 % now. Ties back to the region-transport-code slide (a region is just an agreed
 % name: "at" = Austria, "at-w" = Vienna; no region = mesh-wide).
-% The payoff: the thesis is "you just join" — so show the four steps to actually
-% get on the mesh, right before the channel CTA.
-\begin{frame}{Your first five minutes on the mesh}
-  \begin{itemize}
-    \item \textbf{Get a companion board} --- e.g.\ a SenseCAP \textbf{T1000-E}
-      ($\sim$40\,EUR), often pre-flashed; otherwise flash it from the browser
-    \item \textbf{Install the app} --- Liam Cottle's MeshCore client
-      (iOS / Android / web) and pair the board over \textbf{Bluetooth}
-    \item \textbf{It generates your keypair on first run} --- that pair \emph{is}
-      your identity. Back it up; nobody else can recover it
-    \item \textbf{Join} --- type a channel name and you're talking: no account,
-      no SIM, no permission
-  \end{itemize}
-  \vfill
-  \begin{alertblock}{That's the whole onboarding}
-    Buy, pair, generate, join --- the permissionless claim is literal: nobody
-    issued you anything, and nothing on the network knew you were coming.
-  \end{alertblock}
-\end{frame}
-
 \begin{frame}{Join the Bitcoin channels on MeshCore}
   Same name, same key --- just type the channel name to join.
   \vskip1.2em
