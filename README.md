@@ -1,5 +1,11 @@
 # MeshCore for Bitcoiners
 
+> [!NOTE]
+> 📄 **Prebuilt slide PDFs are published as [GitHub Releases](https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/latest).**
+> Just want to read the deck? Grab `meshcore-for-bitcoiners.pdf` from the
+> [latest release](https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/latest)
+> — no need to clone or build anything. Each `v*` tag ships a new PDF.
+
 A LaTeX **Beamer** talk (Bitcoin Austria) drawing the structural parallels
 between **Bitcoin** and **MeshCore** — off-grid, permissionless messaging over
 long-range **LoRa** radio — and honestly naming where each analogy breaks.

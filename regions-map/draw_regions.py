@@ -47,9 +47,9 @@ ASPECT = 1.0 / cos(radians((LAT0 + LAT1) / 2))  # de-squish lon at this latitude
 
 # --- the three community regions: (label, lon, lat, width°, height°, angle) --
 REGIONS = [
-    ("at-west", 11.7, 47.45, 6.4, 2.0, -7, "#5BA6D6", "#2E6E9E"),
+    ("at-west", 11.7, 47.25, 5.13, 1.62, 3, "#5BA6D6", "#2E6E9E"),
     ("at-ost",  14.9, 48.10, 4.6, 1.8, 2, "#73C16E", "#3E8C45"),
-    ("at-sued", 14.9, 46.85, 4.8, 1.45, -4, "#E89B57", "#C26F28"),
+    ("at-sued", 14.9, 46.85, 4.8, 1.45, 6, "#E89B57", "#C26F28"),
 ]
 
 def main():
