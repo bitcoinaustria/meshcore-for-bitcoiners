@@ -20,14 +20,60 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed
+- **Channel-key formula made consistent.** The "Joining `#bitcoin-at`" slide
+  showed `SHA256(SHA256(name)[:16])` over the bare name, while the brainwallet
+  slide hashes `#name` (with the `#`). The `#` *is* part of the input, so the
+  derivation slide now reads `SHA256(SHA256(#name)[:16])` — both slides agree.
+- **Region-key crop restored.** The region-transport-code bridge said the key is
+  `SHA256(name)`; corrected to `SHA256(name)[:16]`, matching the channel-key crop
+  and the verified source note.
+- **Routing hard-fork divider retitled** ("The 2-byte routing hard fork" →
+  "The multi-byte routing hard fork"): the prefix grows 1 → 1–3 bytes, and
+  "2-byte" collided with the separate 2-byte region code.
+- **Backup-slide note** corrected from "1-byte path hashes" to "1–3 byte path
+  hashes" (the obsolete pre-1.14 width).
+
 ### Added
-- **Floating SX1262 chip photo on the ASIC slide**, plus a reusable
-  `\cornerimage[width]{image}` helper to drop a small image into a slide's
-  top-right corner without touching the theme's frame macros (it uses
-  `eso-pic`'s next-page foreground hook, so it works over `\bridgeslide` /
-  `\comparisonslide` too). Handy for breaking up text-heavy slides; called right
-  before a slide macro. First use: a small photo of the Semtech SX1262 on the
-  "ASICs --- and the LoRa radio chip" bridgeslide.
+- **Floating SX1262 chip photo on the ASIC slide** — uses the theme's new
+  `\cornerimage` helper (theme submodule bumped) to float a small image into a
+  slide's top-right corner, over the theme's frame macros (`\bridgeslide` /
+  `\comparisonslide`), sitting below the headline/page-number band so it never
+  hides the page number. The chip photo (`pix/sx1262.jpg`) is cropped to the chip
+  itself (white border removed) so it reads as a tight accent, not a white card.
+- **Two intro slides (from a full deck review).** **"The catch --- kilometres of
+  range, bytes of bandwidth"**, right after the packet-across-Austria visual,
+  names the long-range / tiny-pipe trade-off up front so the audience drops the
+  "WhatsApp-over-radio" model early (the throughput bridge pays it off later);
+  and **"What recurs --- and a promise"**, before "The core thesis", maps the
+  recurring Bitcoin primitives and states the deck's honesty contract (every
+  parallel drawn rigorously, every break named out loud).
+- **"Your first five minutes on the mesh"** — an onboarding slide before the
+  channel CTA: buy a companion board → install Liam Cottle's app and pair over
+  Bluetooth → keypair generated on first run (back it up) → type a channel name
+  to join. Turns the "permissionless, you just join" thesis into a concrete
+  action the room can take that night.
+
+### Changed
+- **Thesis stated once, as a reveal.** "The core thesis" now opens with a
+  callback ("we opened with the one-liner; here is the precise claim…") so it
+  reads as escalation, not repetition of the hook slide.
+- **Brainwallet slide reframed as a payoff** of the channel-hash slide ("we just
+  saw the room key *is* SHA256 of the name…"); its alertblock trimmed to fit.
+- **"advert" defined at first lean** (the signing model: "a node's signed *here
+  is my key, here I am*"), and the three node **roles glossed** where named
+  (companion = handset, repeater = always-on relay, room server = store-and-forward).
+- **Seed-phrase / key-backup parallel** added to the identity bridge: no seed
+  phrase, the key lives on the device — lose it and you lose the *handle*, but
+  with no value at stake it's a re-announce, not a theft.
+- **"Scarce airtime" turned into a callback** — the region-code slide now ties it
+  back to the duty-cycle budget from the throughput slide, instead of
+  re-introducing the constraint from scratch.
+- **More links on the references slide**, including a new **"Hardware & radio"**
+  group: the **Semtech SX1262** (the LoRa radio IC behind the ASIC slide — chirp
+  spread spectrum in silicon) and **ST STM32WL** (the same SX126x radio IP on an
+  MCU die). Also added **docs.meshcore.io/packet_format** (the on-wire format
+  behind the backup slide) to the internals column.
 - **"ASICs --- and the LoRa radio chip"** — a new `\bridgeslide` after the
   "not mining" slide, answering the natural Bitcoiner question *"does LoRa have
   ASICs too?"* It does: the LoRa PHY (chirp spread spectrum) runs in a dedicated
@@ -46,7 +92,7 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
   "western Austria" to **Vienna**, to match these channel names.
 - **Backup slide: "Anatomy of a MeshCore packet"** — an *optional* deep-dive on
   the on-wire format (`[header][transport codes?][path_len][path][payload]`,
-  ≤255 B; header bits = route/payload type + version; 1-byte path hashes; payload
+  ≤255 B; header bits = route/payload type + version; 1–3 byte path hashes; payload
   ≤184 B, advert is Ed25519-signed, group/text is channel-hash + 2-byte MAC +
   AES-128). Foregrounds the **core idea**: each relay *appends its own short
   router ID* to the path as it forwards, so the path *is* the route — a direct
