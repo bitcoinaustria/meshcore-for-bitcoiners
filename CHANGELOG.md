@@ -33,6 +33,8 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
   "2-byte" collided with the separate 2-byte region code.
 - **Backup-slide note** corrected from "1-byte path hashes" to "1–3 byte path
   hashes" (the obsolete pre-1.14 width).
+- **Region-code slide no longer overflows** — re-split the columns 66:32
+  (text:map) so the "The neat part" callout is on-screen again (was cropped).
 
 ### Added
 - **Floating SX1262 chip photo on the ASIC slide** — uses the theme's new
@@ -63,6 +65,12 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
   just join" thesis into a concrete action the room can take that night.
 
 ### Changed
+- **Opening hook unified.** The "What is MeshCore?" divider and "The one-line
+  version" both lead with *"What Bitcoin did for money, MeshCore does for
+  messaging"* (divider states it; the slide opens with it, then explains — bold
+  on the payoff *"a radio mesh you can join without asking"*). Also bolded the
+  "censorship-resistant, self-sovereign comms…" line. Tuned the region-map
+  ellipses (Salzburg covered; at-west smaller/south; at-sued rotated).
 - **Throughput slide now quantified.** "The throttle is imposed, not a failure"
   gives real ceilings: Bitcoin ≈ 200–400 tx/min (network-wide), MeshCore ≈ 4–25
   msgs/min *per node* under the 10% duty cycle (AT preset 869.618 MHz, SF 8,
