@@ -35,6 +35,10 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
   hashes" (the obsolete pre-1.14 width).
 - **Region-code slide no longer overflows** — re-split the columns 66:32
   (text:map) so the "The neat part" callout is on-screen again (was cropped).
+- **Identity-bridge wording corrected** — "lose the device and you lose the
+  handle" → "back it up: lose the *private key* and you lose the *handle*" (the
+  key can be backed up, so the device isn't the single point of failure). Dropped
+  the redundant "(An honest flaw to name.)" aside on the signing slide.
 
 ### Added
 - **Floating SX1262 chip photo on the ASIC slide** — uses the theme's new
