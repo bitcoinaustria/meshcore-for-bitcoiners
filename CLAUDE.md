@@ -74,6 +74,9 @@ cut a tag.
 ## Notes
 
 - The deck is a **draft** based on `handoff-20260626.md`; develop further.
-- There is a `TODO` in the throughput section: verify the exact EU 868 MHz
-  duty-cycle figure before stating a number on stage.
+- The EU 868 MHz duty-cycle figure is **verified** (2026-06-29): **10%** on the
+  869.4–869.65 MHz "P" sub-band, up to 500 mW ERP — the deck states this. Sources
+  in the throughput-section comment in the `.tex` and in `handoff-20260626.md`.
+  (Still worth a final sanity-check against the current AT national frequency plan
+  before stage.)
 - Don't commit the built PDF or LaTeX aux files (see `.gitignore`).

@@ -73,5 +73,8 @@ fal.ai and Replicate, writes a `.json` metadata sidecar per image. Keys via env
 - [x] Topology: per-talk repo + shared theme submodule; both in `bitcoinaustria` org.
 - [x] Tag scheme: `v*`.
 - [ ] Final content / slide order (current `.tex` is a draft from the handoff).
-- [ ] Verify the EU 868 MHz duty-cycle figure before stating it on stage.
+- [x] Verify the EU 868 MHz duty-cycle figure before stating it on stage.
+      **Verified 2026-06-29:** 10% on the 869.4–869.65 MHz sub-band, 500 mW ERP
+      ([TTN](https://www.thethingsnetwork.org/docs/lorawan/regional-limitations-of-rf-use/),
+      [disk91](https://www.disk91.com/2017/technology/internet-of-things-technology/all-what-you-need-to-know-about-regulation-on-rf-868mhz-for-lpwan/)).
 - [ ] Real figures/images in `pix/`.
