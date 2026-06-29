@@ -158,7 +158,7 @@
       \item Role-based: companion (handset), repeater (always-on
         relay), room server (store-and-forward)
       \item \textbf{Source-routed} along discovered paths
-      \item Quieter, more scalable mesh
+      \item Quieter, \textbf{more scalable mesh}
     \end{itemize}}%
   {Meshtastic}{%
     \begin{itemize}
@@ -336,21 +336,23 @@
 
 \bridgeslide{Angle A — route along a discovered path}{%
   \begin{itemize}
-    \item Find a route through specific channels
-    \item Don't broadcast the payment to everyone
+    \item Find a route \textbf{through specific channels}
+    \item \textbf{Don't broadcast} the payment \textbf{to everyone}
   \end{itemize}}{%
   \begin{itemize}
-    \item An advert floods once; path info accumulates
-    \item Later DMs are source-routed along that path
+    \item An advert floods once; \textbf{path info accumulates}
+    \item Later DMs are \textbf{source-routed along that path}
   \end{itemize}}{%
-  Lightning onion-routes (hop privacy) and carries atomic value (HTLCs);
-  MeshCore path bytes are in the clear and carry data — no settlement.}
+  \begin{itemize}
+    \item Lightning onion-routes (hop privacy) and carries atomic value (HTLCs)
+    \item MeshCore path bytes are in the clear and carry data --- no settlement
+  \end{itemize}}
 
 \begin{frame}{Angle B — bootstrap, then jump layers}
   \begin{itemize}
-    \item A small mesh message = the rare, expensive anchoring event
-    \item Exchange a key / rendezvous over the mesh
-    \item Move the bulk transfer to a fat pipe (internet, CB radio) — off-mesh
+    \item A small mesh message = the rare, \textbf{expensive anchoring event}
+    \item \textbf{Exchange a key} / rendezvous over the mesh
+    \item Move the bulk transfer to a \textbf{fat pipe} (internet, CB radio) --- off-mesh
   \end{itemize}
   \vfill
   \begin{alertblock}{Where it breaks}
@@ -392,12 +394,12 @@
 \fillerslide[Same primitive, a different game]{Double SHA256 --- but not mining}
 
 \begin{frame}{Joining \texttt{\#bitcoin-at}: SHA256, twice, cropped}
-  \texttt{SHA256(SHA256(\#name)[:16])} --- hash the channel name (the \texttt{\#}
-  counts), \textbf{crop} to
-  16 bytes (the AES-128 key), hash again, take the first byte as a tiny public
-  channel id. First pass: a KDF (name\,$\to$\,AES-128 key); second: a commitment
-  (a short id for that key). Two SHA256 rounds \emph{look} like Bitcoin --- but
-  this is not mining.
+  \texttt{SHA256(SHA256(\#name)[:16])} --- \textbf{hash} the channel
+  \texttt{\#name}, \textbf{crop} to 16 bytes (the AES-128 key), \textbf{hash
+  again}, take the first byte as a tiny public channel id. First pass: a
+  \textbf{KDF} (key-derivation function, name\,$\to$\,AES-128 key); second: a
+  commitment (a short id for that key). Two SHA256 rounds \emph{look} like
+  Bitcoin --- but this is not mining.
   \vfill
   \centering\small
   \setlength{\tabcolsep}{8pt}\renewcommand{\arraystretch}{1.3}%
