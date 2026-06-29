@@ -156,16 +156,16 @@
 \comparisonslide{MeshCore vs Meshtastic}%
   {MeshCore}{%
     \begin{itemize}
-      \item Role-based: companion (handset), repeater (always-on
+      \item \textbf{Role-based}: companion (handset), repeater (always-on
         relay), room server (store-and-forward)
       \item \textbf{Source-routed} along discovered paths
-      \item Quieter, more scalable mesh
+      \item Quieter, \textbf{more scalable mesh}
     \end{itemize}}%
   {Meshtastic}{%
     \begin{itemize}
-      \item Easy to join, phone-first
-      \item Flood-based — every node rebroadcasts
-      \item Gets noisy as it grows
+      \item Easy to join, \textbf{phone-first}
+      \item \textbf{Flood-based} — every node rebroadcasts
+      \item Gets \textbf{noisy} as it grows
     \end{itemize}}%
   {Same cheap hardware}{%
     Same boards, same chips — a different firmware and routing philosophy.}
@@ -263,16 +263,16 @@
 
 \bridgeslide{Identity is a keypair}{%
   \begin{itemize}
-    \item Self-generated keypair, no issuer
-    \item Address = hash of the public key
-    \item ``Not your keys, not your coins''
-    \item Verify the address out-of-band
+    \item \textbf{Self-generated keypair}, no issuer
+    \item Address = \textbf{hash of the public key}
+    \item \textbf{``Not your keys, not your coins''}
+    \item Verify the address \textbf{out-of-band}
   \end{itemize}}{%
   \begin{itemize}
-    \item Self-generated keypair, on-device
-    \item Routing target = public-key prefix
-    \item ``Not your keys, not your identity''
-    \item Verify keys via QR / word list (TOFU)
+    \item \textbf{Self-generated keypair}, on-device
+    \item Routing target = \textbf{public-key prefix}
+    \item \textbf{``Not your keys, not your identity''}
+    \item Verify keys via \textbf{QR / word list} (TOFU)
   \end{itemize}}{%
   HD wallets rotate addresses for privacy; a MeshCore identity is deliberately
   \emph{sticky} — you want to stay discoverable. No HD equivalent, and no seed
@@ -337,21 +337,23 @@
 
 \bridgeslide{Angle A — route along a discovered path}{%
   \begin{itemize}
-    \item Find a route through specific channels
-    \item Don't broadcast the payment to everyone
+    \item Find a route \textbf{through specific channels}
+    \item \textbf{Don't broadcast} the payment \textbf{to everyone}
   \end{itemize}}{%
   \begin{itemize}
-    \item An advert floods once; path info accumulates
-    \item Later DMs are source-routed along that path
+    \item An advert floods once; \textbf{path info accumulates}
+    \item Later DMs are \textbf{source-routed along that path}
   \end{itemize}}{%
-  Lightning onion-routes (hop privacy) and carries atomic value (HTLCs);
-  MeshCore path bytes are in the clear and carry data — no settlement.}
+  \begin{itemize}
+    \item Lightning onion-routes (hop privacy) and carries atomic value (HTLCs)
+    \item MeshCore path bytes are in the clear and carry data --- no settlement
+  \end{itemize}}
 
 \begin{frame}{Angle B — bootstrap, then jump layers}
   \begin{itemize}
-    \item A small mesh message = the rare, expensive anchoring event
-    \item Exchange a key / rendezvous over the mesh
-    \item Move the bulk transfer to a fat pipe (internet, CB radio) — off-mesh
+    \item A small mesh message = the rare, \textbf{expensive anchoring event}
+    \item \textbf{Exchange a key} / rendezvous over the mesh
+    \item Move the bulk transfer to a \textbf{fat pipe} (internet, CB radio) --- off-mesh
   \end{itemize}
   \vfill
   \begin{alertblock}{Where it breaks}
@@ -393,12 +395,12 @@
 \fillerslide[Same primitive, a different game]{Double SHA256 --- but not mining}
 
 \begin{frame}{Joining \texttt{\#bitcoin-at}: SHA256, twice, cropped}
-  \texttt{SHA256(SHA256(\#name)[:16])} --- hash the channel name (the \texttt{\#}
-  counts), \textbf{crop} to
-  16 bytes (the AES-128 key), hash again, take the first byte as a tiny public
-  channel id. First pass: a KDF (name\,$\to$\,AES-128 key); second: a commitment
-  (a short id for that key). Two SHA256 rounds \emph{look} like Bitcoin --- but
-  this is not mining.
+  \texttt{SHA256(SHA256(\#name)[:16])} --- \textbf{hash} the channel
+  \texttt{\#name}, \textbf{crop} to 16 bytes (the AES-128 key), \textbf{hash
+  again}, take the first byte as a tiny public channel id. First pass: a
+  \textbf{KDF} (key-derivation function, name\,$\to$\,AES-128 key); second: a
+  commitment (a short id for that key). Two SHA256 rounds \emph{look} like
+  Bitcoin --- but this is not mining.
   \vfill
   \centering\small
   \setlength{\tabcolsep}{8pt}\renewcommand{\arraystretch}{1.3}%
@@ -560,8 +562,8 @@
 
 \bridgeslide{Consensus state vs.\ the moment}{%
   \begin{itemize}
-    \item A permanent, globally agreed ledger
-    \item Confirmed once $\to$ there forever, verifiable by anyone, later
+    \item A \textbf{permanent, globally agreed ledger}
+    \item Confirmed once $\to$ \textbf{there forever}, verifiable by anyone, later
   \end{itemize}}{%
   \begin{itemize}
     \item Channel messages exist \textbf{only as they are transmitted}
@@ -591,7 +593,7 @@
 \bridgeslide{Two ways to agree on ``after''}{%
   \begin{itemize}
     \item One chain orders \textbf{everything}, globally
-    \item That total order is exactly what makes double-spend impossible
+    \item That total order is exactly what makes \textbf{double-spend impossible}
   \end{itemize}}{%
   \begin{itemize}
     \item A node's \textbf{adverts} must move \textbf{forward in time}: a repeater
@@ -744,11 +746,17 @@
 \begin{frame}{Join the Bitcoin channels on MeshCore}
   Same name, same key --- just type the channel name to join.
   \vskip1.2em
-  \begin{itemize}
-    \item \texttt{\#bitcoin} --- no region (mesh-wide)
-    \item \texttt{\#bitcoin-at} --- region \texttt{at} (Austria)
-    \item \texttt{\#bitcoin-wien} --- region \texttt{at-w} (Vienna)
-  \end{itemize}
+  \centering
+  \setlength{\tabcolsep}{12pt}\renewcommand{\arraystretch}{1.4}%
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+      \textbf{Channel} & \textbf{Region} & \textbf{Reach} \\
+    \midrule
+      \texttt{\#bitcoin}      & ---           & whole mesh (no region) \\
+      \texttt{\#bitcoin-at}   & \texttt{at}   & Austria \\
+      \texttt{\#bitcoin-wien} & \texttt{at-w} & Vienna \\
+    \bottomrule
+  \end{tabular}
   \vfill
   \begin{alertblock}{Pick your scope}
     Plain \texttt{\#bitcoin} reaches the whole mesh; the regional channels add a
