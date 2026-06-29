@@ -1,4 +1,4 @@
-% MeshCore for Bitcoiners — a Bitcoin Austria talk.
+% MeshCore for Bitcoiners --- a Bitcoin Austria talk.
 % Build from the repo ROOT:  make           (or: latexmk -xelatex meshcore-for-bitcoiners.tex)
 % Requires the `theme/` submodule (Bitcoin Austria beamer style). If it is
 % missing, run:  git submodule update --init --recursive
@@ -21,7 +21,7 @@
 
 % Talk-specific: app / website screenshots, to break up the theory with a look
 % at the real thing. Phone screenshots are tall (portrait), so each is shown as
-% a "card" — the image with a short caption beneath. Cards are narrow, so two
+% a "card" --- the image with a short caption beneath. Cards are narrow, so two
 % (or more) sit side by side on one slide; add more as they arrive.
 %   \screenshotcard[width]{image}{caption}
 \newcommand{\screenshotcard}[3][0.30\paperwidth]{%
@@ -33,7 +33,7 @@
   \end{minipage}%
 }
 
-% \cornerimage is now provided by the theme (bitcoin-austria.sty) — it floats a
+% \cornerimage is now provided by the theme (bitcoin-austria.sty) --- it floats a
 % small image into a slide corner over everything, with a default top clearance
 % that sits below the headline/page-number band. Call it right before a slide.
 %
@@ -43,8 +43,8 @@
 % which runs <code> only on narrow formats. No deck-side helper needed.
 
 \title{MeshCore for Bitcoiners}
-\subtitle{Permissionless communication — from money to radio}
-\author{Harald Schilly — Bitcoin Austria}
+\subtitle{Permissionless communication --- from money to radio}
+\author{Harald Schilly --- Bitcoin Austria}
 \date{\today}
 
 \begin{document}
@@ -54,11 +54,14 @@
 \end{frame}
 
 % ============================================================ what is MeshCore?
-% Bitcoiners don't know MeshCore — introduce it before drawing the parallels.
+% Bitcoiners don't know MeshCore --- introduce it before drawing the parallels.
 \fillerslide[What Bitcoin did for money, MeshCore does for messaging!]{What is MeshCore?}
 
 % Hook slide: open with the one-line mental model + why a Bitcoiner should care,
 % BEFORE the mechanics. Audience are technical Bitcoiners new to MeshCore.
+% SPEAKER OPEN (spoken, before revealing this slide): put the stakes in the room
+% first --- "How many of you could send a message tonight if the cell network
+% went down? Keep your hand up if you could do it without asking permission."
 \begin{frame}{The one-line version}
   \begin{itemize}
     \item What Bitcoin did for money, MeshCore does for messaging:
@@ -79,15 +82,15 @@
 
 \begin{frame}{Messaging without the network}
   \begin{itemize}
-    \item Off-grid text messaging over long-range \textbf{LoRa} radio —
+    \item Off-grid text messaging over long-range \textbf{LoRa} radio ---
       no internet, no cell tower, no SIM
     \item Open-source firmware running on cheap LoRa boards
-    \item Uses \textbf{licence-free} ISM radio bands — worldwide, region by
+    \item Uses \textbf{licence-free} ISM radio bands --- worldwide, region by
       region (EU 868\,MHz; US/AU 915\,MHz; \dots)
   \end{itemize}
   \vfill
   \begin{alertblock}{The EU angle}
-    On these bands \emph{anyone} may transmit — no licence, no registration, no
+    On these bands \emph{anyone} may transmit --- no licence, no registration, no
     fee. You only respect the power and duty-cycle limits.
   \end{alertblock}
 \end{frame}
@@ -111,16 +114,17 @@
   \end{itemize}
   \vfill
   \begin{alertblock}{The right mental model}
-    Not WhatsApp-over-radio. Think \textbf{a permissionless telegraph} --- short
+    Not WhatsApp-over-radio --- think \textbf{a permissionless telegraph}: short
     text, long reach, no carrier. The narrow pipe is the price of needing nothing
-    but a cheap radio and line of sight. (We come back to \emph{why} that
-    constraint is a feature.)
+    but a cheap radio and line of sight.
   \end{alertblock}
 \end{frame}
 
 % The 2026 fork is on-theme for a Bitcoin crowd: open-source firmware (MIT), a
 % trademark/brand capture attempt by the promoter, and the community routing
 % around it. We stick to the core team's .io domain throughout this deck.
+% SPEAKER: lead spoken with the punchline --- "In 2026 someone tried to trademark
+% MeshCore and ship secret AI-rewritten apps. Guess how that went." Then bullets.
 \begin{frame}{Where it comes from --- and the fork}
   \begin{itemize}
     \item Grew out of the \textbf{Meshtastic} world, then rebuilt from scratch
@@ -143,21 +147,21 @@
   \end{alertblock}
 \end{frame}
 
-\begin{frame}{The hardware — tens of euros, not hundreds}
+\begin{frame}{The hardware --- tens of euros, not hundreds}
   \begin{itemize}
-    \item \textbf{Companion} (your device: screen + Bluetooth) — SenseCAP
-      \textbf{T1000-E}, credit-card size with GPS, $\sim$\,40\,EUR
-    \item \textbf{Portable with a display} — Heltec LoRa\,32 V3 (OLED,
-      $\sim$\,40\,EUR), Seeed Wio Tracker L1 Pro (screen, GPS, case)
-    \item \textbf{Repeater} — SenseCAP Solar Node \textbf{P1-Pro}: 5\,W solar +
+    \item \textbf{Companion} (your device: screen + Bluetooth) --- SenseCAP
+      T1000-E, credit-card size with GPS, $\sim$40\,EUR
+    \item \textbf{Portable with a display} --- Heltec LoRa\,32 V3 (OLED,
+      $\sim$40\,EUR), Seeed Wio Tracker L1 Pro (screen, GPS, case)
+    \item \textbf{Repeater} --- SenseCAP Solar Node P1-Pro: 5\,W solar +
       battery, runs for days off-grid, pole-mounted; antenna + device
-      $\sim$\,130\,EUR
-    \item \textbf{Build your own} — Heltec / RAK WisBlock boards
+      $\sim$130\,EUR
+    \item \textbf{Build your own} --- Heltec / RAK WisBlock boards
   \end{itemize}
 \end{frame}
 
 % Practical example, right after "the hardware is cheap": the four steps to
-% actually get on the mesh that night — buy, pair, generate, join.
+% actually get on the mesh that night --- buy, pair, generate, join.
 \begin{frame}{Your first five minutes on the mesh}
   \begin{itemize}
     \item \textbf{Get a companion board} --- e.g.\ a SenseCAP \textbf{T1000-E}
@@ -176,7 +180,7 @@
   \end{alertblock}
 \end{frame}
 
-% MeshCore (red, the subject) vs Meshtastic — generic comparison, not \bridgeslide
+% MeshCore (red, the subject) vs Meshtastic --- generic comparison, not \bridgeslide
 \comparisonslide{MeshCore vs Meshtastic}%
   {MeshCore}{%
     \begin{itemize}
@@ -188,13 +192,16 @@
   {Meshtastic}{%
     \begin{itemize}
       \item Easy to join, \textbf{phone-first}
-      \item \textbf{Flood-based} — every node rebroadcasts
+      \item \textbf{Flood-based} --- every node rebroadcasts
       \item Gets \textbf{noisy} as it grows
     \end{itemize}}%
   {Same cheap hardware}{%
-    Same boards, same chips — a different firmware and routing philosophy.}
+    Same boards, same chips --- a different firmware and routing philosophy.}
 
 % Break up the theory with a look at the real app: watch it, chat, plan a link.
+% SPEAKER: if connectivity allows, SWITCH TO THE LIVE observer/app here for ~30s
+% --- a real packet arcing across Vienna beats any screenshot. Else say aloud
+% "this is live right now."
 \begin{frame}{Live on the mesh}
   \vfill
   \centering
@@ -273,60 +280,43 @@
       \centering
       \includegraphics[width=\linewidth]{austria-regions}\\[0.3em]
       {\scriptsize Austria's three MeshCore macro-regions ---
-       \texttt{at-west} / \texttt{at-ost} / \texttt{at-sued}\\
+       \texttt{at-west} (west) / \texttt{at-ost} (east) / \texttt{at-sued} (south);
+       cities nest below, e.g.\ \texttt{at-w} = Vienna\\
        region scheme: \href{https://meshcore-austria.at}{meshcore-austria.at}}
     \end{column}
   \end{columns}
   \vfill
   \begin{alertblock}{The neat part}
     The code is computed over the \emph{encrypted} payload, so repeaters filter by
-    region \textbf{without decrypting} --- and because it commits to the packet's
-    bytes, it behaves like a SIGHASH (a Bitcoin parallel we'll draw later).
+    region \textbf{without decrypting} --- and because it \textbf{commits to the
+    packet's bytes}, you can't lift it onto a different packet (a Bitcoin parallel
+    we'll sharpen later).
   \end{alertblock}
 \end{frame}
 
-% Make the agenda + the honesty contract explicit before the thesis, so the
-% later "where it breaks" callouts land as a kept promise, not a hedge.
-\begin{frame}{What recurs --- and a promise}
-  You already know the moves. The rest of the talk is the same Bitcoin
-  primitives, in radio:
-  \vskip0.8em
-  \begin{itemize}
-    \item \textbf{A self-issued keypair} is your whole identity --- no issuer, no
-      registration
-    \item \textbf{Signatures and encryption} do the work --- adverts signed,
-      DMs encrypted
-    \item \textbf{A throughput cap you didn't choose} forces a second layer ---
-      sound familiar?
-    \item \textbf{Routing, not flooding} --- find a path, don't shout to everyone
-    \item \textbf{Permissionless by construction} --- you join by generating a
-      key, not by asking
-  \end{itemize}
-  \vfill
-  \begin{alertblock}{The honest contract for the rest of this talk}
-    Every parallel is drawn rigorously --- and every time it \textbf{breaks},
-    I'll say so out loud. MeshCore is not Bitcoin; it's Bitcoin's \emph{instincts}
-    pointed at a different problem. The breaks are where it gets interesting.
-  \end{alertblock}
-\end{frame}
-
-% ---------------------------------------------------------------- core thesis
-\begin{frame}{The core thesis}
-  We opened with the one-liner; here is the precise claim the rest of the talk
-  defends.
+% Merged setup slide: one statement of the precise claim + the recurring-primitives
+% preview + the honesty contract. (Previously three restatements of the same thesis
+% across "one-line version" / "what recurs" / "core thesis" --- collapsed so the
+% deck reaches the first parallel a slide sooner.)
+\begin{frame}{The precise claim --- and a promise}
+  We opened with the one-liner; here is the claim the rest of the talk defends ---
+  the same Bitcoin primitives, in radio:
   \vskip0.6em
   \begin{itemize}
-    \item A self-generated \textbf{keypair} replaces institutional identity.
-    \item \textbf{Bitcoin} replaces the bank account — gatekeeper: the bank.
-    \item \textbf{MeshCore} replaces the SIM card / call sign — gatekeepers:
-      the telco \emph{and} the state.
-    \item No registration, no permission: you simply become a full participant.
+    \item A self-generated \textbf{keypair replaces institutional identity} ---
+      Bitcoin fires the bank; MeshCore fires the telco \emph{and} the state
+    \item \textbf{Signatures and encryption} do the work --- adverts signed,
+      DMs encrypted
+    \item \textbf{A throughput cap you didn't choose} forces a second layer
+    \item \textbf{Permissionless by construction} --- routing not flooding, and
+      you join by generating a key, not by asking
   \end{itemize}
   \vfill
   \begin{alertblock}{The line the talk hangs on}
-    Radio spectrum is heavily licensed. A permissionless, self-issued identity
-    broadcasting in the ether is \textbf{arguably even more subversive than
-    permissionless money}.
+    A permissionless, self-issued identity broadcasting in the ether is
+    \textbf{arguably even more subversive than permissionless money}. Every time
+    the parallel \emph{breaks}, I'll say so out loud --- the breaks are the
+    interesting part.
   \end{alertblock}
 \end{frame}
 
@@ -346,11 +336,12 @@
     \item \textbf{``Not your keys, not your identity''}
     \item Verify keys via \textbf{QR / word list} (TOFU)
   \end{itemize}}{%
-  HD wallets rotate addresses for privacy; a MeshCore identity is deliberately
-  \emph{sticky} — you want to stay discoverable. No HD equivalent, and no seed
-  phrase — the key just lives on the device, so \textbf{back it up}: lose the
-  \emph{private key} and you lose the \emph{handle} — but with no value at stake,
-  a re-announce, not a theft.}
+  Two different tricks for the short ID: Bitcoin \textbf{hashes} the pubkey (hidden
+  until you spend); MeshCore just \textbf{truncates} it to a prefix --- a routing
+  shortcut, so it can collide (1\,$\to$\,1--3\,B). And the identity is deliberately
+  \emph{sticky} (no HD rotation, no seed phrase) --- so \textbf{back it up}: lose
+  the key and you lose the \emph{handle}, but with no value at stake that's a
+  re-announce, not a theft.}
 
 % ---------------------------------------------------------------- signing
 \fillerslide[The elegant twist]{The signing model}
@@ -359,35 +350,40 @@
   \begin{itemize}
     \item Content is \textbf{public} (on-chain)
     \item The key protects \textbf{authorization}
-    \item No valid signature → the transaction does not exist
+    \item No valid signature $\to$ the transaction \textbf{does not exist}
   \end{itemize}}{%
   \begin{itemize}
-    \item Identity is \textbf{public} (the \textbf{advert} --- a node's signed
+    \item Identity is \textbf{public} (the advert --- a node's signed
       ``here is my key, here I am'')
     \item The key protects \textbf{content}
-    \item Adverts are signed (Ed25519); DMs are encrypted (X25519)
+    \item Adverts are \textbf{signed} (Ed25519)
+    \item DMs are \textbf{encrypted} (X25519)
   \end{itemize}}{%
-  Group / channel messages use a pre-shared key — no per-sender signature.
-  Anyone with the PSK can read \emph{and} write.}
+  But channels/rooms share one pre-shared key, so a group message proves only that
+  \emph{someone} in the channel sent it --- \textbf{not who}. Anyone with the PSK
+  can read \emph{and} forge the sender name. DMs (X25519) and the advert (Ed25519)
+  authenticate; \textbf{channel posts don't}.}
 
 % Region code <-> SIGHASH (moved here from the intro region explanation): the
 % 2-byte transport code commits to the (encrypted) payload, like a signature
 % commits to its own tx. Audience already met region codes in the intro.
 \bridgeslide{The region rides inside the message}{%
   \begin{itemize}
-    \item A signature commits to the \textbf{transaction itself} (SIGHASH)
-    \item Lift it onto a different tx and it is invalid --- the authorization is
-      bound to the content it authorizes
+    \item A signature \textbf{commits to the transaction} it signs --- SIGHASH
+      flags even pick \emph{which} parts it covers
+    \item Lift it onto a different tx and it is invalid --- authorization is
+      \textbf{bound to the content}
   \end{itemize}}{%
   \begin{itemize}
-    \item The 2-byte region code is an \textbf{HMAC over the packet payload};
+    \item The 2-byte region code is an \textbf{HMAC committing to the payload};
       repeaters recompute it per hop to decide whether to relay
     \item The region key is just \texttt{SHA256(name)[:16]} --- agree on
-      ``\texttt{at-w}'', no key exchange, no registry
+      ``\texttt{at-w}'' (Vienna), no key exchange, no registry
   \end{itemize}}{%
-  Symmetric and public-ish (anyone who knows the region name can forge it), and
-  only 2 bytes wide --- a flood-scoping filter that saves airtime, not a real
-  signature. It binds \emph{scope} to the content, not \emph{authorship}.}
+  No flags, no signer, no authorship: symmetric and \textbf{forgeable} (anyone who
+  knows the region name can recompute it) and only 2 bytes wide --- a flood-scoping
+  filter that saves airtime, \emph{not} a real signature. It binds \emph{scope},
+  not \emph{authorship}.}
 
 % ---------------------------------------------------------------- throughput
 \fillerslide[A chosen constraint, not a weakness]{Throughput}
@@ -396,28 +392,30 @@
 % Austria via the national frequency plan). MeshCore's EU default 869.525 MHz
 % falls in the 869.4--869.65 MHz sub-band ("P"/g3) => 10% duty cycle, up to
 % 500 mW (+27 dBm) ERP. (The lower 868.0--868.6 MHz sub-band is only 1% at
-% 25 mW — MeshCore deliberately picks the generous one.) Sources: The Things
+% 25 mW --- MeshCore deliberately picks the generous one.) Sources: The Things
 % Network "Regional limitations of RF use"; rf.guru "Meshtastic, MeshCore,
 % 868 MHz and the Ham Radio Trap"; disk91.com 868 MHz regulation overview.
 % NOTE: still sanity-check against the current AT frequency plan before stage.
 % Throughput numbers (estimation, both sides):
-%  Bitcoin: ~2,000-3,000 tx/block, 1 block/10 min => ~3-7 tx/s ~= 200-400 tx/min.
-%  MeshCore (AT preset 869.618 MHz, SF8, BW62.5 kHz, CR 4/8): LoRa time-on-air
+%  Bitcoin: ~2,000-3,000 tx/block, 1 block/10 min => ~3-5 tx/s ~= 200-300 tx/min.
+%  MeshCore (EU/UK Narrow preset 869.525 MHz, SF8, BW62.5 kHz, CR 4/8): LoRa time-on-air
 %  (Semtech ToA: 8-sym preamble, explicit header, CRC, DE=0) for a 16 B short
 %  text ~0.25 s, 64 B ~0.64 s, 184 B full packet ~1.62 s; lighter coding 4/5
 %  trims ~1/3 (16 B ~0.19 s ... 184 B ~1.05 s). 10% duty cycle = 6 s airtime/min/node
 %  => ~24/min (short) down to ~4/min (full packet); ~30/min for tiny pings @4/5.
+% SPEAKER: stage the airtime figure as a reveal --- ask "how much airtime per
+% minute is a node legally allowed? ... six seconds." The smallness is the hook.
 \bridgeslide{The throttle is imposed, not a failure}{%
   \begin{itemize}
     \item Block size is a \textbf{consensus} cap: one block every $\sim$10\,min
-    \item $\sim$2{,}000--3{,}000 tx/block $\Rightarrow$ $\sim$3--7\,tx/s
-      $\approx$ \textbf{200--400 tx/min}, network-wide
+    \item $\sim$2{,}000--3{,}000 tx/block $\Rightarrow$ $\sim$3--5\,tx/s
+      $\approx$ \textbf{200--300 tx/min}, network-wide
   \end{itemize}}{%
   \begin{itemize}
-    \item Duty cycle is a \textbf{regulatory} cap: \textbf{10\%} airtime on the
-      869.4--869.65\,MHz sub-band \,(AT: 869.618\,MHz, SF\,8, BW\,62.5\,kHz, CR\,4/8)
+    \item Duty cycle is a \textbf{regulatory} cap: 10\% airtime on the
+      869.4--869.65\,MHz sub-band (EU default: 869.525\,MHz, SF\,8, BW\,62.5\,kHz, CR\,4/8)
     \item One msg $\approx$ 0.25--1.6\,s on air (short text $\to$ full 184\,B);
-      10\% $=$ 6\,s airtime/min $\Rightarrow$ \textbf{$\sim$4--25 msgs/min per node}
+      10\% $=$ 6\,s airtime/min $\Rightarrow$ \textbf{$\sim$4--24 msgs/min per node}
   \end{itemize}}{%
   Bitcoin's rate is one \emph{global} ledger; MeshCore's is \emph{per node} on a
   \textbf{shared} channel --- many nodes split the same airtime, so the real
@@ -425,39 +423,45 @@
   more'' --- and a deliberate cap is exactly what forces a second layer to exist.}
 
 % ---------------------------------------------------------------- lightning
-\fillerslide[Two distinct analogies — keep them separate]{Lightning Network}
+\fillerslide[Two distinct analogies --- keep them separate]{Lightning Network}
 
-\bridgeslide{Angle A — route along a discovered path}{%
+\bridgeslide{Angle A --- route along a discovered path}{%
   \begin{itemize}
-    \item Find a route \textbf{through specific channels}
-    \item \textbf{Don't broadcast} the payment \textbf{to everyone}
+    \item \textbf{Route through specific channels} --- you pick the path
+    \item Don't broadcast the payment \textbf{to the whole network}
   \end{itemize}}{%
   \begin{itemize}
     \item An advert floods once; \textbf{path info accumulates}
     \item Later DMs are \textbf{source-routed along that path}
   \end{itemize}}{%
   \begin{itemize}
-    \item Lightning onion-routes (hop privacy) and carries atomic value (HTLCs)
-    \item MeshCore path bytes are in the clear and carry data --- no settlement
+    \item \textbf{Discovery differs:} Lightning gossips the \emph{whole} graph
+      (proactive); MeshCore floods one advert to learn \emph{one} path (reactive)
+    \item Lightning \textbf{onion-routes} (hop privacy); MeshCore path bytes ride
+      in the clear
+    \item Lightning carries \textbf{atomic value} (HTLCs); MeshCore carries data,
+      no settlement
   \end{itemize}}
 
-\begin{frame}{Angle B — bootstrap, then jump layers}
+\begin{frame}{Angle B --- bootstrap, then jump layers}
   \begin{itemize}
     \item A small mesh message = the rare, \textbf{expensive anchoring event}
     \item \textbf{Exchange a key} / rendezvous over the mesh
+    \item That key is a \textbf{TOFU anchor} --- it authenticates the off-mesh
+      pipe (same trust model as ``identity is a keypair'')
     \item Move the bulk transfer to a \textbf{fat pipe} (internet, CB radio) --- off-mesh
   \end{itemize}
   \vfill
   \begin{alertblock}{Where it breaks}
     Lightning stays cryptographically chained to L1 (you can unilaterally
     close). The mesh\,→\,fat-pipe handoff is a \textbf{one-time bootstrap}, not
-    a trust-anchored channel — closer to WebRTC signaling or a BitTorrent
+    a trust-anchored channel --- closer to WebRTC signaling or a BitTorrent
     tracker.
   \end{alertblock}
 \end{frame}
 
 % ---------------------------------------------------------------- facts
-\fillerslide[Side by side — what's under the hood]{Crypto facts}
+\fillerslide[Side by side --- what's under the hood]{Crypto facts}
 
 \begin{frame}{The crypto, side by side}
   \centering
@@ -477,13 +481,13 @@
 
 % ---------------------------------------------------------------- channel hash
 % A Bitcoiner spots SHA256-twice in the channel hash and reaches for "mining".
-% Same primitive, different game — make the distinction, then name the parallel
+% Same primitive, different game --- make the distinction, then name the parallel
 % that *does* hold (commitment + truncation trade-off).
 % Construction VERIFIED against MeshCore source (firmware + michaelhart/
 % meshcore-decoder, src/crypto/channel-crypto.ts; "Hitchhiker's Guide to
 % MeshCore Cryptography"): for a "#room", key = SHA256("#room")[:16] (the
 % AES-128 key), channel id = SHA256(key)[0] (first byte). Cipher is AES-128-ECB
-% (+ HMAC-SHA256 MAC) — NOT AES-256/CTR.
+% (+ HMAC-SHA256 MAC) --- NOT AES-256/CTR.
 \fillerslide[Same primitive, a different game]{Double SHA256 --- but not mining}
 
 \begin{frame}{Joining \texttt{\#bitcoin-at}: SHA256, twice, cropped}
@@ -529,7 +533,7 @@
 \fillerslide[Same silicon idea, opposite reason]{ASICs --- and the LoRa radio chip}
 
 % Float a small photo of the SX1262 high in the top-right corner of the
-% bridgeslide — small enough to sit up by the title/page number, not over the
+% bridgeslide --- small enough to sit up by the title/page number, not over the
 % MeshCore column. (Bare name; resolves via the deck's pix/ graphics path.)
 \cornerimage[width=0.10\paperwidth,topclear=20pt]{sx1262}
 \bridgeslide{Purpose-built silicon, for opposite reasons}{%
@@ -542,8 +546,8 @@
     \item The \textbf{SX1262} radio chip runs the whole LoRa modem in hardware,
       not in software
     \item Dedicated silicon for \textbf{power}: microamps asleep, so a small
-      coin-cell battery lasts for ages; doing the modem on a general CPU would
-      burn far more
+      coin-cell battery lasts for ages --- a general CPU couldn't really run the
+      chirp-spread-spectrum modem at all, let alone that efficiently
   \end{itemize}}{%
   Both are purpose-built chips --- but Bitcoin's ASIC wins a \emph{contest} (more
   efficiency $\to$ more reward), while the SX1262 just \emph{sips power} at a
@@ -573,15 +577,14 @@
     Input              & low-entropy phrase          & short word (\texttt{\#vienna}) \\
     Salt / stretching  & none                        & none \\
     Public oracle      & the blockchain              & the broadcast packet \\
-    Failure            & swept in seconds            & anyone who guesses reads it \\
+    Failure            & swept in seconds            & cracked in $\sim$90\,s ($<$7 chars) \\
   }
   \vfill
   \begin{alertblock}{The deep point --- a free verification oracle}
-    Both hand the attacker a public way to \emph{check} an offline guess: the
-    chain says ``this address holds coins,'' the broadcast says ``this key decodes
-    to a message.'' Offline guessing \emph{plus} public verification is what makes
-    both catastrophic --- \textbf{not} an AES break: the entropy is the
-    \emph{name}. A \#room name under 7 chars falls in $\sim$90\,s on a laptop GPU.
+    Both hand the attacker a public way to \emph{check} an offline guess: the chain
+    says ``this address holds coins''; the broadcast says ``this key decodes a
+    message.'' Offline guessing \emph{plus} public verification is what makes both
+    catastrophic --- \textbf{not} an AES break: the entropy is the \emph{name}.
   \end{alertblock}
 \end{frame}
 
@@ -607,33 +610,30 @@
 % (coins), so it pays for heavy consensus machinery (PoW/Sybil resistance, one
 % global order, permanent state); MeshCore defends nothing scarce -- it relays
 % fleeting messages -- so it needs none of it. Each slide is one face of that.
-\fillerslide[No scarce asset, no heavy machinery]{What Bitcoin's consensus buys --- and MeshCore skips}
+\fillerslide[What is all that consensus machinery actually for?]{What Bitcoin's consensus buys --- and MeshCore skips}
 
-% #1 Sybil resistance -- answers the question the "not mining" slide opens.
-\fillerslide[Permissionless without proof-of-work]{Sybil resistance}
-
-\bridgeslide{What proof-of-work buys}{%
+% #1 Sybil resistance. (Per-topic divider dropped --- topic folded into the
+% bridge title so this section isn't a stack of title cards.)
+\bridgeslide{Sybil resistance --- what proof-of-work buys}{%
   \begin{itemize}
     \item PoW makes identity / participation deliberately \textbf{costly}
-    \item That cost \emph{is} the security: Sybil resistance, global ordering,
+    \item That cost \textbf{is the security}: Sybil resistance, global ordering,
       permanent state
     \item You spend energy to earn a say
   \end{itemize}}{%
   \begin{itemize}
     \item Identity is \textbf{free} --- an Ed25519 keypair, generated offline, in
       unlimited number
-    \item No proof-of-work, no cost to participate
+    \item \textbf{No cost to participate} --- no proof-of-work
     \item Anyone can flood adverts
   \end{itemize}}{%
-  No cryptographic Sybil resistance. The only brakes are \textbf{physical}
-  (airtime / duty cycle, RF range --- spam self-limits) and \textbf{social}
-  (repeater ACLs, admin passwords). MeshCore needs no PoW because it defends no
-  scarce asset --- the worst case is wasted airtime, not theft.}
+  \textbf{No Sybil resistance --- and none needed:} nothing to vote on, no scarce
+  asset to seize. Abuse is only \emph{throttled}, never stopped --- \textbf{physical}
+  limits (airtime / duty cycle, RF range) and \textbf{social} ones (repeater ACLs,
+  admin passwords). The worst case is wasted airtime, not theft.}
 
-% #2 Incentives -- paid security vs a volunteer commons.
-\fillerslide[Who runs the infrastructure --- and why]{Incentives}
-
-\bridgeslide{Paid security vs.\ a volunteer commons}{%
+% #2 Incentives. (Per-topic divider folded into the bridge title.)
+\bridgeslide{Incentives --- paid security vs.\ a volunteer commons}{%
   \begin{itemize}
     \item Miners are \textbf{paid} --- block subsidy + fees
     \item Scarce block space $\to$ a \textbf{fee market} (a price)
@@ -650,10 +650,8 @@
   market}. It works at today's scale, but nothing \emph{economic} defends it
   against the tragedy of the commons.}
 
-% #3 State -- permanent ledger vs fleeting broadcast.
-\fillerslide[Permanent ledger vs.\ fleeting broadcast]{State}
-
-\bridgeslide{Consensus state vs.\ the moment}{%
+% #3 State. (Per-topic divider folded into the bridge title.)
+\bridgeslide{State --- consensus state vs.\ the moment}{%
   \begin{itemize}
     \item A \textbf{permanent, globally agreed ledger}
     \item Confirmed once $\to$ \textbf{there forever}, verifiable by anyone, later
@@ -681,9 +679,8 @@
 % rule is enforced on a node's *adverts* (self-announcements), keyed per pubkey
 % by last_advert_timestamp -- NOT on every data packet. Slide reworded to say
 % "adverts" so the claim stays watertight.
-\fillerslide[Ordering without a global clock]{Time}
-
-\bridgeslide{Two ways to agree on ``after''}{%
+% #4 Time. (Per-topic divider folded into the bridge title.)
+\bridgeslide{Time --- two ways to agree on ``after''}{%
   \begin{itemize}
     \item One chain orders \textbf{everything}, globally
     \item That total order is exactly what makes \textbf{double-spend impossible}
@@ -698,20 +695,20 @@
   Bitcoin builds one \emph{global} order (essential against double-spend);
   MeshCore enforces only \emph{per-sender} local order on adverts. There's no
   global ``which came first'' across senders --- with no asset to double-spend,
-  it doesn't need one.}
+  it never needs the \emph{global} one.}
 
 % ------------------------------------------------------------------- hard fork
 % The firmware 1.14+ multi-byte routing prefix is backward-incompatible: a
-% genuine "hard fork" framing — with the honest caveat that there is no chain
+% genuine "hard fork" framing --- with the honest caveat that there is no chain
 % to actually split.
-\fillerslide[Break the wire format, split the network]{The multi-byte routing hard fork}
+\fillerslide[Break the wire format, leave the laggards behind]{The multi-byte routing hard fork}
 
 \bridgeslide{A backward-incompatible rule change}{%
   \begin{itemize}
     \item A \textbf{hard fork} changes the rules so old software rejects the new
       format
-    \item Old and new nodes can no longer agree --- the network splits unless
-      everyone upgrades
+    \item Both sides can stay alive --- \textbf{two live chains}, each kept up by
+      its own economic backers
   \end{itemize}}{%
   \begin{itemize}
     \item Firmware \textbf{1.14+} widens the routing prefix from 1 byte to
@@ -719,14 +716,47 @@
     \item Old firmware cannot parse the new adverts / path hashes --- you must
       upgrade to stay on the mesh
   \end{itemize}}{%
-  MeshCore has no consensus and no ledger to fork: this is a coordinated
-  firmware upgrade, not a persistent chain split. ``Hard fork'' names the
-  backward incompatibility --- not a permanent divergence you could mine on.}
+  No consensus, no ledger, no coins --- nothing keeps a second version alive, so
+  old firmware just \textbf{falls off the mesh} until it upgrades. Closer to a
+  \textbf{TLS 1.2\,$\to$\,1.3} bump than a chain split: ``hard fork'' names the
+  backward incompatibility, not a persistent divergence you could mine on.}
 
-% ------------------------------------------------------------------ references
-% Collected links — project/docs, the live observer, and the internals/crypto
-% sources behind the channel-hash, region-code and AES-128 facts in this deck.
-\begin{frame}{References \& further reading}
+% Closing call to action: concrete Bitcoin channels the audience can join right
+% now. Ties back to the region-transport-code slide (a region is just an agreed
+% name: "at" = Austria, "at-w" = Vienna; no region = mesh-wide).
+\begin{frame}{Join the Bitcoin channels on MeshCore}
+  Same name, same key --- just type the channel name to join.
+  \vskip1.2em
+  \centering
+  \setlength{\tabcolsep}{12pt}\renewcommand{\arraystretch}{1.4}%
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+      \textbf{Channel} & \textbf{Region} & \textbf{Reach} \\
+    \midrule
+      \texttt{\#bitcoin}      & ---           & whole mesh (no region) \\
+      \texttt{\#bitcoin-at}   & \texttt{at}   & Austria \\
+      \texttt{\#bitcoin-wien} & \texttt{at-w} & Vienna \\
+    \bottomrule
+  \end{tabular}
+  \vfill
+  \begin{alertblock}{Pick your scope}
+    Plain \texttt{\#bitcoin} reaches the whole mesh; the regional channels add a
+    \textbf{region code} so repeaters relay them only locally --- less airtime,
+    same permissionless join.\\[0.4em]
+    The grid-down question we opened with? \textbf{\#bitcoin-wien is already up.}
+    Join it before you leave.
+  \end{alertblock}
+\end{frame}
+
+\fillerslide[%
+  \href{https://meshcore.io}{meshcore.io}\quad\textbullet\quad
+  \href{https://meshcore-austria.at}{meshcore-austria.at}%
+]{Thank you}
+
+% ============================================================== backup / appendix
+% References moved here so the main talk ends on the call to action, not a link
+% dump. [noframenumbering] keeps it out of the main slide count.
+\begin{frame}[noframenumbering]{References \& further reading}
   \footnotesize
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}
@@ -769,40 +799,9 @@
   \end{columns}
 \end{frame}
 
-% Closing call to action: concrete Bitcoin channels the audience can join right
-% now. Ties back to the region-transport-code slide (a region is just an agreed
-% name: "at" = Austria, "at-w" = Vienna; no region = mesh-wide).
-\begin{frame}{Join the Bitcoin channels on MeshCore}
-  Same name, same key --- just type the channel name to join.
-  \vskip1.2em
-  \centering
-  \setlength{\tabcolsep}{12pt}\renewcommand{\arraystretch}{1.4}%
-  \begin{tabular}{@{}lll@{}}
-    \toprule
-      \textbf{Channel} & \textbf{Region} & \textbf{Reach} \\
-    \midrule
-      \texttt{\#bitcoin}      & ---           & whole mesh (no region) \\
-      \texttt{\#bitcoin-at}   & \texttt{at}   & Austria \\
-      \texttt{\#bitcoin-wien} & \texttt{at-w} & Vienna \\
-    \bottomrule
-  \end{tabular}
-  \vfill
-  \begin{alertblock}{Pick your scope}
-    Plain \texttt{\#bitcoin} reaches the whole mesh; the regional channels add a
-    \textbf{region code} so repeaters relay them only locally --- less airtime,
-    same permissionless join.
-  \end{alertblock}
-\end{frame}
-
-\fillerslide[%
-  \href{https://meshcore.io}{meshcore.io}\quad\textbullet\quad
-  \href{https://meshcore-austria.at}{meshcore-austria.at}%
-]{Thank you}
-
-% ============================================================== backup / appendix
 % Optional deep-dive on the on-wire packet format. Kept AFTER the closing as a
 % backup slide so it can be skipped for a non-technical audience and shown only
-% on demand — it's self-contained, so skipping it breaks nothing in the main
+% on demand --- it's self-contained, so skipping it breaks nothing in the main
 % talk. It also ties several earlier slides together (region code, the 1--3 byte
 % routing prefix, AES-128 + 2-byte MAC). [noframenumbering] keeps it out of the
 % main slide count. VERIFIED against docs.meshcore.io/packet_format, DeepWiki 7.1
