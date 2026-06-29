@@ -448,10 +448,11 @@
       always better, and difficulty just pulls up to match
   \end{itemize}}{%
   \begin{itemize}
-    \item The \textbf{SX1262} radio chip runs chirp spread-spectrum in hardware
-      --- the MCU just hands it bytes over SPI
-    \item Dedicated silicon for \textbf{power}: $\sim\mu$A asleep, so a coin cell
-      lasts; doing the modem on a general CPU would burn far more
+    \item The \textbf{SX1262} radio chip runs the whole LoRa modem in hardware,
+      not in software
+    \item Dedicated silicon for \textbf{power}: microamps asleep, so a small
+      coin-cell battery lasts for ages; doing the modem on a general CPU would
+      burn far more
   \end{itemize}}{%
   Both are purpose-built chips --- but Bitcoin's ASIC wins a \emph{contest} (more
   efficiency $\to$ more reward), while the SX1262 just \emph{sips power} at a

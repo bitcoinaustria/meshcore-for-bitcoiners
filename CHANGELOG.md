@@ -20,6 +20,16 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [v1.0] — 2026-06-29
+
+First complete, stage-ready version. Everything since v0.3: an app/website
+screenshot tour, a full intro rework (one-line hook, "the catch", onboarding,
+honesty contract), a quantified throughput slide, the consensus-machinery and
+brainwallet sections, the ASIC/SX1262 slide with a floating chip photo, a
+self-drawn Austria regions map, the references slide, a deck-wide readability
+pass (one bold key-phrase per bullet), plus the cross-slide consistency and
+wording fixes below.
+
 ### Fixed
 - **Channel-key formula made consistent.** The "Joining `#bitcoin-at`" slide
   showed `SHA256(SHA256(name)[:16])` over the bare name, while the brainwallet
@@ -39,6 +49,9 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
   handle" → "back it up: lose the *private key* and you lose the *handle*" (the
   key can be backed up, so the device isn't the single point of failure). Dropped
   the redundant "(An honest flaw to name.)" aside on the signing slide.
+- **ASIC slide de-jargoned** — "the MCU just hands it bytes over SPI" → "runs the
+  whole LoRa modem in hardware, not in software"; "so a coin cell lasts" → "so a
+  small coin-cell battery lasts for ages".
 
 ### Added
 - **Floating SX1262 chip photo on the ASIC slide** — uses the theme's new
@@ -333,7 +346,8 @@ First complete draft of the talk — end to end, buildable, releasable.
   the scope.
 - MeshCore launch framed as **late 2024** per Wikipedia, not "early 2025".
 
-[Unreleased]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/compare/v0.3...HEAD
+[Unreleased]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/compare/v1.0...HEAD
+[v1.0]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v1.0
 [v0.3]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v0.3
 [v0.2]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v0.2
 [v0.1]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v0.1
