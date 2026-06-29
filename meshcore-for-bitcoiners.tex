@@ -213,6 +213,54 @@
   \vfill
 \end{frame}
 
+% --------------------------------------------------------------- region codes
+% The region "transport code" is an HMAC of the region key over the packet
+% payload, truncated to 2 bytes; repeaters recompute it per hop to decide
+% whether to relay (geofencing the flood). VERIFIED against MeshCore source
+% (meshcore-decoder src/crypto/region-transport.ts; DeepWiki 7.6 "Region
+% Filtering and Transport Codes"): region key = SHA256(regionName)[:16];
+% code = LE-uint16 of the first 2 bytes of HMAC-SHA256(key, payloadType ||
+% payload), with 0/0xFFFF nudged to 1/0xFFFE. Computed over the ENCRYPTED
+% payload, so repeaters filter by region without decrypting. Symmetric and only
+% 2 bytes wide => a routing/airtime filter, not a signature.
+\fillerslide[Borders agreed by name, enforced per hop]{The region transport code}
+
+% Plain-language setup before the bridge: the audience doesn't know MeshCore, so
+% explain what a region code is and why it exists before drawing the SIGHASH bridge.
+\begin{frame}{What is a region code, and why?}
+  \begin{columns}[T]
+    \begin{column}{0.66\textwidth}
+      \begin{itemize}
+        \item MeshCore \textbf{floods} adverts and path discovery. Unchecked,
+          traffic from far away wastes everyone's scarce airtime --- the same
+          budget the duty cycle already rations
+        \item A \textbf{region} is just an agreed name --- e.g.\ \texttt{at} for
+          all of Austria, or \texttt{at-west} / \texttt{at-ost} / \texttt{at-sued}
+          for its three macro-regions (right). Hash the name and everyone there
+          shares a \textbf{region key}
+        \item Every packet carries a 2-byte \textbf{transport code} derived from
+          that key; a repeater relays a packet only if the code matches its own
+          region
+        \item The mesh is thus \textbf{geofenced by agreement} --- no registry,
+          no coordinates, no permission: just a name the locals share
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{austria-regions}\\[0.3em]
+      {\scriptsize Austria's three MeshCore macro-regions ---
+       \texttt{at-west} / \texttt{at-ost} / \texttt{at-sued}\\
+       region scheme: \href{https://meshcore-austria.at}{meshcore-austria.at}}
+    \end{column}
+  \end{columns}
+  \vfill
+  \begin{alertblock}{The neat part}
+    The code is computed over the \emph{encrypted} payload, so repeaters filter by
+    region \textbf{without decrypting} --- and because it commits to the packet's
+    bytes, it behaves like a SIGHASH (a Bitcoin parallel we'll draw later).
+  \end{alertblock}
+\end{frame}
+
 % Make the agenda + the honesty contract explicit before the thesis, so the
 % later "where it breaks" callouts land as a kept promise, not a hedge.
 \begin{frame}{What recurs --- and a promise}
@@ -297,6 +345,25 @@
   \end{itemize}}{%
   Group / channel messages use a pre-shared key — no per-sender signature.
   Anyone with the PSK can read \emph{and} write.}
+
+% Region code <-> SIGHASH (moved here from the intro region explanation): the
+% 2-byte transport code commits to the (encrypted) payload, like a signature
+% commits to its own tx. Audience already met region codes in the intro.
+\bridgeslide{The region rides inside the message}{%
+  \begin{itemize}
+    \item A signature commits to the \textbf{transaction itself} (SIGHASH)
+    \item Lift it onto a different tx and it is invalid --- the authorization is
+      bound to the content it authorizes
+  \end{itemize}}{%
+  \begin{itemize}
+    \item The 2-byte region code is an \textbf{HMAC over the packet payload};
+      repeaters recompute it per hop to decide whether to relay
+    \item The region key is just \texttt{SHA256(name)[:16]} --- agree on
+      ``\texttt{at-w}'', no key exchange, no registry
+  \end{itemize}}{%
+  Symmetric and public-ish (anyone who knows the region name can forge it), and
+  only 2 bytes wide --- a flood-scoping filter that saves airtime, not a real
+  signature. It binds \emph{scope} to the content, not \emph{authorship}.}
 
 % ---------------------------------------------------------------- throughput
 \fillerslide[A chosen constraint, not a weakness]{Throughput}
@@ -608,70 +675,6 @@
   MeshCore enforces only \emph{per-sender} local order on adverts. There's no
   global ``which came first'' across senders --- with no asset to double-spend,
   it doesn't need one.}
-
-% --------------------------------------------------------------- region codes
-% The region "transport code" is an HMAC of the region key over the packet
-% payload, truncated to 2 bytes; repeaters recompute it per hop to decide
-% whether to relay (geofencing the flood). VERIFIED against MeshCore source
-% (meshcore-decoder src/crypto/region-transport.ts; DeepWiki 7.6 "Region
-% Filtering and Transport Codes"): region key = SHA256(regionName)[:16];
-% code = LE-uint16 of the first 2 bytes of HMAC-SHA256(key, payloadType ||
-% payload), with 0/0xFFFF nudged to 1/0xFFFE. Computed over the ENCRYPTED
-% payload, so repeaters filter by region without decrypting. Symmetric and only
-% 2 bytes wide => a routing/airtime filter, not a signature.
-\fillerslide[Borders agreed by name, enforced per hop]{The region transport code}
-
-% Plain-language setup before the bridge: the audience doesn't know MeshCore, so
-% explain what a region code is and why it exists before drawing the SIGHASH bridge.
-\begin{frame}{What is a region code, and why?}
-  \begin{columns}[T]
-    \begin{column}{0.66\textwidth}
-      \begin{itemize}
-        \item MeshCore \textbf{floods} adverts and path discovery. Unchecked,
-          traffic from far away wastes everyone's scarce airtime --- the same
-          budget the duty cycle already rations
-        \item A \textbf{region} is just an agreed name --- e.g.\ \texttt{at} for
-          all of Austria, or \texttt{at-west} / \texttt{at-ost} / \texttt{at-sued}
-          for its three macro-regions (right). Hash the name and everyone there
-          shares a \textbf{region key}
-        \item Every packet carries a 2-byte \textbf{transport code} derived from
-          that key; a repeater relays a packet only if the code matches its own
-          region
-        \item The mesh is thus \textbf{geofenced by agreement} --- no registry,
-          no coordinates, no permission: just a name the locals share
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.32\textwidth}
-      \centering
-      \includegraphics[width=\linewidth]{austria-regions}\\[0.3em]
-      {\scriptsize Austria's three MeshCore macro-regions ---
-       \texttt{at-west} / \texttt{at-ost} / \texttt{at-sued}\\
-       region scheme: \href{https://meshcore-austria.at}{meshcore-austria.at}}
-    \end{column}
-  \end{columns}
-  \vfill
-  \begin{alertblock}{The neat part}
-    The code is computed over the \emph{encrypted} payload, so repeaters filter by
-    region \textbf{without decrypting} --- and because it commits to the packet's
-    bytes, it behaves like a SIGHASH. That bridge is next.
-  \end{alertblock}
-\end{frame}
-
-\bridgeslide{The region rides inside the message}{%
-  \begin{itemize}
-    \item A signature commits to the \textbf{transaction itself} (SIGHASH)
-    \item Lift it onto a different tx and it is invalid --- the authorization is
-      bound to the content it authorizes
-  \end{itemize}}{%
-  \begin{itemize}
-    \item The 2-byte region code is an \textbf{HMAC over the packet payload};
-      repeaters recompute it per hop to decide whether to relay
-    \item The region key is just \texttt{SHA256(name)[:16]} --- agree on
-      ``\texttt{at-w}'', no key exchange, no registry
-  \end{itemize}}{%
-  Symmetric and public-ish (anyone who knows the region name can forge it), and
-  only 2 bytes wide --- a flood-scoping filter that saves airtime, not a real
-  signature. It binds \emph{scope} to the content, not \emph{authorship}.}
 
 % ------------------------------------------------------------------- hard fork
 % The firmware 1.14+ multi-byte routing prefix is backward-incompatible: a

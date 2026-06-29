@@ -20,6 +20,18 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [v1.1] — 2026-06-29
+
+### Changed
+- **Region-code slides reordered for a cleaner narrative.** The explanation
+  ("The region transport code" divider + "What is a region code, and why?") now
+  lives in the **intro**, right after "How a message reaches me" (the routing
+  flow), instead of being buried in the consensus-machinery section. The Bitcoin
+  parallel **"The region rides inside the message"** (region code ↔ SIGHASH)
+  moved into the **parallels** section, right after the signing model. The
+  "multi-byte routing hard fork" stays at the end. (Intro alertblock's "that
+  bridge is next" reworded to "a Bitcoin parallel we'll draw later".)
+
 ## [v1.0] — 2026-06-29
 
 First complete, stage-ready version. Everything since v0.3: an app/website
@@ -346,7 +358,8 @@ First complete draft of the talk — end to end, buildable, releasable.
   the scope.
 - MeshCore launch framed as **late 2024** per Wikipedia, not "early 2025".
 
-[Unreleased]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/compare/v1.0...HEAD
+[Unreleased]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/compare/v1.1...HEAD
+[v1.1]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v1.1
 [v1.0]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v1.0
 [v0.3]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v0.3
 [v0.2]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v0.2
