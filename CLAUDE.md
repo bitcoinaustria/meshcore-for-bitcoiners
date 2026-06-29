@@ -18,8 +18,20 @@ it and prints this hint.
 
 - Engine: **XeLaTeX** via `latexmk` (the theme loads the Blinker font with
   `fontspec` — pdflatex will not work). Build from the **repo root**.
-- `make` (build), `make view`, `make watch`, `make clean`.
-- Output: `meshcore-for-bitcoiners.pdf` (gitignored — it's a release artifact).
+- `make` (build 16:9), `make view`, `make watch`, `make clean`.
+- **Two aspect ratios, one source:** `make` builds 16:9
+  (`meshcore-for-bitcoiners.pdf`); `make pdf-43` builds 4:3
+  (`meshcore-for-bitcoiners-4x3.pdf`); `make both` builds both (what CI/release
+  ship). The ratio is parameterised by `\baAspect` (default `169`); the 4:3
+  build injects `\def\baAspect{43}` via `latexmk -usepretex`. Don't edit the
+  `\documentclass` to switch — use the make targets. Both PDFs are gitignored
+  release artifacts.
+- **4:3 is the regression canary:** it's narrower, so slide overflow shows there
+  first. The theme auto-scales typography on narrow formats (tighter lists +
+  gentle paperwidth-driven heading/body scale), so dense slides fit on their
+  own. For a slide that's *still* too dense at 4:3, use the theme's
+  `\narrowonly{<code>}` escape hatch (e.g. `\narrowonly{\small}`) — a no-op at
+  16:9. (Don't add a deck-side body nudge on top — it double-shrinks.)
 
 ## Structure
 

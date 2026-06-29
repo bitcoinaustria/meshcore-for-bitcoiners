@@ -40,15 +40,17 @@ jobs:
             inkscape \
             xvfb
 
-      - name: Build the presentation
+      - name: Build the presentation (16:9 + 4:3)
         run: |
           export DISPLAY=:99
           Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-          make build
+          make both
 
-      - name: Upload PDF artifact
+      - name: Upload PDF artifacts
         uses: actions/upload-artifact@v7
         with:
           name: meshcore-for-bitcoiners-pdf
-          path: meshcore-for-bitcoiners.pdf
+          path: |
+            meshcore-for-bitcoiners.pdf
+            meshcore-for-bitcoiners-4x3.pdf
           retention-days: 30

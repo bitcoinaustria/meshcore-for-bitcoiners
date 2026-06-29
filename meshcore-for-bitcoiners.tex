@@ -4,7 +4,12 @@
 % missing, run:  git submodule update --init --recursive
 %
 % NOTE: this is a working draft built from handoff-20260626.md; develop further.
-\documentclass[aspectratio=169,t,9pt]{beamer}
+%
+% Aspect ratio is parameterised so the deck can be built at 16:9 (default) or
+% 4:3 without editing this file: the makefile passes `-usepretex='\def\baAspect{43}'`.
+% \providecommand keeps 169 as the default for a plain `latexmk`/`make` run.
+\providecommand{\baAspect}{169}
+\documentclass[aspectratio=\baAspect,t,9pt]{beamer}
 
 \usepackage{theme/bitcoin-austria}
 
@@ -31,6 +36,11 @@
 % \cornerimage is now provided by the theme (bitcoin-austria.sty) — it floats a
 % small image into a slide corner over everything, with a default top clearance
 % that sits below the headline/page-number band. Call it right before a slide.
+%
+% The theme auto-scales typography on narrow (4:3-class) formats so dense slides
+% don't overflow the bottom; for a slide that is STILL too dense at 4:3, the
+% theme exports the escape hatch \narrowonly{<code>} (e.g. \narrowonly{\small}),
+% which runs <code> only on narrow formats. No deck-side helper needed.
 
 \title{MeshCore for Bitcoiners}
 \subtitle{Permissionless communication — from money to radio}
@@ -174,15 +184,15 @@
 \begin{frame}{Live on the mesh}
   \vfill
   \centering
-  \screenshotcard[0.28\paperwidth]{meshcore-observer-live-map-vienna}{%
+  \screenshotcard[0.27\paperwidth]{meshcore-observer-live-map-vienna}{%
     The observer's live map: 828 nodes, packets arcing across Vienna in
     real time.}%
-  \hspace{1.4em}%
-  \screenshotcard[0.28\paperwidth]{meshcore-app-test-channel}{%
+  \hspace{1em}%
+  \screenshotcard[0.27\paperwidth]{meshcore-app-test-channel}{%
     The public \textbf{\#test} channel: signed adverts and \emph{ping}\,/\,%
     \emph{pong} probes scrolling by.}%
-  \hspace{1.4em}%
-  \screenshotcard[0.28\paperwidth]{meshcore-app-line-of-sight-vienna}{%
+  \hspace{1em}%
+  \screenshotcard[0.27\paperwidth]{meshcore-app-line-of-sight-vienna}{%
     Line-of-sight planner: terrain and Fresnel zone between two repeaters
     (6.7\,km in Vienna).}%
   \vfill

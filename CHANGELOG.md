@@ -20,6 +20,32 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added
+- **Second aspect ratio: 4:3.** The deck now also builds at **4:3** for legacy
+  projectors, alongside the **16:9** default — same content, one source. The
+  ratio is parameterised (`\baAspect`, default `169`); `make both` builds both,
+  and CI / the GitHub Release attach both PDFs (`meshcore-for-bitcoiners.pdf` =
+  16:9, `meshcore-for-bitcoiners-4x3.pdf` = 4:3). Building 4:3 doubles as a
+  **theme regression check** — the narrower canvas surfaces any slide overflow
+  first.
+
+### Changed
+- **Theme submodule bumped `4d10439` → `c0fd54b`**: adds 16:9/4:3 aspect-ratio
+  support and, prompted by the overflow we hit below, **auto-scales typography
+  on narrow (4:3-class) formats** (tighter lists + gentle paperwidth-driven
+  heading/body scale) so dense slides no longer run off the bottom. 16:9 is a
+  pixel-exact no-op. The theme now also exports `\narrowonly{<code>}` as an
+  escape hatch for any still-too-dense slide.
+
+### Fixed
+- **Two slides overflowed on the 4:3 canvas** (both clean at 16:9). "Live on the
+  mesh" wrapped its third screenshot card to a second row that ran off the
+  bottom — cards trimmed `0.28\paperwidth` → `0.27\paperwidth` so all three fit
+  one row in both ratios (deck-side; geometry, not font). "What is a region
+  code, and why?" pushed the "The neat part" callout off the bottom edge — now
+  fixed upstream by the theme's narrow-format auto-scaling (no deck-side nudge
+  needed). 16:9 is byte-for-byte unchanged.
+
 ## [v1.1] — 2026-06-29
 
 ### Changed
