@@ -686,10 +686,8 @@
     \item Room servers add \emph{optional} short-term history
   \end{itemize}}{%
   Bitcoin's whole purpose is durable shared state; MeshCore channels deliberately
-  keep none. Different goals --- you can't ``re-sync'' a missed channel message
-  the way a node replays the chain from genesis. (DMs can ACK, and
-  identities/contacts do persist --- the contrast is \emph{channels}, not all of
-  MeshCore.)}
+  keep none. Different goals --- \textbf{you can't ``re-sync'' a missed channel
+  message} the way a node replays the chain from genesis.}
 
 % #4 Time -- ordering without a global clock. VERIFIED (see note below); the
 % rule is scoped to ADVERTS, not arbitrary packets.
