@@ -729,6 +729,62 @@
   \textbf{TLS 1.2\,$\to$\,1.3} bump than a chain split: ``hard fork'' names the
   backward incompatibility, not a persistent divergence you could mine on.}
 
+% ===================================================== shortcomings (Part 4) DRAFT
+% DRAFT section --- "shortcomings from a Bitcoiner's perspective". Pulls the
+% sharpest breaks out of the per-parallel callouts into one deliberate beat, and
+% adds the items the parallels never reached (metadata leakage, no forward secrecy,
+% default-channel weak key). Split deliberately into "deliberate by design" vs
+% "real gaps" so the honest contract lands without sounding like a teardown.
+% Sources for the added facts: jacksbrain.com "Hitchhiker's Guide to MeshCore
+% Cryptography" (static-ECDH DMs -> no forward secrecy; channel/#room key model),
+% localmesh.nl "MeshCore encryption details" (AES-128, default public key), and
+% docs.meshcore.io. NOTE: keep an eye on 4:3 fit --- if either consolidation slide
+% overflows, reach for \narrowonly{\small} (theme escape hatch).
+\fillerslide[The honest reckoning --- what to still distrust]{Shortcomings, as a Bitcoiner sees them}
+
+% Slide 1: the genuine gaps a privacy-minded Bitcoiner cares about most.
+\begin{frame}{What still leaks --- even with encryption}
+  \begin{itemize}
+    \item \textbf{Metadata is in the clear:} adverts broadcast your pubkey and
+      rough position, and source-routed paths expose \emph{who relays to whom} ---
+      the social graph and location leak even when DM \emph{content} is encrypted
+    \item \textbf{No onion routing:} repeaters must read the path prefixes to
+      forward, so there is no hop privacy --- unlike Lightning's onion
+    \item \textbf{No forward secrecy:} DMs use \emph{static} X25519 to your
+      long-term key --- capture that key once and every \emph{recorded past} DM
+      decrypts (a Signal-style ratchet is what's missing)
+    \item \textbf{Sticky identity widens the blast radius:} the deliberately
+      non-rotating key means one compromise exposes \emph{all} of your history
+  \end{itemize}
+  \vfill
+  \begin{alertblock}{The honest line}
+    Encryption protects \textbf{what you said}, not \textbf{that you said it, to
+    whom, from where} --- and not retroactively if your key ever leaks.
+  \end{alertblock}
+\end{frame}
+
+% Slide 2: the structural omissions --- mostly deliberate (callbacks), one real.
+\begin{frame}{What nothing defends --- and why that's (mostly) on purpose}
+  \begin{itemize}
+    \item \textbf{No Sybil resistance:} identities are free, so spam is only
+      \emph{throttled} by airtime and ACLs --- fine, because there's no scarce
+      asset to seize
+    \item \textbf{A volunteer commons:} repeaters are unpaid goodwill --- no fee
+      market, so nothing \emph{economic} defends the network at scale
+    \item \textbf{The default \#public channel ships a well-known key:} everyone
+      has it --- convenience, \emph{not} privacy
+    \item \textbf{Prefix squatting is cheap:} short routing prefixes are grindable
+      --- a nuisance to \emph{discovery}, \emph{not} impersonation (full key
+      $+$ TOFU is the backstop)
+  \end{itemize}
+  \vfill
+  \begin{alertblock}{Deliberate vs.\ a real gap}
+    Most of these are \textbf{features of defending nothing scarce} --- the worst
+    case is wasted airtime, not theft. The two worth fixing before you trust it
+    with anything sensitive: \textbf{metadata privacy} and \textbf{forward secrecy}.
+  \end{alertblock}
+\end{frame}
+
 % Closing call to action: concrete Bitcoin channels the audience can join right
 % now. Ties back to the region-transport-code slide (a region is just an agreed
 % name: "at" = Austria, "at-w" = Vienna; no region = mesh-wide).
