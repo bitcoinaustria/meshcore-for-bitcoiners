@@ -888,7 +888,7 @@
 % routing prefix, AES-128 + 2-byte MAC). [noframenumbering] keeps it out of the
 % main slide count. VERIFIED against docs.meshcore.io/packet_format, DeepWiki 7.1
 % "Packet Structure and Types", and michaelhart/meshcore-decoder.
-\begin{frame}[noframenumbering]{Backup --- anatomy of a MeshCore packet}
+\begin{frame}[noframenumbering]{Appendix 1: Anatomy of a MeshCore packet}
   \small
   \texttt{[\,header\,][\,transport codes?\,][\,path\_len\,][\,path\,][\,payload\,]}
   \hfill at most \textbf{255\,bytes} --- one LoRa frame
@@ -913,6 +913,31 @@
   \end{alertblock}
   {\footnotesize Skip unless the room likes wire formats. Sources:
   \texttt{docs.meshcore.io/packet\_format}, DeepWiki 7.1, \texttt{meshcore-decoder}.}
+\end{frame}
+
+% Appendix 2: the physical layer --- what LoRa actually puts on the spectrum.
+% Chirp Spread Spectrum: a packet is a preamble of up-chirps (so receivers sync),
+% a sync word (down-chirps), then data symbols (chirps offset in start frequency).
+% The large processing gain lets the receiver demodulate ~20 dB below the noise
+% floor. Diagrams from mokosmart.com/lora-frequency (educational use, credited).
+\begin{frame}[noframenumbering]{Appendix 2: What's actually on the spectrum}
+  \textbf{LoRa} (the radio layer) encodes bits as \textbf{chirps} --- tones that
+  sweep across the band. A packet opens with a \textbf{preamble} of up-chirps so
+  receivers lock on, then a sync word, then the data symbols.
+  \vfill
+  \begin{columns}[b]
+    \begin{column}{0.55\textwidth}\centering
+      \includegraphics[width=\linewidth,height=0.40\paperheight,keepaspectratio]{lora-frequency}\\[0.3em]
+      {\footnotesize Frequency vs.\ time: \textbf{preamble $\to$ sync $\to$ data}}
+    \end{column}
+    \begin{column}{0.43\textwidth}\centering
+      \includegraphics[width=\linewidth,height=0.40\paperheight,keepaspectratio]{lora-signal-strength}\\[0.3em]
+      {\footnotesize Huge \textbf{processing gain}: LoRa decodes \textbf{$\sim$20\,dB
+       below the noise} --- where FSK is long gone. Almost magic}
+    \end{column}
+  \end{columns}
+  \vfill
+  {\scriptsize Diagrams: \href{https://www.mokosmart.com/lora-frequency/}{mokosmart.com/lora-frequency}}
 \end{frame}
 
 \end{document}
