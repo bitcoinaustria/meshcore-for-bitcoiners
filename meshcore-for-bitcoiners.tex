@@ -519,8 +519,9 @@
   \texttt{\#name}, \textbf{crop} to 16 bytes (the AES-128 key), \textbf{hash
   again}, take the first byte as a tiny channel id. That \textbf{public id rides
   in the clear} --- it narrows a receiver to a couple of candidate keys, and the
-  MAC confirms the match. Two SHA256 rounds \emph{look} like Bitcoin --- but this
-  is not mining.
+  MAC\footnote{Message Authentication Code --- a keyed tag; only the matching key
+  produces a valid one.} confirms the match. Two SHA256 rounds \emph{look} like
+  Bitcoin --- but this is not mining.
   \vfill
   \centering\small
   \setlength{\tabcolsep}{8pt}\renewcommand{\arraystretch}{1.3}%
@@ -540,8 +541,7 @@
   \begin{alertblock}{The parallel that holds}
     No nonce search, no target, no contest --- so not mining. The real Bitcoin
     echo is \textbf{a short one-way commitment plus truncation as a namespace
-    trade-off} --- like HASH160 addresses or txid prefixes, shorter is cheaper
-    but collides sooner, the same tension as the 1\,B\,$\to$\,1--3\,B prefix.
+    trade-off} --- like HASH160 addresses or txid prefixes.
   \end{alertblock}
 \end{frame}
 
