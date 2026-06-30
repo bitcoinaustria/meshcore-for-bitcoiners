@@ -285,13 +285,12 @@
       \begin{itemize}
         \item MeshCore \textbf{floods} adverts and path discovery. Unchecked,
           traffic from far away wastes everyone's scarce airtime
-        \item A \textbf{region} is just an agreed name --- e.g.\ \texttt{at} for
-          all of Austria, or \texttt{at-west} / \texttt{at-ost} / \texttt{at-sued}
-          for its three macro-regions (right). Hash the name and everyone there
-          shares a \textbf{region key}
-        \item Every packet carries a 2-byte \textbf{transport code} derived from
-          that key; a repeater relays a packet only if the code matches its own
-          region
+        \item A \textbf{region} is just an agreed name --- e.g.\ \textcolor{baRed}{\texttt{at}}
+          for all of Austria, or \textcolor{baRed}{\texttt{at-west}} / \textcolor{baRed}{\texttt{at-ost}}
+          / \textcolor{baRed}{\texttt{at-sued}} for its three macro-regions (right)
+        \item Every packet carries a 2-byte \textbf{transport code}, derived from
+          a hash of the region name and the message body; a repeater relays a
+          packet only if the code matches its own region
         \item The mesh is thus \textbf{geofenced by agreement} --- no registry,
           no coordinates, no permission: just a name the locals share
       \end{itemize}
