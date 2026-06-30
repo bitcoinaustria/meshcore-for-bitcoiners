@@ -517,10 +517,9 @@
 \begin{frame}{Joining \texttt{\#bitcoin-at}: SHA256, twice, cropped}
   \texttt{SHA256(SHA256(\#name)[:16])} --- \textbf{hash} the channel
   \texttt{\#name}, \textbf{crop} to 16 bytes (the AES-128 key), \textbf{hash
-  again}, take the first byte as a tiny public channel id. First pass: a
-  \textbf{KDF} (key-derivation function, name\,$\to$\,AES-128 key); second: a
-  commitment (a short id for that key). Two SHA256 rounds \emph{look} like
-  Bitcoin --- but this is not mining.
+  again}, take the first byte as a tiny channel id. That \textbf{public id rides
+  in the clear} --- it tells a receiver which key to try, and the MAC confirms the
+  match. Two SHA256 rounds \emph{look} like Bitcoin --- but this is not mining.
   \vfill
   \centering\small
   \setlength{\tabcolsep}{8pt}\renewcommand{\arraystretch}{1.3}%
