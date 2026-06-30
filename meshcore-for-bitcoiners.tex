@@ -353,7 +353,7 @@
     \item \textbf{Self-generated keypair}, on-device
     \item Routing target = \textbf{public-key prefix}
     \item \textbf{``Not your keys, not your identity''}
-    \item Verify keys via \textbf{QR / word list} (TOFU)
+    \item Verify keys via \textbf{QR / word list} (TOFU\footnote{Trust On First Use --- check a key once out-of-band, then pin it.})
   \end{itemize}}{%
   Two different tricks for the short ID: Bitcoin \textbf{hashes} the pubkey (hidden
   until you spend); MeshCore just \textbf{truncates} it to a prefix --- a routing
