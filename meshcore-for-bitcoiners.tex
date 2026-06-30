@@ -471,11 +471,9 @@
 
 \begin{frame}{Angle B --- bootstrap, then jump layers}
   \begin{itemize}
-    \item A small mesh message = the rare, \textbf{expensive anchoring event}
-    \item \textbf{Exchange a key} / rendezvous over the mesh
-    \item That key is a \textbf{TOFU anchor} --- it authenticates the off-mesh
-      pipe (same trust model as ``identity is a keypair'')
     \item Move the bulk transfer to a \textbf{fat pipe} (internet, CB radio) --- off-mesh
+    \item The mesh carries only the rare, \textbf{expensive anchoring event}, never the payload
+    \item Key and rendezvous get negotiated over \textbf{encrypted DMs} --- on the mesh itself
   \end{itemize}
   \vfill
   \begin{alertblock}{Where it breaks}
