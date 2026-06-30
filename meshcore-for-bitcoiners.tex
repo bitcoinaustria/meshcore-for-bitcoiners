@@ -42,20 +42,9 @@
 % theme exports the escape hatch \narrowonly{<code>} (e.g. \narrowonly{\small}),
 % which runs <code> only on narrow formats. No deck-side helper needed.
 
-% Footnotes (used to gloss acronyms like TOFU): beamer's default template puts
-% a 1em paragraph indent and right-aligns the mark in a ~1.8em box, so the mark
-% floats well in from the left margin. Pin the mark flush-left instead — for both
-% frame-level footnotes (beamer template) and the minipage/column footnotes used
-% inside \comparisonslide (LaTeX's \@makefntext). [PREVIEW: move into the theme.]
-\setbeamertemplate{footnote}{%
-  \parindent0pt\noindent\raggedright
-  \hbox{\usebeamercolor[fg]{footnote mark}\insertfootnotemark}\hspace{0.35em}%
-  {\usebeamercolor[fg]{footnote}\insertfootnotetext}\par%
-}
-\makeatletter
-\renewcommand\@makefntext[1]{%
-  \parindent0pt\noindent\hbox{\@makefnmark}\hspace{0.35em}#1}
-\makeatother
+% Footnotes (used to gloss acronyms like TOFU / PSK) are styled by the theme:
+% brand-red mark pinned flush-left, for both frame-level and the minipage/column
+% footnotes raised inside \comparisonslide. Nothing needed here.
 
 \title{MeshCore for Bitcoiners}
 \subtitle{Permissionless communication --- from money to radio}
