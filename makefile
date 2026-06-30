@@ -8,13 +8,13 @@
 #
 # Two aspect ratios share one source (the .tex parameterises the documentclass
 # via \baAspect, default 169):
-#   make        / make build  -> meshcore-for-bitcoiners.pdf      (16:9, default)
-#   make pdf-43               -> meshcore-for-bitcoiners-4x3.pdf  (4:3)
+#   make        / make build  -> meshcore-for-bitcoiners-16x9.pdf  (16:9, default)
+#   make pdf-43               -> meshcore-for-bitcoiners-4x3.pdf   (4:3)
 #   make both                 -> both of the above (used by CI / release)
 
 NAME    := meshcore-for-bitcoiners
 TEX     := $(NAME).tex
-PDF     := $(NAME).pdf       # 16:9 (default)
+PDF     := $(NAME)-16x9.pdf  # 16:9 (default)
 PDF_43  := $(NAME)-4x3.pdf   # 4:3
 
 # pix/*.svg -> pix/*.pdf
@@ -37,9 +37,10 @@ check-theme:
 	  echo "Run: git submodule update --init --recursive"; \
 	  exit 1; }
 
-# 16:9 — the default build, fast for iteration.
+# 16:9 — the default build, fast for iteration. A -jobname names the output
+# (and aux files) -16x9, symmetric with the -4x3 build below.
 build: check-theme $(SVG_PDFS)
-	$(LATEXMK) $(TEX)
+	$(LATEXMK) -jobname=$(NAME)-16x9 $(TEX)
 	@echo "Built $(PDF) (16:9)"
 
 # 4:3 — same source, aspect ratio injected via -usepretex (\baAspect=43).
@@ -68,15 +69,15 @@ view-43: pdf-43
 	@xdg-open $(PDF_43) >/dev/null 2>&1 || open $(PDF_43) 2>/dev/null || echo "Open $(PDF_43) manually"
 
 watch: check-theme $(SVG_PDFS)
-	latexmk -xelatex -pvc -interaction=nonstopmode $(TEX)
+	latexmk -xelatex -pvc -interaction=nonstopmode -jobname=$(NAME)-16x9 $(TEX)
 
 clean:
-	latexmk -c $(TEX)
+	latexmk -c -jobname=$(NAME)-16x9 $(TEX)
 	latexmk -c -jobname=$(NAME)-4x3 $(TEX)
-	rm -f $(NAME).nav $(NAME).snm $(NAME).vrb \
+	rm -f $(NAME)-16x9.nav $(NAME)-16x9.snm $(NAME)-16x9.vrb \
 	      $(NAME)-4x3.nav $(NAME)-4x3.snm $(NAME)-4x3.vrb build.log
 
 clean-all: clean
-	latexmk -C $(TEX)
+	latexmk -C -jobname=$(NAME)-16x9 $(TEX)
 	latexmk -C -jobname=$(NAME)-4x3 $(TEX)
 	rm -f $(SVG_PDFS)

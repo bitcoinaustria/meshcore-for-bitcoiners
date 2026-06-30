@@ -51,6 +51,6 @@ jobs:
         with:
           name: meshcore-for-bitcoiners-pdf
           path: |
-            meshcore-for-bitcoiners.pdf
+            meshcore-for-bitcoiners-16x9.pdf
             meshcore-for-bitcoiners-4x3.pdf
           retention-days: 30

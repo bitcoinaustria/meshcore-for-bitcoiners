@@ -20,7 +20,7 @@ it and prints this hint.
   `fontspec` — pdflatex will not work). Build from the **repo root**.
 - `make` (build 16:9), `make view`, `make watch`, `make clean`.
 - **Two aspect ratios, one source:** `make` builds 16:9
-  (`meshcore-for-bitcoiners.pdf`); `make pdf-43` builds 4:3
+  (`meshcore-for-bitcoiners-16x9.pdf`); `make pdf-43` builds 4:3
   (`meshcore-for-bitcoiners-4x3.pdf`); `make both` builds both (what CI/release
   ship). The ratio is parameterised by `\baAspect` (default `169`); the 4:3
   build injects `\def\baAspect{43}` via `latexmk -usepretex`. Don't edit the

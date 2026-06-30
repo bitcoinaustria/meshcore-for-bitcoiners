@@ -45,14 +45,14 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           files: |
-            meshcore-for-bitcoiners.pdf
+            meshcore-for-bitcoiners-16x9.pdf
             meshcore-for-bitcoiners-4x3.pdf
           name: MeshCore for Bitcoiners ${{ github.ref_name }}
           body: |
             PDF build of "MeshCore for Bitcoiners" (${{ github.ref_name }}).
 
             Two aspect ratios, same content:
-            - `meshcore-for-bitcoiners.pdf` — 16:9 (widescreen, default)
+            - `meshcore-for-bitcoiners-16x9.pdf` — 16:9 (widescreen, default)
             - `meshcore-for-bitcoiners-4x3.pdf` — 4:3 (legacy projectors)
 
             Automatically generated from the LaTeX source.

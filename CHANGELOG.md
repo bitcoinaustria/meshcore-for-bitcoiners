@@ -6,19 +6,19 @@ describe what changed *on stage* (sections, framing, facts, visuals), not just
 file edits.
 
 - **Versioning:** a git tag `vMAJOR.MINOR` cuts a release. CI
-  (`.github/workflows/release.yml`) builds the PDF and attaches it to a
+  (`.github/workflows/release.yml`) builds the PDFs and attaches them to a
   [GitHub Release](https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases).
   Bump **MINOR** for content additions/reworks; reserve **MAJOR** (→ `v1.0`)
   for the first version actually delivered on stage.
-- The built `meshcore-for-bitcoiners.pdf` is a release artifact (gitignored),
-  not committed — grab it from the Release page.
+- The built PDFs (`meshcore-for-bitcoiners-16x9.pdf` and `…-4x3.pdf`) are release
+  artifacts (gitignored), not committed — grab them from the Release page.
 - The Bitcoin Austria beamer style lives in its own repo and is pinned here as
   the `theme/` submodule; its own history is tracked
   [there](https://github.com/bitcoinaustria/latex-beamer-style-2026).
 
 This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 
-## [Unreleased]
+## [v1.2] — 2026-06-30
 
 ### Added
 - **A fork-history beat: "Where it comes from — and the fork."** The origin slide
@@ -36,12 +36,35 @@ This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 - **Second aspect ratio: 4:3.** The deck now also builds at **4:3** for legacy
   projectors, alongside the **16:9** default — same content, one source. The
   ratio is parameterised (`\baAspect`, default `169`); `make both` builds both,
-  and CI / the GitHub Release attach both PDFs (`meshcore-for-bitcoiners.pdf` =
-  16:9, `meshcore-for-bitcoiners-4x3.pdf` = 4:3). Building 4:3 doubles as a
+  and CI / the GitHub Release attach both PDFs (`meshcore-for-bitcoiners-16x9.pdf`
+  = 16:9, `meshcore-for-bitcoiners-4x3.pdf` = 4:3). Building 4:3 doubles as a
   **theme regression check** — the narrower canvas surfaces any slide overflow
   first.
 
 ### Changed
+- **16:9 PDF renamed `meshcore-for-bitcoiners-16x9.pdf`** (was the bare
+  `meshcore-for-bitcoiners.pdf`), symmetric with `-4x3.pdf` — both release assets
+  now carry their aspect ratio in the name. The default `make` build, CI
+  artifacts, GitHub Release, and docs all use the new name.
+- **Late wording & accuracy polish** (a second slide-by-slide pass on top of the
+  review below):
+  - *Channel-hash slide:* explain what the 1-byte channel id is actually **for**
+    — a public tag, in the clear, that shortlists candidate keys — instead of
+    re-labelling the two hash steps as "KDF / commitment". Honest about
+    collisions (only 256 buckets, so the id just narrows; the **MAC**, now
+    footnoted, confirms the real match). Truncation example swapped to the deck's
+    own **1–3-byte routing prefix**.
+  - *Lightning Angle B* now leads with the takeaway (**move the bulk transfer to
+    a fat pipe**), drops the "TOFU anchor" line, and says how the mesh actually
+    bootstraps it — key + rendezvous negotiated over **encrypted DMs**.
+  - *ASIC slide:* "a coin-cell lasts for ages" → "a small battery **runs a node
+    for days**" — the coin-cell-for-ages claim overshot continuous-RX draw and
+    now matches the deck's other power figures.
+  - *Shortcomings slide* retitled to the plain **"What's left undefended"** (was
+    the riddling "What nothing defends"), parallel to "What still leaks".
+  - Bolded the load-bearing phrase on the ephemeral-channel (**can't re-sync a
+    missed channel message**) and hard-fork (**widens the routing prefix from 1
+    byte to 1–3 bytes**) slides, and trimmed a couple of over-detailed asides.
 - **Full content + consistency review pass.** Tightened pacing and sharpened the
   analogies after a slide-by-slide review:
   - *Less repetition up front:* three thesis restatements ("one-line version" /
@@ -431,7 +454,8 @@ First complete draft of the talk — end to end, buildable, releasable.
   the scope.
 - MeshCore launch framed as **late 2024** per Wikipedia, not "early 2025".
 
-[Unreleased]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/compare/v1.1...HEAD
+[Unreleased]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/compare/v1.2...HEAD
+[v1.2]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v1.2
 [v1.1]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v1.1
 [v1.0]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v1.0
 [v0.3]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v0.3

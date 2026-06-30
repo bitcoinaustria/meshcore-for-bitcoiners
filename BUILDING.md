@@ -25,8 +25,8 @@ Requires **XeLaTeX** + `latexmk` — the theme loads the Blinker font via
 needed if you add SVG figures to `pix/`. From the repo root:
 
 ```bash
-make            # -> meshcore-for-bitcoiners.pdf      (16:9, default)
-make pdf-43     # -> meshcore-for-bitcoiners-4x3.pdf  (4:3)
+make            # -> meshcore-for-bitcoiners-16x9.pdf  (16:9, default)
+make pdf-43     # -> meshcore-for-bitcoiners-4x3.pdf   (4:3)
 make both       # both ratios (what CI / release builds)
 make view       # build and open the 16:9 PDF
 make watch      # continuous rebuild (16:9)
