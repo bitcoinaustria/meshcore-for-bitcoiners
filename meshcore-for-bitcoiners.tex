@@ -398,15 +398,15 @@
       \textbf{bound to the content}
   \end{itemize}}{%
   \begin{itemize}
-    \item The 2-byte region code is an \textbf{HMAC committing to the payload};
-      repeaters recompute it per hop to decide whether to relay
+    \item The 2-byte region code is an \textbf{HMAC\footnote{Hash-based Message
+      Authentication Code --- a keyed hash of the message.} committing to the
+      payload}; repeaters recompute it per hop to decide whether to relay
     \item The region key is just \texttt{SHA256(name)[:16]} --- agree on
       ``\texttt{at-w}'' (Vienna), no key exchange, no registry
   \end{itemize}}{%
   No flags, no signer, no authorship: symmetric and \textbf{forgeable} (anyone who
   knows the region name can recompute it) and only 2 bytes wide --- a flood-scoping
-  filter that saves airtime, \emph{not} a real signature. It binds \emph{scope},
-  not \emph{authorship}.}
+  filter that saves airtime. It binds \emph{scope}, not \emph{authorship}.}
 
 % ---------------------------------------------------------------- throughput
 \fillerslide[A chosen constraint, not a weakness]{Throughput}
