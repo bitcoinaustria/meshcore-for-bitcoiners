@@ -157,32 +157,47 @@
   \begin{itemize}
     \item \textbf{Companion} (your device: screen + Bluetooth) --- SenseCAP
       T1000-E, credit-card size with GPS, $\sim$40\,EUR
-    \item \textbf{Portable with a display} --- Heltec LoRa\,32 V3 (OLED,
+    \item \textbf{Portable with a display} --- Heltec LoRa\,32 V4 (OLED,
       $\sim$40\,EUR), Seeed Wio Tracker L1 Pro (screen, GPS, case)
     \item \textbf{Repeater} --- SenseCAP Solar Node P1-Pro: 5\,W solar +
-      battery, runs for days off-grid, pole-mounted; antenna + device
-      $\sim$130\,EUR
+      battery, runs for days off-grid, $\sim$130\,EUR
     \item \textbf{Build your own} --- Heltec / RAK WisBlock boards
   \end{itemize}
+  \vfill
+  % A small device row, in bullet order: companion / portable / repeater.
+  % Images are background-removed PNGs; height-capped so they align and the row
+  % stays within \textwidth on both 16:9 and 4:3.
+  \centering
+  \begin{minipage}[b]{0.27\paperwidth}\centering
+    \includegraphics[height=0.24\paperheight,width=\linewidth,keepaspectratio]{hw-t1000e}%
+  \end{minipage}\hfill
+  \begin{minipage}[b]{0.27\paperwidth}\centering
+    \includegraphics[height=0.24\paperheight,width=\linewidth,keepaspectratio]{hw-heltec-v4}%
+  \end{minipage}\hfill
+  \begin{minipage}[b]{0.27\paperwidth}\centering
+    \includegraphics[height=0.24\paperheight,width=\linewidth,keepaspectratio]{hw-sensecap-p1pro}%
+  \end{minipage}
 \end{frame}
 
 % Practical example, right after "the hardware is cheap": the four steps to
 % actually get on the mesh that night --- buy, pair, generate, join.
 \begin{frame}{Your first five minutes on the mesh}
-  \begin{itemize}
-    \item \textbf{Get a companion board} --- e.g.\ a SenseCAP \textbf{T1000-E}
-      ($\sim$40\,EUR), often pre-flashed; otherwise flash it from the browser
+  \begin{enumerate}
+    \item \textbf{Get a companion device} --- e.g.\ a SenseCAP \textbf{T1000-E}
+      ($\sim$40\,EUR)
+    \item \textbf{Flash it} --- connect over USB and flash from the browser at
+      \href{https://flasher.meshcore.io/}{flasher.meshcore.io}
     \item \textbf{Install the app} --- Liam Cottle's MeshCore client
       (iOS / Android / web) and pair the board over \textbf{Bluetooth}
     \item \textbf{It generates your keypair on first run} --- that pair \emph{is}
       your identity. Back it up; nobody else can recover it
-    \item \textbf{Join} --- type a channel name and you're talking: no account,
-      no SIM, no permission
-  \end{itemize}
+    \item \textbf{Send your first message} --- to the public \textbf{\#test}
+      channel: no account, no SIM, no permission
+  \end{enumerate}
   \vfill
   \begin{alertblock}{That's the whole onboarding}
-    Buy, pair, generate, join --- the permissionless claim is literal: nobody
-    issued you anything, and nothing on the network knew you were coming.
+    Buy, flash, pair, generate, send --- the permissionless claim is literal:
+    nobody issued you anything, and nothing on the network knew you were coming.
   \end{alertblock}
 \end{frame}
 
