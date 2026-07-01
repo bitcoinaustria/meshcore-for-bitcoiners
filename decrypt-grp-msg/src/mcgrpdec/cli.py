@@ -96,16 +96,39 @@ def _report_hit(hit: Hit) -> None:
     click.echo(f"  message   : {hit.message.text}")
 
 
-def _mk_progress():
-    state = {"t": 0.0}
+def _mk_progress(window: float = 60.0):
+    """Progress line with a rate + ETA extrapolated from the **recent** rate.
+
+    Rate is measured over a sliding ~`window`-second window (not the cumulative
+    average), so the ETA reflects the current speed and adapts if it changes
+    (e.g. thermal throttling). A drop in `done` starts a fresh phase (the GPU's
+    second derivation pass reuses the same length).
+    """
+    from collections import deque
+    st = {"t": 0.0, "phase": None, "samples": deque()}  # samples: (time, done)
 
     def progress(length, done, total):
         now = time.time()
-        if now - state["t"] < 0.5:
+        samples = st["samples"]
+        if st["phase"] != length or (samples and done < samples[-1][1]):
+            st["phase"] = length
+            samples.clear()
+        samples.append((now, done))
+        # keep one sample just beyond the window as a stable baseline
+        while len(samples) > 2 and now - samples[1][0] > window:
+            samples.popleft()
+        if now - st["t"] < 0.5 and done < total:
             return
-        state["t"] = now
+        st["t"] = now
         pct = 100.0 * done / total if total else 100.0
-        sys.stderr.write(f"\r    len {length}: {done:,}/{total:,} ({pct:5.1f}%)   ")
+        t0, d0 = samples[0]
+        span = now - t0
+        rate = (done - d0) / span if span > 0.5 else 0
+        line = f"\r    len {length}: {done:,}/{total:,} ({pct:5.1f}%)"
+        if rate > 0:
+            eta = (total - done) / rate
+            line += f"  {_fmt_rate(rate, ' names/s')}  ETA {_fmt_time(eta)}"
+        sys.stderr.write(line + "        ")
         sys.stderr.flush()
         if done >= total:
             sys.stderr.write("\n")
@@ -411,11 +434,11 @@ def selftest():
     sys.exit(0 if ok else 1)
 
 
-def _fmt_rate(n: float) -> str:
-    for unit, div in (("G", 1e9), ("M", 1e6), ("k", 1e3)):
+def _fmt_rate(n: float, suffix: str = "/s") -> str:
+    for mag, div in (("G", 1e9), ("M", 1e6), ("k", 1e3)):
         if n >= div:
-            return f"{n / div:.1f} {unit}/s"
-    return f"{n:.0f} /s"
+            return f"{n / div:.1f} {mag}{suffix}"
+    return f"{n:.0f}{suffix}"
 
 
 def _fmt_time(secs: float) -> str:
