@@ -234,8 +234,9 @@ def _crack_options(f):
     f = click.option("--engine", type=click.Choice(["auto", "gpu", "cpu"]), default="auto", show_default=True)(f)
     f = click.option("-j", "--jobs", type=int, default=0, help="CPU workers (0 = all cores)")(f)
     f = click.option("--no-brute", is_flag=True, help="dictionary only")(f)
-    f = click.option("--hash-prefix-only", is_flag=True,
-                     help="only try SHA256('#'+name); default also tries SHA256(name)")(f)
+    f = click.option("--also-plain", is_flag=True,
+                     help="also try SHA256(name) without the leading '#' "
+                          "(default: only #name — what MeshCore actually uses)")(f)
     return f
 
 
@@ -262,7 +263,7 @@ def decrypt(ctx, raw, observer, seen_time, window, name, key, public, **crack):
     framings, min_ts, max_ts = _framings_and_window(
         raw=raw, observer=observer, seen_time=seen_time, window=window)
     hit = _solve(framings, min_ts, max_ts, name=name, key=key, public=public,
-                 both_prefix=not crack["hash_prefix_only"],
+                 both_prefix=crack["also_plain"],
                  wordlist=crack["wordlist"], charset=crack["charset"],
                  min_len=crack["min_len"], max_len=crack["max_len"],
                  engine=crack["engine"], jobs=crack["jobs"], no_brute=crack["no_brute"])
@@ -285,7 +286,7 @@ def crack(ctx, raw, observer, seen_time, window, name, key, public, **cr):
     framings, min_ts, max_ts = _framings_and_window(
         raw=raw, observer=observer, seen_time=seen_time, window=window)
     hit = _solve(framings, min_ts, max_ts, name=name, key=key, public=public,
-                 both_prefix=not cr["hash_prefix_only"],
+                 both_prefix=cr["also_plain"],
                  wordlist=cr["wordlist"], charset=cr["charset"],
                  min_len=cr["min_len"], max_len=cr["max_len"],
                  engine=cr["engine"], jobs=cr["jobs"], no_brute=cr["no_brute"])
@@ -300,14 +301,15 @@ def crack(ctx, raw, observer, seen_time, window, name, key, public, **cr):
 @click.argument("listfile")
 @click.option("--wordlist", help="newline-delimited wordlist to try (in addition to the seed list)")
 @click.option("--window", type=int, default=0, help="timestamp window in seconds (default 86400)")
-@click.option("--hash-prefix-only", is_flag=True)
+@click.option("--also-plain", is_flag=True,
+              help="also try SHA256(name) without the leading '#' (default: only #name)")
 @click.option("--brute/--no-brute-unsolved", "brute", default=False,
               help="also GPU-brute each message the wordlist didn't solve")
 @click.option("--charset", default=C.DEFAULT_CHARSET, show_default=True)
 @click.option("--min-len", type=int, default=1, show_default=True)
 @click.option("--max-len", type=int, default=6, show_default=True)
 @click.option("--engine", type=click.Choice(["auto", "gpu", "cpu"]), default="auto", show_default=True)
-def batch(listfile, wordlist, window, hash_prefix_only, brute, charset, min_len, max_len, engine):
+def batch(listfile, wordlist, window, also_plain, brute, charset, min_len, max_len, engine):
     """Decrypt a LISTFILE of messages, sharing the dictionary work across them.
 
     LISTFILE: one entry per line. Blank lines and '#' comments are ignored.
@@ -319,7 +321,7 @@ def batch(listfile, wordlist, window, hash_prefix_only, brute, charset, min_len,
         vienna = obs:e9847719c3d40dee
         154F12 7F A1 ...
     """
-    both = not hash_prefix_only
+    both = also_plain
     targets: list[BatchTarget] = []
     with open(listfile, encoding="utf-8") as fh:
         for n, line in enumerate(fh, 1):
