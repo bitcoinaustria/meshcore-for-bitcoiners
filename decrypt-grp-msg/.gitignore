@@ -1,0 +1,13 @@
+# Python / uv build artifacts (the "extra files we don't need")
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+
+# Generated wordlists (large, derived from system dictionaries) — rebuild with
+# `uv run python wordlists/build_wordlist.py`. The builder itself IS tracked.
+/wordlists/*.txt

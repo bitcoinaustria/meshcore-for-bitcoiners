@@ -1,0 +1,11 @@
+# MeshCore group messages to work on — one per line.
+#   optional "label = " prefix; value is raw packet hex, an "obs:<id>"
+#   observer reference, or a full observer URL.
+# Run:  uv run mcgrpdec batch messages.txt --wordlist wordlists/combined.txt
+
+test-known  = 150320 DD 2CD9 B9 E7 7A 7A B2 CE C9 18 EA AC A3 95 EE 38 AD 98 99 A5 64 A4 01 AE 22 88 CD C8 83 6C 6E 4E 00 7F 1D D6
+p1-observer = obs:e9847719c3d40dee
+p3          = 154923 D3 17 AB B1 47 E2 F3 46 4E 4E 89 7D 50 5A 0C AB 2BB8 15 58 3B BF 6D 39 22 EE CA D7 D9 50 DE 3B 88 58 84 5F D2 8F 80 2D 6B 21 09 81 F4 F0 C2 B6 C5 16 16 A3 C9 90 13 44 67 4B 27 B7 6B 3C 0F 3B 4F EF 05 D2 04 8D BA 8A 1A EA D8 7A 7F 5F 83 9E 5E 1A 94 98
+p4-austria  = 154F12 7F A1 EB D6 52 03 96 5A FD 1A D6 0F DA EB CA 14 9C 1B AC 7D 50 5A 0C 2D FD AB 2B 5C 6C1E E0 DD 5F D5 15 7E D2 42 91 58 24 F5 62 73 42 E7 E8 DE 6A 59 60 D7 47 15 D4 B5 82 74 7A AB 34 47 BB BF
+# p5 is on the SAME channel as p3 (both chash 0xb8) — crack once, decrypt both.
+p5-observer = obs:3a1d5fdad11eccd8
