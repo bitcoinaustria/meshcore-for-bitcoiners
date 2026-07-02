@@ -18,6 +18,64 @@ file edits.
 
 This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [v1.3] — 2026-07-02
+
+### Added
+- **`decrypt-grp-msg` — a MeshCore group-message decrypter / cracker**
+  (`mcgrpdec`, a `uv` project). Given an observed group/channel packet it
+  recovers the plaintext when the channel key is known, and brute-forces
+  `#room` names otherwise — the **brainwallet attack the deck describes, now
+  runnable**. CPU and **WebGPU** backends, a wordlist builder, and a live
+  progress line showing **names/s + ETA** over a sliding-rate window. Defaults
+  to the correct `SHA256("#"+name)` derivation (`--also-plain` opts the old
+  bare-name pass back in), halving brute-force work.
+- **`speakers-notes.md` now carries the spoken cues and fact provenance.** About
+  100 lines of mixed `% SPEAKER` cues, source citations, and derivations
+  (time-on-air math, duty-cycle) moved out of the `.tex` into the notes, ordered
+  by slide; the `.tex` keeps layout notes plus one-line pointers and the
+  load-bearing warnings (frequency, advert-scope rule, 4:3 escape hatch).
+
+### Changed
+- **Hardware slide: bigger device photos.** The three device images were trimmed
+  of their transparent padding and the shared height cap raised
+  (`0.24` → `0.28\paperheight`) — the **P1-Pro repeater** (a kit shot with small
+  components) is now roughly **twice as large** and the row reads clearly from
+  the back of the room. Fits on both 16:9 and 4:3.
+- **Repeater price split out:** the SenseCAP Solar Node P1-Pro now reads
+  **~100 EUR device + ~30 antenna** (was a ~130 all-in figure) and "runs 24/7
+  off-grid" rather than "for days".
+- **Time slide bullet tightened:** dropped the `last_advert_timestamp` field name
+  from the slide (it lives in the notes) and reworded to "**repeaters reject any
+  advert not newer than the last one from that key**" — clears the last 16:9
+  overflow.
+
+### Fixed
+- **EU/UK Narrow preset frequency corrected to 869.618 MHz** (was 869.525),
+  verified 2026-07-02 against meshcore.ch/settings, chatters.io,
+  docs.meshcore.io/faq and [meshcore-austria.at](https://meshcore-austria.at)
+  (the Oct-2025 narrow migration). SF 8 / BW 62.5 kHz / CR 4/8 unchanged, and it
+  stays in the 10%-duty **869.4–869.65 MHz** "P" sub-band, so the airtime math
+  holds.
+- **Bitcoin-side accuracy pass** (verified against primary sources): throughput
+  updated to mid-2026 reality (**~3,000–4,000 tx/block, ~5–7 tx/s**; "block size"
+  → block space / 4M weight units); "double-spend impossible" → **infeasible**
+  (probabilistic finality); **HASH160** called a *shorter hash*, not truncation;
+  a **Taproot** caveat on "address = hash of the pubkey" (key-path outputs skip
+  the hash); Lightning gossips the **public** graph (private channels aren't
+  announced); the SX1262 claim softened to **power, not impossibility** (SDRs can
+  decode LoRa in software); the bitcoin.com line reworded to "**marketed Bitcoin
+  Cash as Bitcoin**".
+- **Hard-fork slide made precise:** pre-1.14 repeaters still relay 1-byte paths
+  and **silently drop** wider prefixes ("falls off" → "fades off"); the Bitcoin
+  side now says old nodes reject the new blocks (rules loosened).
+- **Packet-anatomy appendix footnote** trimmed to just its **Sources:** line —
+  the "skip unless the room likes wire formats" staging aside moved to the
+  speaker notes.
+- **Wording / engagement:** "fires the telco and the state" → "and the SIM
+  registry behind it"; the fat-pipe example switched to Wi-Fi / sneakernet;
+  expanded the cryptic "(1 → 1–3 B)" prefix note; bolded the missing load-bearing
+  phrase on the open-source-firmware bullet.
+
 ## [v1.2] — 2026-06-30
 
 ### Added
@@ -454,7 +512,8 @@ First complete draft of the talk — end to end, buildable, releasable.
   the scope.
 - MeshCore launch framed as **late 2024** per Wikipedia, not "early 2025".
 
-[Unreleased]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/compare/v1.2...HEAD
+[Unreleased]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/compare/v1.3...HEAD
+[v1.3]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v1.3
 [v1.2]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v1.2
 [v1.1]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v1.1
 [v1.0]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v1.0

@@ -155,17 +155,17 @@
   \end{itemize}
   \vfill
   % A small device row, in bullet order: companion / portable / repeater.
-  % Images are background-removed PNGs; height-capped so they align and the row
-  % stays within \textwidth on both 16:9 and 4:3.
+  % Images are background-removed, tightly trimmed PNGs; height-capped so they
+  % align and the row stays within \textwidth on both 16:9 and 4:3.
   \centering
   \begin{minipage}[b]{0.27\paperwidth}\centering
-    \includegraphics[height=0.24\paperheight,width=\linewidth,keepaspectratio]{hw-t1000e}%
+    \includegraphics[height=0.28\paperheight,width=\linewidth,keepaspectratio]{hw-t1000e}%
   \end{minipage}\hfill
   \begin{minipage}[b]{0.27\paperwidth}\centering
-    \includegraphics[height=0.24\paperheight,width=\linewidth,keepaspectratio]{hw-heltec-v4}%
+    \includegraphics[height=0.28\paperheight,width=\linewidth,keepaspectratio]{hw-heltec-v4}%
   \end{minipage}\hfill
   \begin{minipage}[b]{0.27\paperwidth}\centering
-    \includegraphics[height=0.24\paperheight,width=\linewidth,keepaspectratio]{hw-sensecap-p1pro}%
+    \includegraphics[height=0.28\paperheight,width=\linewidth,keepaspectratio]{hw-sensecap-p1pro}%
   \end{minipage}
 \end{frame}
 
@@ -649,9 +649,9 @@
     \item That total order is what makes a \textbf{double-spend infeasible}
   \end{itemize}}{%
   \begin{itemize}
-    \item A node's \textbf{adverts} must move \textbf{forward in time}: a repeater
-      rejects one whose timestamp is $\le$ the last it saw for that key
-      (\texttt{last\_advert\_timestamp}) --- a per-sender anti-replay rule
+    \item A node's \textbf{adverts} must move \textbf{forward in time}: repeaters
+      reject any advert not newer than the last one from that key --- a
+      per-sender anti-replay rule
     \item Reset your radio with the wrong clock $\to$ your adverts are silently
       dropped and you stop appearing on the mesh
   \end{itemize}}{%
@@ -839,7 +839,7 @@
     repeaters forward it --- not every node, the way Meshtastic floods. The path
     \emph{is} the route.
   \end{alertblock}
-  {\footnotesize Skip unless the room likes wire formats. Sources:
+  {\footnotesize Sources:
   \texttt{docs.meshcore.io/packet\_format}, DeepWiki 7.1, \texttt{meshcore-decoder}.}
 \end{frame}
 
