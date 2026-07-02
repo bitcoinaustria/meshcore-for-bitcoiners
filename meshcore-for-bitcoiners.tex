@@ -88,7 +88,7 @@
   \begin{itemize}
     \item Off-grid text messaging over long-range \textbf{LoRa} radio ---
       no internet, no cell tower, no SIM
-    \item Open-source firmware running on cheap LoRa boards
+    \item \textbf{Open-source firmware} running on cheap LoRa boards
     \item Uses \textbf{licence-free} ISM radio bands --- worldwide, region by
       region (EU 868\,MHz; US/AU 915\,MHz; \dots)
   \end{itemize}
@@ -115,7 +115,7 @@
       repeater with seconds of latency; you text, you don't stream
     \item \textbf{Physics, not policy:} the range buys reach by spending
       bandwidth and time --- and it sips power, so a node runs for days off a
-      small battery or a solar panel
+      small battery, or indefinitely on a small solar panel
   \end{itemize}
   \vfill
   \begin{alertblock}{The right mental model}
@@ -152,8 +152,8 @@
   \begin{alertblock}{A familiar story}
     Permissionless tech, a \textbf{brand-capture attempt} --- the
     \texttt{.co.uk} holder trademarking the name, much as \textbf{bitcoin.com}
-    pushed its fork as ``Bitcoin'' --- and the community just \textbf{routes
-    around it}. Bitcoiners have seen this movie.
+    marketed Bitcoin Cash as ``Bitcoin'' --- and the community just
+    \textbf{routes around it}. Bitcoiners have seen this movie.
   \end{alertblock}
 \end{frame}
 
@@ -164,7 +164,7 @@
     \item \textbf{Portable with a display} --- Heltec LoRa\,32 V4 (OLED,
       $\sim$40\,EUR), Seeed Wio Tracker L1 Pro (screen, GPS, case)
     \item \textbf{Repeater} --- SenseCAP Solar Node P1-Pro: 5\,W solar +
-      battery, runs for days off-grid, $\sim$130\,EUR
+      battery, runs 24/7 off-grid, $\sim$100\,EUR
     \item \textbf{Build your own} --- Heltec / RAK WisBlock boards
   \end{itemize}
   \vfill
@@ -327,7 +327,8 @@
   \vskip0.6em
   \begin{itemize}
     \item A self-generated \textbf{keypair replaces institutional identity} ---
-      Bitcoin fires the bank; MeshCore fires the telco \emph{and} the state
+      Bitcoin fires the bank; MeshCore fires the telco \emph{and} the SIM
+      registry behind it
     \item \textbf{Signatures and encryption} do the work --- adverts signed,
       DMs encrypted
     \item \textbf{A throughput cap you didn't choose} forces a second layer
@@ -360,8 +361,9 @@
     \item Verify keys via \textbf{QR / word list} (TOFU\footnote{Trust On First Use --- check a key once out-of-band, then pin it.})
   \end{itemize}}{%
   Two different tricks for the short ID: Bitcoin \textbf{hashes} the pubkey (hidden
-  until you spend); MeshCore just \textbf{truncates} it to a prefix --- a routing
-  shortcut, so it can collide (1\,$\to$\,1--3\,B). And the identity is deliberately
+  until you spend --- Taproot skips the hash); MeshCore just \textbf{truncates} it
+  to a prefix --- a routing shortcut, so it can collide (1 byte originally, 1--3
+  today). And the identity is deliberately
   \emph{sticky} (no HD rotation, no seed phrase) --- so \textbf{back it up}: lose
   the key and you lose the \emph{handle}.}
 
@@ -419,27 +421,36 @@
 % Network "Regional limitations of RF use"; rf.guru "Meshtastic, MeshCore,
 % 868 MHz and the Ham Radio Trap"; disk91.com 868 MHz regulation overview.
 % NOTE: still sanity-check against the current AT frequency plan before stage.
-% Frequency: 869.525 MHz is MeshCore's documented EU/UK "Narrow" preset (the
-% historical 869.525 RX2 frequency) and matches the SF8/BW62.5/CR4/8 below; an
-% earlier draft said 869.618 MHz, which maps to no standard preset -- don't revert.
+% Frequency RE-VERIFIED (2026-07-02): the EU/UK "Narrow" preset is 869.618 MHz,
+% SF8, BW62.5, CR4/8 -- confirmed by meshcore.ch/settings and
+% chatters.io/meshcore-network-presets, consistent with docs.meshcore.io/faq
+% ("as of October 2025, many regions have moved to the 'narrow' setting").
+% 869.525 MHz (an earlier draft value, once mislabelled the Narrow preset) is
+% the OLD wide preset / LoRaWAN RX2 frequency -- don't revert to it. Both sit
+% inside the 869.4-869.65 MHz P sub-band, so the 10% duty-cycle claim holds.
 % Throughput numbers (estimation, both sides):
-%  Bitcoin: ~2,000-3,000 tx/block, 1 block/10 min => ~3-5 tx/s ~= 200-300 tx/min.
-%  MeshCore (EU/UK Narrow preset 869.525 MHz, SF8, BW62.5 kHz, CR 4/8): LoRa time-on-air
+%  Bitcoin: ~3,000-4,000 tx/block (mid-2026 average; 2022-era 2,000-3,000 is
+%  outdated), 1 block/10 min => ~5-7 tx/s ~= 300-400 tx/min. The consensus cap
+%  is 4M weight units (block WEIGHT, not a 1 MB size) since SegWit.
+%  MeshCore (EU/UK Narrow preset 869.618 MHz, SF8, BW62.5 kHz, CR 4/8): LoRa time-on-air
 %  (Semtech ToA: 8-sym preamble, explicit header, CRC, DE=0) for a 16 B short
 %  text ~0.25 s, 64 B ~0.64 s, 184 B full packet ~1.62 s; lighter coding 4/5
 %  trims ~1/3 (16 B ~0.19 s ... 184 B ~1.05 s). 10% duty cycle = 6 s airtime/min/node
 %  => ~24/min (short) down to ~4/min (full packet); ~30/min for tiny pings @4/5.
+% NOTE: ERC 70-03 defines the duty cycle over a 1-hour window (10% = 360 s/h),
+% so "6 s per minute" is a fair per-minute average, not a hard per-minute cap.
 % SPEAKER: stage the airtime figure as a reveal --- ask "how much airtime per
 % minute is a node legally allowed? ... six seconds." The smallness is the hook.
 \bridgeslide{The throttle is imposed, not a failure}{%
   \begin{itemize}
-    \item Block size is a \textbf{consensus} cap: one block every $\sim$10\,min
-    \item $\sim$2{,}000--3{,}000 tx/block $\Rightarrow$ $\sim$3--5\,tx/s
-      $\approx$ \textbf{200--300 tx/min}, network-wide
+    \item Block space is a \textbf{consensus} cap (4M weight units): one block
+      every $\sim$10\,min
+    \item $\sim$3{,}000--4{,}000 tx/block $\Rightarrow$ $\sim$5--7\,tx/s
+      $\approx$ \textbf{300--400 tx/min}, network-wide
   \end{itemize}}{%
   \begin{itemize}
     \item Duty cycle is a \textbf{regulatory} cap: 10\% airtime on the
-      869.4--869.65\,MHz sub-band (EU default: 869.525\,MHz, SF\,8, BW\,62.5\,kHz, CR\,4/8)
+      869.4--869.65\,MHz sub-band (EU default: 869.618\,MHz, SF\,8, BW\,62.5\,kHz, CR\,4/8)
     \item One msg $\approx$ 0.25--1.6\,s on air (short text $\to$ full 184\,B);
       10\% $=$ 6\,s airtime/min $\Rightarrow$ \textbf{$\sim$4--24 msgs/min per node}
   \end{itemize}}{%
@@ -461,8 +472,9 @@
     \item Later DMs are \textbf{source-routed along that path}
   \end{itemize}}{%
   \begin{itemize}
-    \item \textbf{Discovery differs:} Lightning gossips the \emph{whole} graph
-      (proactive); MeshCore floods one advert to learn \emph{one} path (reactive)
+    \item \textbf{Discovery differs:} Lightning gossips the whole \emph{public}
+      graph (proactive); MeshCore floods one advert to learn \emph{one} path
+      (reactive)
     \item Lightning \textbf{onion-routes} (hop privacy); MeshCore path bytes ride
       in the clear
     \item Lightning carries \textbf{atomic value} (HTLCs); MeshCore carries data,
@@ -471,7 +483,8 @@
 
 \begin{frame}{Angle B --- bootstrap, then jump layers}
   \begin{itemize}
-    \item Move the bulk transfer to a \textbf{fat pipe} (internet, CB radio) --- off-mesh
+    \item Move the bulk transfer to a \textbf{fat pipe} (internet, Wi-Fi,
+      sneakernet) --- off-mesh
     \item The mesh carries only the rare, \textbf{expensive anchoring event}, never the payload
     \item Key and rendezvous get negotiated over \textbf{encrypted DMs} --- on the mesh itself
   \end{itemize}
@@ -540,8 +553,9 @@
   \vfill
   \begin{alertblock}{The parallel that holds}
     No nonce search, no target, no contest --- so not mining. The real Bitcoin
-    echo is \textbf{a short one-way commitment plus truncation as a namespace
-    trade-off} --- like HASH160 addresses or 1--3-byte routing prefixes.
+    echo is \textbf{a short one-way commitment that trades length for
+    collisions} --- like Bitcoin's 160-bit HASH160 addresses or MeshCore's
+    1--3-byte routing prefixes.
   \end{alertblock}
 \end{frame}
 
@@ -570,8 +584,8 @@
     \item The \textbf{SX1262} radio chip runs the whole LoRa modem in hardware,
       not in software
     \item Dedicated silicon for \textbf{power}: microamps asleep, so a small
-      battery runs a node for days --- a general CPU couldn't really run the
-      chirp-spread-spectrum modem at all, let alone that efficiently
+      battery runs a node for days --- an SDR \emph{can} decode LoRa in
+      software, just at orders of magnitude more power
   \end{itemize}}{%
   Both are purpose-built chips --- but Bitcoin's ASIC wins a \emph{contest} (more
   efficiency $\to$ more reward), while the SX1262 just \emph{sips power} at a
@@ -705,7 +719,7 @@
 \bridgeslide{Time --- two ways to agree on ``after''}{%
   \begin{itemize}
     \item One chain orders \textbf{everything}, globally
-    \item That total order is exactly what makes \textbf{double-spend impossible}
+    \item That total order is what makes a \textbf{double-spend infeasible}
   \end{itemize}}{%
   \begin{itemize}
     \item A node's \textbf{adverts} must move \textbf{forward in time}: a repeater
@@ -722,24 +736,27 @@
 % ------------------------------------------------------------------- hard fork
 % The firmware 1.14+ multi-byte routing prefix is backward-incompatible: a
 % genuine "hard fork" framing --- with the honest caveat that there is no chain
-% to actually split.
+% to actually split. VERIFIED (2026-07-02, docs/faq.md): repeaters older than
+% 1.14 only repeat 1-byte path-hash packets and SILENTLY DROP 2/3-byte ones ---
+% so old nodes degrade (miss the new traffic) rather than drop off entirely;
+% the slide wording reflects that.
 \fillerslide[Break the wire format, leave the laggards behind]{The multi-byte routing hard fork}
 
 \bridgeslide{A backward-incompatible rule change}{%
   \begin{itemize}
-    \item A \textbf{hard fork} changes the rules so old software rejects the new
-      format
+    \item A \textbf{hard fork} loosens the rules, so old nodes reject the new
+      blocks
     \item Both sides can stay alive --- \textbf{two live chains}, each kept up by
       its own economic backers
   \end{itemize}}{%
   \begin{itemize}
     \item Firmware 1.14+ \textbf{widens the routing prefix from 1 byte to
       1--3 bytes}
-    \item Old firmware cannot parse the new adverts / path hashes --- you must
-      upgrade to stay on the mesh
+    \item Old repeaters \textbf{silently drop} the wider-prefix packets ---
+      they still relay 1-byte paths, but the new traffic passes them by
   \end{itemize}}{%
   No consensus, no ledger, no coins --- nothing keeps a second version alive, so
-  old firmware just \textbf{falls off the mesh} until it upgrades. Closer to a
+  old firmware just \textbf{fades off the mesh} as wider prefixes spread. Closer to a
   \textbf{TLS 1.2\,$\to$\,1.3} bump than a chain split: ``hard fork'' names the
   backward incompatibility, not a persistent divergence you could mine on.}
 
