@@ -422,12 +422,17 @@
 % 868 MHz and the Ham Radio Trap"; disk91.com 868 MHz regulation overview.
 % NOTE: still sanity-check against the current AT frequency plan before stage.
 % Frequency RE-VERIFIED (2026-07-02): the EU/UK "Narrow" preset is 869.618 MHz,
-% SF8, BW62.5, CR4/8 -- confirmed by meshcore.ch/settings and
-% chatters.io/meshcore-network-presets, consistent with docs.meshcore.io/faq
-% ("as of October 2025, many regions have moved to the 'narrow' setting").
-% 869.525 MHz (an earlier draft value, once mislabelled the Narrow preset) is
-% the OLD wide preset / LoRaWAN RX2 frequency -- don't revert to it. Both sit
-% inside the 869.4-869.65 MHz P sub-band, so the 10% duty-cycle claim holds.
+% SF8, BW62.5, CR4/8. PRIMARY source for Austria:
+% meshcore-austria.at/doku.php?id=start ("Funk Einstellungen": Preset EU/UK
+% Narrow, 869.618 MHz, 62.5 kHz, SF 8, CR 8). Also confirmed by
+% meshcore.ch/settings and chatters.io/meshcore-network-presets, consistent
+% with docs.meshcore.io/faq ("as of October 2025, many regions have moved to
+% the 'narrow' setting"). 869.525 MHz (an earlier draft value, once mislabelled
+% the Narrow preset) is the OLD wide preset / LoRaWAN RX2 frequency -- don't
+% revert to it. Both sit inside the 869.4-869.65 MHz P sub-band, so the 10%
+% duty-cycle claim holds. In the wild, observers also show CR 4/5 in use on
+% good links (less FEC, ~1/3 less airtime -- the 4/5 numbers below cover it);
+% the slide states the official preset, CR 4/8.
 % Throughput numbers (estimation, both sides):
 %  Bitcoin: ~3,000-4,000 tx/block (mid-2026 average; 2022-era 2,000-3,000 is
 %  outdated), 1 block/10 min => ~5-7 tx/s ~= 300-400 tx/min. The consensus cap
