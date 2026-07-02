@@ -4,6 +4,8 @@
 % missing, run:  git submodule update --init --recursive
 %
 % NOTE: this is a working draft built from handoff-20260626.md; develop further.
+% Spoken cues, staging, and fact-check provenance live in speakers-notes.md ---
+% update it in the same commit when a slide's facts or staging change.
 %
 % Aspect ratio is parameterised so the deck can be built at 16:9 (default) or
 % 4:3 without editing this file: the makefile passes `-usepretex='\def\baAspect{43}'`.
@@ -33,18 +35,11 @@
   \end{minipage}%
 }
 
-% \cornerimage is now provided by the theme (bitcoin-austria.sty) --- it floats a
-% small image into a slide corner over everything, with a default top clearance
-% that sits below the headline/page-number band. Call it right before a slide.
-%
-% The theme auto-scales typography on narrow (4:3-class) formats so dense slides
-% don't overflow the bottom; for a slide that is STILL too dense at 4:3, the
-% theme exports the escape hatch \narrowonly{<code>} (e.g. \narrowonly{\small}),
-% which runs <code> only on narrow formats. No deck-side helper needed.
-
-% Footnotes (used to gloss acronyms like TOFU / PSK) are styled by the theme:
-% brand-red mark pinned flush-left, for both frame-level and the minipage/column
-% footnotes raised inside \comparisonslide. Nothing needed here.
+% Theme extras used in this deck: \cornerimage (floats a small image into a
+% slide corner, clear of the headline band; call it right before the slide) and
+% \narrowonly{<code>} (runs <code> only on narrow/4:3 builds --- the escape
+% hatch for a slide still too dense after the theme's auto-scaling). Footnote
+% styling (the TOFU / PSK glosses) also comes from the theme.
 
 \title{MeshCore for Bitcoiners}
 \subtitle{Permissionless communication --- from money to radio}
@@ -62,10 +57,7 @@
 \fillerslide[What Bitcoin did for money, MeshCore does for messaging!]{What is MeshCore?}
 
 % Hook slide: open with the one-line mental model + why a Bitcoiner should care,
-% BEFORE the mechanics. Audience are technical Bitcoiners new to MeshCore.
-% SPEAKER OPEN (spoken, before revealing this slide): put the stakes in the room
-% first --- "How many of you could send a message tonight if the cell network
-% went down? Keep your hand up if you could do it without asking permission."
+% BEFORE the mechanics. Spoken opener (the stakes question): speakers-notes.md.
 \begin{frame}{The one-line version}
   \begin{itemize}
     \item What Bitcoin did for money, MeshCore does for messaging:
@@ -125,16 +117,10 @@
   \end{alertblock}
 \end{frame}
 
-% The 2026 fork is on-theme for a Bitcoin crowd: open-source firmware (MIT), a
-% trademark/brand capture attempt by the promoter, and the community routing
-% around it. We stick to the core team's .io domain throughout this deck.
-% VERIFIED (2026): the core team (Scott Powell, Liam Cottle, et al.) split from
-% promoter Andy Kirby over a MeshCore trademark filing + undisclosed AI-rewritten
-% apps; the team kept meshcore.io, Kirby kept meshcore.co.uk + the old Discord.
-% Sources: blog.meshcore.io/2026/04/23/the-split ; meshcoreeurope.org
-% "MeshCore Splits Over Trademark, AI Code, and Team Breakdown" (2026-04-27).
-% SPEAKER: lead spoken with the punchline --- "In 2026 someone tried to trademark
-% MeshCore and ship secret AI-rewritten apps. Guess how that went." Then bullets.
+% The 2026 fork is on-theme for a Bitcoin crowd: MIT firmware, a brand-capture
+% attempt, the community routing around it. We stick to the core team's .io
+% domain throughout. Facts verified --- details, sources, and the spoken
+% punchline lead-in: speakers-notes.md ("Where it comes from").
 \begin{frame}{Where it comes from}
   \begin{itemize}
     \item Grew out of the \textbf{Meshtastic} world, then rebuilt from scratch
@@ -224,9 +210,7 @@
     Same boards, same chips --- a different firmware and routing philosophy.}
 
 % Break up the theory with a look at the real app: watch it, chat, plan a link.
-% SPEAKER: if connectivity allows, SWITCH TO THE LIVE observer/app here for ~30s
-% --- a real packet arcing across Vienna beats any screenshot. Else say aloud
-% "this is live right now."
+% Staging (switch to the live observer here if connectivity allows): speakers-notes.md.
 \begin{frame}{Live on the mesh}
   \vfill
   \centering
@@ -270,15 +254,9 @@
 \end{frame}
 
 % --------------------------------------------------------------- region codes
-% The region "transport code" is an HMAC of the region key over the packet
-% payload, truncated to 2 bytes; repeaters recompute it per hop to decide
-% whether to relay (geofencing the flood). VERIFIED against MeshCore source
-% (meshcore-decoder src/crypto/region-transport.ts; DeepWiki 7.6 "Region
-% Filtering and Transport Codes"): region key = SHA256(regionName)[:16];
-% code = LE-uint16 of the first 2 bytes of HMAC-SHA256(key, payloadType ||
-% payload), with 0/0xFFFF nudged to 1/0xFFFE. Computed over the ENCRYPTED
-% payload, so repeaters filter by region without decrypting. Symmetric and only
-% 2 bytes wide => a routing/airtime filter, not a signature.
+% The region "transport code" is a 2-byte HMAC of the region key over the
+% (encrypted) payload, recomputed per hop --- geofencing the flood. Construction
+% verified against the MeshCore source; details & sources: speakers-notes.md.
 \fillerslide[Borders agreed by name, enforced per hop]{The region transport code}
 
 % Plain-language setup before the bridge: the audience doesn't know MeshCore, so
@@ -317,10 +295,8 @@
   \end{alertblock}
 \end{frame}
 
-% Merged setup slide: one statement of the precise claim + the recurring-primitives
-% preview + the honesty contract. (Previously three restatements of the same thesis
-% across "one-line version" / "what recurs" / "core thesis" --- collapsed so the
-% deck reaches the first parallel a slide sooner.)
+% One statement of the precise claim + the primitives preview + the honesty
+% contract (merged from three earlier restatements of the same thesis).
 \begin{frame}{The precise claim --- and a promise}
   We opened with the one-liner; here is the claim the rest of the talk defends ---
   the same Bitcoin primitives, in radio:
@@ -413,39 +389,12 @@
 % ---------------------------------------------------------------- throughput
 \fillerslide[A chosen constraint, not a weakness]{Throughput}
 
-% EU 868 duty cycle VERIFIED (CEPT/ERC 70-03 + ETSI EN 300 220-2; implemented in
-% Austria via the national frequency plan). MeshCore's EU default 869.525 MHz
-% falls in the 869.4--869.65 MHz sub-band ("P"/g3) => 10% duty cycle, up to
-% 500 mW (+27 dBm) ERP. (The lower 868.0--868.6 MHz sub-band is only 1% at
-% 25 mW --- MeshCore deliberately picks the generous one.) Sources: The Things
-% Network "Regional limitations of RF use"; rf.guru "Meshtastic, MeshCore,
-% 868 MHz and the Ham Radio Trap"; disk91.com 868 MHz regulation overview.
-% NOTE: still sanity-check against the current AT frequency plan before stage.
-% Frequency RE-VERIFIED (2026-07-02): the EU/UK "Narrow" preset is 869.618 MHz,
-% SF8, BW62.5, CR4/8. PRIMARY source for Austria:
-% meshcore-austria.at/doku.php?id=start ("Funk Einstellungen": Preset EU/UK
-% Narrow, 869.618 MHz, 62.5 kHz, SF 8, CR 8). Also confirmed by
-% meshcore.ch/settings and chatters.io/meshcore-network-presets, consistent
-% with docs.meshcore.io/faq ("as of October 2025, many regions have moved to
-% the 'narrow' setting"). 869.525 MHz (an earlier draft value, once mislabelled
-% the Narrow preset) is the OLD wide preset / LoRaWAN RX2 frequency -- don't
-% revert to it. Both sit inside the 869.4-869.65 MHz P sub-band, so the 10%
-% duty-cycle claim holds. In the wild, observers also show CR 4/5 in use on
-% good links (less FEC, ~1/3 less airtime -- the 4/5 numbers below cover it);
-% the slide states the official preset, CR 4/8.
-% Throughput numbers (estimation, both sides):
-%  Bitcoin: ~3,000-4,000 tx/block (mid-2026 average; 2022-era 2,000-3,000 is
-%  outdated), 1 block/10 min => ~5-7 tx/s ~= 300-400 tx/min. The consensus cap
-%  is 4M weight units (block WEIGHT, not a 1 MB size) since SegWit.
-%  MeshCore (EU/UK Narrow preset 869.618 MHz, SF8, BW62.5 kHz, CR 4/8): LoRa time-on-air
-%  (Semtech ToA: 8-sym preamble, explicit header, CRC, DE=0) for a 16 B short
-%  text ~0.25 s, 64 B ~0.64 s, 184 B full packet ~1.62 s; lighter coding 4/5
-%  trims ~1/3 (16 B ~0.19 s ... 184 B ~1.05 s). 10% duty cycle = 6 s airtime/min/node
-%  => ~24/min (short) down to ~4/min (full packet); ~30/min for tiny pings @4/5.
-% NOTE: ERC 70-03 defines the duty cycle over a 1-hour window (10% = 360 s/h),
-% so "6 s per minute" is a fair per-minute average, not a hard per-minute cap.
-% SPEAKER: stage the airtime figure as a reveal --- ask "how much airtime per
-% minute is a node legally allowed? ... six seconds." The smallness is the hook.
+% Numbers verified (2026-07-02), both sides: EU band-P duty cycle (10%, 500 mW
+% ERP), the EU/UK Narrow preset 869.618 MHz / SF8 / BW62.5 / CR4/8, the LoRa
+% time-on-air figures, and the Bitcoin tx/block rate. Derivations, sources, Q&A
+% nuances, and the "six seconds" reveal: speakers-notes.md ("Throughput").
+% DON'T revert the frequency to 869.525 --- that's the old wide preset (the
+% LoRaWAN RX2 frequency), not the Narrow preset.
 \bridgeslide{The throttle is imposed, not a failure}{%
   \begin{itemize}
     \item Block space is a \textbf{consensus} cap (4M weight units): one block
@@ -522,14 +471,9 @@
 \end{frame}
 
 % ---------------------------------------------------------------- channel hash
-% A Bitcoiner spots SHA256-twice in the channel hash and reaches for "mining".
-% Same primitive, different game --- make the distinction, then name the parallel
-% that *does* hold (commitment + truncation trade-off).
-% Construction VERIFIED against MeshCore source (firmware + michaelhart/
-% meshcore-decoder, src/crypto/channel-crypto.ts; "Hitchhiker's Guide to
-% MeshCore Cryptography"): for a "#room", key = SHA256("#room")[:16] (the
-% AES-128 key), channel id = SHA256(key)[0] (first byte). Cipher is AES-128-ECB
-% (+ HMAC-SHA256 MAC) --- NOT AES-256/CTR.
+% A Bitcoiner spots SHA256-twice and reaches for "mining" --- same primitive,
+% different game. Construction verified against the MeshCore source (AES-128-ECB
+% + 2-byte MAC, NOT AES-256/CTR); details & sources: speakers-notes.md.
 \fillerslide[Same primitive, a different game]{Double SHA256 --- but not mining}
 
 \begin{frame}{Joining \texttt{\#bitcoin-at}: SHA256, twice, cropped}
@@ -565,14 +509,9 @@
 \end{frame}
 
 % --------------------------------------------------------------- ASIC / silicon
-% Follows the "not mining" slide: a Bitcoiner asks whether LoRa has ASICs too.
-% It does -- the LoRa PHY (chirp spread spectrum) is implemented in a dedicated
-% radio IC, the Semtech SX1262 (the modem runs in hardware; the MCU just hands it
-% bytes over SPI; ~uA in sleep). VERIFIED: Semtech SX1261/SX1262 datasheet/product
-% pages; the Heltec LoRa 32 V3 in this deck uses an SX1262; ST's STM32WL packs the
-% same SX126x radio IP onto an MCU die. The analogy BREAKS on the reason: a mining
-% ASIC wins a competitive PoW race (more efficiency -> more reward, difficulty
-% follows); the SX1262 is fixed-function and just saves power -- no contest.
+% Follows "not mining": a Bitcoiner asks whether LoRa has ASICs too. It does ---
+% the SX1262 runs the LoRa PHY in silicon, but for power, not a PoW contest.
+% Facts & sources: speakers-notes.md ("ASICs --- and the SX1262").
 \fillerslide[Same silicon idea, opposite reason]{ASICs --- and the LoRa radio chip}
 
 % Float a small photo of the SX1262 high in the top-right corner of the
@@ -598,16 +537,9 @@
   hashpower.}
 
 % ---------------------------------------------------------- brainwallet rooms
-% A #hashtag room derives its AES-128 key straight from the room name:
-% key = SHA256("#" + name)[:16] (consistent with the channel-hash slide above).
-% No salt, no stretching -> a brainwallet. VERIFIED against the MeshCore source
-% and jacksbrain.com "Hitchhiker's Guide to MeshCore Cryptography": room names
-% are lowercase alphanumerics + hyphens, <=30 chars; every name under 7 chars is
-% exhaustively brute-forced in ~90 s on a 2023 laptop GPU (100M+ keys/s). A
-% public WebGPU brute-forcer exists: github.com/jkingsman/meshcore-hashtag-cracker
-% (added to the references slide). NOT an AES break -- AES-128 is untouched; the
-% effective security is the entropy of the *name*. Hashtag rooms are world-
-% readable *by design* (the honest divergence from the Bitcoin footgun).
+% A #hashtag room's AES-128 key is SHA256 of its name --- no salt, no
+% stretching: a brainwallet. The ~90 s crack figure and the WebGPU cracker are
+% verified; details & sources: speakers-notes.md ("Hashtag rooms").
 \fillerslide[The name is the key --- a familiar footgun]{Hashtag rooms are brainwallets}
 
 \begin{frame}{A hashtag room is a brainwallet}
@@ -653,10 +585,10 @@
 % (coins), so it pays for heavy consensus machinery (PoW/Sybil resistance, one
 % global order, permanent state); MeshCore defends nothing scarce -- it relays
 % fleeting messages -- so it needs none of it. Each slide is one face of that.
+% (Per-topic divider slides folded into the bridge titles.)
 \fillerslide[What is all that consensus machinery actually for?]{What Bitcoin's consensus buys --- and MeshCore skips}
 
-% #1 Sybil resistance. (Per-topic divider dropped --- topic folded into the
-% bridge title so this section isn't a stack of title cards.)
+% #1 Sybil resistance.
 \bridgeslide{Sybil resistance --- what proof-of-work buys}{%
   \begin{itemize}
     \item PoW makes identity / participation deliberately \textbf{costly}
@@ -675,7 +607,7 @@
   limits (airtime / duty cycle, RF range) and \textbf{social} ones (repeater ACLs,
   admin passwords). The worst case is wasted airtime, not theft.}
 
-% #2 Incentives. (Per-topic divider folded into the bridge title.)
+% #2 Incentives.
 \bridgeslide{Incentives --- paid security vs.\ a volunteer commons}{%
   \begin{itemize}
     \item Miners are \textbf{paid} --- block subsidy + fees
@@ -693,7 +625,7 @@
   market}. It works at today's scale, but nothing \emph{economic} defends it
   against the tragedy of the commons.}
 
-% #3 State. (Per-topic divider folded into the bridge title.)
+% #3 State.
 \bridgeslide{State --- consensus state vs.\ the moment}{%
   \begin{itemize}
     \item A \textbf{permanent, globally agreed ledger}
@@ -708,19 +640,9 @@
   keep none. Different goals --- \textbf{you can't ``re-sync'' a missed channel
   message} the way a node replays the chain from genesis.}
 
-% #4 Time -- ordering without a global clock. VERIFIED (see note below); the
-% rule is scoped to ADVERTS, not arbitrary packets.
-% VERIFIED against the MeshCore firmware behaviour via two sources independent of
-% the "Hitchhiker's Guide" blog: DeepWiki's firmware annotation (ripplebiz/
-% MeshCore 10.3 Troubleshooting) -- "Timestamp must be greater than
-% last_advert_timestamp. If not, advert is rejected as possible replay attack"
-% (src/helpers/BaseChatMesh.cpp) -- and the official FAQ (docs/faq.md), which
-% documents the clock-not-set failure mode (a node with the wrong time stops
-% appearing in discovery). IMPORTANT SCOPE FIX vs the brief: the forward-in-time
-% rule is enforced on a node's *adverts* (self-announcements), keyed per pubkey
-% by last_advert_timestamp -- NOT on every data packet. Slide reworded to say
-% "adverts" so the claim stays watertight.
-% #4 Time. (Per-topic divider folded into the bridge title.)
+% #4 Time. The forward-in-time rule is scoped to ADVERTS (per-pubkey
+% last_advert_timestamp), NOT to every packet --- keep the slide's wording.
+% Verification & sources: speakers-notes.md ("Time --- advert anti-replay").
 \bridgeslide{Time --- two ways to agree on ``after''}{%
   \begin{itemize}
     \item One chain orders \textbf{everything}, globally
@@ -739,12 +661,9 @@
   it never needs the \emph{global} one.}
 
 % ------------------------------------------------------------------- hard fork
-% The firmware 1.14+ multi-byte routing prefix is backward-incompatible: a
-% genuine "hard fork" framing --- with the honest caveat that there is no chain
-% to actually split. VERIFIED (2026-07-02, docs/faq.md): repeaters older than
-% 1.14 only repeat 1-byte path-hash packets and SILENTLY DROP 2/3-byte ones ---
-% so old nodes degrade (miss the new traffic) rather than drop off entirely;
-% the slide wording reflects that.
+% Firmware 1.14+ widens the routing prefix --- honest caveat: pre-1.14 repeaters
+% still relay 1-byte paths (silently dropping wider ones), so old nodes degrade
+% rather than drop off; hence "fades off the mesh". Sources: speakers-notes.md.
 \fillerslide[Break the wire format, leave the laggards behind]{The multi-byte routing hard fork}
 
 \bridgeslide{A backward-incompatible rule change}{%
@@ -765,17 +684,11 @@
   \textbf{TLS 1.2\,$\to$\,1.3} bump than a chain split: ``hard fork'' names the
   backward incompatibility, not a persistent divergence you could mine on.}
 
-% ===================================================== shortcomings (Part 4) DRAFT
-% DRAFT section --- "shortcomings from a Bitcoiner's perspective". Pulls the
-% sharpest breaks out of the per-parallel callouts into one deliberate beat, and
-% adds the items the parallels never reached (metadata leakage, no forward secrecy,
-% default-channel weak key). Split deliberately into "deliberate by design" vs
-% "real gaps" so the honest contract lands without sounding like a teardown.
-% Sources for the added facts: jacksbrain.com "Hitchhiker's Guide to MeshCore
-% Cryptography" (static-ECDH DMs -> no forward secrecy; channel/#room key model),
-% localmesh.nl "MeshCore encryption details" (AES-128, default public key), and
-% docs.meshcore.io. NOTE: keep an eye on 4:3 fit --- if either consolidation slide
-% overflows, reach for \narrowonly{\small} (theme escape hatch).
+% ===================================================== shortcomings (Part 4)
+% Pulls the sharpest breaks into one deliberate beat, split into "deliberate by
+% design" vs "real gaps" so the honesty lands without sounding like a teardown.
+% Sources: speakers-notes.md ("Shortcomings"). Watch 4:3 fit --- if a slide
+% overflows, reach for \narrowonly{\small}.
 \fillerslide[The honest reckoning --- what to still distrust]{Shortcomings, as a Bitcoiner sees them}
 
 % Slide 1: the genuine gaps a privacy-minded Bitcoiner cares about most.
@@ -899,13 +812,10 @@
   \end{columns}
 \end{frame}
 
-% Optional deep-dive on the on-wire packet format. Kept AFTER the closing as a
-% backup slide so it can be skipped for a non-technical audience and shown only
-% on demand --- it's self-contained, so skipping it breaks nothing in the main
-% talk. It also ties several earlier slides together (region code, the 1--3 byte
-% routing prefix, AES-128 + 2-byte MAC). [noframenumbering] keeps it out of the
-% main slide count. VERIFIED against docs.meshcore.io/packet_format, DeepWiki 7.1
-% "Packet Structure and Types", and michaelhart/meshcore-decoder.
+% Optional deep-dive on the on-wire packet format --- self-contained backup
+% slide after the closing, skippable on demand; ties the region code, routing
+% prefix, and AES-128 + MAC together. [noframenumbering] keeps it out of the
+% slide count. Verified; sources: speakers-notes.md ("Appendix 1").
 \begin{frame}[noframenumbering]{Appendix 1: Anatomy of a MeshCore packet}
   \small
   \texttt{[\,header\,][\,transport codes?\,][\,path\_len\,][\,path\,][\,payload\,]}
