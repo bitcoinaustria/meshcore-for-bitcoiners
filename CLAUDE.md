@@ -36,6 +36,10 @@ it and prints this hint.
 ## Structure
 
 - `meshcore-for-bitcoiners.tex` — the deck. Loads `\usepackage{theme/bitcoin-austria}`.
+- `speakers-notes.md` — spoken cues, staging, and the fact-check provenance
+  (sources, derivations, Q&A ammo), per slide. The `.tex` keeps only short
+  pointers; **update the notes in the same commit when a slide's facts or
+  staging change**.
 - `theme/` — the Bitcoin Austria style (submodule). Provides the brand, plus
   `\comparisonslide` and `\fillerslide`. Edit the **theme repo** to change the
   brand; edit the `.tex` to change this talk.
@@ -74,9 +78,11 @@ cut a tag.
 ## Notes
 
 - The deck is a **draft** based on `handoff-20260626.md`; develop further.
-- The EU 868 MHz duty-cycle figure is **verified** (2026-06-29): **10%** on the
-  869.4–869.65 MHz "P" sub-band, up to 500 mW ERP — the deck states this. Sources
-  in the throughput-section comment in the `.tex` and in `handoff-20260626.md`.
-  (Still worth a final sanity-check against the current AT national frequency plan
-  before stage.)
+- The EU 868 MHz duty-cycle figure is **verified** (re-checked 2026-07-02):
+  **10%** on the 869.4–869.65 MHz "P" sub-band, up to 500 mW ERP — the deck
+  states this. The EU/UK Narrow preset is **869.618 MHz** (SF8, BW 62.5,
+  CR 4/8) — *not* 869.525, the old wide preset. Sources and derivations in
+  `speakers-notes.md` ("Throughput") and `handoff-20260626.md`. (Still worth a
+  final sanity-check against the current AT national frequency plan before
+  stage.)
 - Don't commit the built PDF or LaTeX aux files (see `.gitignore`).
