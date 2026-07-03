@@ -18,6 +18,37 @@ file edits.
 
 This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [v1.5] — 2026-07-03
+
+### Added
+- **Appendix 3: "Why floods don't echo forever" — loop detection.** Answers
+  the question the v1.4 routing slides plant: with store-and-forward flooding,
+  what stops endless feedback loops? Three beats: the **built-in brakes** (a
+  seen-packet dedup cache — every payload hashed — plus the 64-byte path field
+  capping hops at **64 / 32 / 21** for 1 / 2 / 3-byte IDs), the **real failure
+  mode** (a single repeater on broken forked firmware that *modifies* payloads
+  blinds the dedup cache — packet storms observed in the wild), and the
+  **`loop.detect` backstop** from repeater firmware 1.14: drop a flood when
+  the repeater's own ID already appears in the path too often. A
+  setting-by-ID-width **threshold matrix** (`off` / `minimal` ≥4/≥2/≥1 /
+  `moderate` ≥2/≥1/≥1 / `strict` ≥1/≥1/≥1) shows the thresholds scaling with
+  collision probability (1-byte IDs collide; 3-byte are near-proof). The
+  alertblock takes a position: the official `off` default reflects the
+  multibyte-path transition, but `minimal` is all but false-positive-free
+  while one storm burns a region's duty-cycle budget — *we'd default to
+  minimal*. Speaker notes carry the sources
+  ([docs.meshcore.io/cli_commands](https://docs.meshcore.io/cli_commands/),
+  the [v1.14 "Path Diagnostics Improvements" blog post](https://blog.meshcore.io/2026/03/06/path-diagnostics-improvements),
+  DeepWiki 7.2, packet_format), the `hasSeen()`/SHA-256 dedup detail, and the
+  false-positive math behind the editorial (~n/256 per relay at strict/1-byte).
+
+### Fixed
+- **"Max 64 hops" corrected to the 64-byte path budget.** The flat 64-hop
+  claim in the routing speaker notes holds only for 1-byte IDs — the real
+  ceiling is `MAX_PATH_SIZE` (64 B), i.e. **64 / 32 / 21 hops** at
+  1 / 2 / 3-byte path hashes (strictly 63 at 1 byte: the `path_len` hop
+  counter encodes 0–63).
+
 ## [v1.4] — 2026-07-03
 
 ### Added
@@ -548,7 +579,8 @@ First complete draft of the talk — end to end, buildable, releasable.
   the scope.
 - MeshCore launch framed as **late 2024** per Wikipedia, not "early 2025".
 
-[Unreleased]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/compare/v1.4...HEAD
+[Unreleased]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/compare/v1.5...HEAD
+[v1.5]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v1.5
 [v1.4]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v1.4
 [v1.3]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v1.3
 [v1.2]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v1.2
