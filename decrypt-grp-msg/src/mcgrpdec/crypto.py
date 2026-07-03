@@ -73,7 +73,7 @@ def compute_mac(key: bytes, ciphertext: bytes) -> bytes:
 
 def aes_ecb_decrypt(key: bytes, ciphertext: bytes) -> bytes:
     """AES-128-ECB, no padding. ``ciphertext`` must be a multiple of 16 bytes."""
-    dec = Cipher(algorithms.AES(key), modes.ECB()).decryptor()
+    dec = Cipher(algorithms.AES128(key), modes.ECB()).decryptor()
     return dec.update(ciphertext) + dec.finalize()
 
 

@@ -152,6 +152,18 @@ AES-128 key); channel id = `SHA256(key)[0]` (first byte). Cipher is
 **AES-128-ECB + an HMAC-SHA256-derived 2-byte MAC** — *not* AES-256/CTR.
 No salt, no key stretching.
 
+**Q&A / marketing-myth ammo:** meshcore.at (features page) advertises "**AES-256
+Verschlüsselung** … derselbe Standard wie Banken und Geheimdienste." It's wrong
+on three counts, and we can *show* it: (1) it's **AES-128, not 256** — our own
+decrypter uses a 16-byte key (`SHA256(secret)[:16]`), a 32-byte key wouldn't
+decrypt; (2) the mode is **ECB**, which is precisely what banks/agencies do
+*not* use (identical plaintext blocks → identical ciphertext — the ECB-penguin);
+(3) "only digital noise on an SDR" is content-only — the **channel-id byte,
+routing header, and adverts (identity + often location) go out in the clear**.
+Live-demo beat: show their "AES-256" slide, then run our decrypter and point at
+the plaintext channel-id byte + AES-128 decrypt. The honest version: content is
+protected, but the security is your *password's* entropy, not the "256".
+
 ## Hashtag rooms are brainwallets
 
 Room names: lowercase alphanumerics + hyphens, ≤30 chars. **Every name under
