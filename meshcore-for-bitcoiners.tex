@@ -914,4 +914,50 @@
   {\scriptsize Diagrams: \href{https://www.mokosmart.com/lora-frequency/}{mokosmart.com/lora-frequency}}
 \end{frame}
 
+% Appendix 3: loop detection --- answers the question the routing slides plant
+% (store-and-forward floods: why no endless echo?). Real packet storms from one
+% bad repeater firmware led to loop.detect in firmware 1.14. Matrix verified
+% against docs.meshcore.io/cli_commands ("Routing"); the off-by-default
+% editorial is ours. Sources & false-positive math: speakers-notes.md
+% ("Appendix 3").
+\begin{frame}[noframenumbering]{Appendix 3: Why floods don't echo forever}
+  \small
+  \begin{itemize}
+    \item \textbf{Two brakes are built in} --- a seen-packet cache (every
+      payload is hashed) means each repeater relays a flood only \emph{once},
+      and the 64-byte path field caps the hops (64\,/\,32\,/\,21 at
+      1\,/\,2\,/\,3-byte IDs)
+    \item \textbf{One bad repeater defeats both} --- if it \emph{modifies} the
+      payload before forwarding, the hash changes, the cache goes blind, and
+      the same message storms the mesh as ``new'' (seen in the wild, blamed on
+      forked firmware)
+    \item \textbf{The v1.14 backstop:} \texttt{loop.detect} --- count
+      \emph{your own ID} in the packet's path, drop past a threshold that
+      scales with ID width (1-byte IDs collide --- ``me'' in the path may be
+      someone else)
+  \end{itemize}
+  \vfill
+  \centering
+  Drop the flood packet when the repeater's own ID already appears\,\dots\\[-0.15em]
+  \begin{tabular}{lccc}
+    \toprule
+    \texttt{loop.detect} & 1-byte IDs & 2-byte IDs & 3-byte IDs \\
+    \midrule
+    \texttt{off} \emph{(default)} & never & never & never \\
+    \texttt{minimal}  & $\geq4\times$ & $\geq2\times$ & $\geq1\times$ \\
+    \texttt{moderate} & $\geq2\times$ & $\geq1\times$ & $\geq1\times$ \\
+    \texttt{strict}   & $\geq1\times$ & $\geq1\times$ & $\geq1\times$ \\
+    \bottomrule
+  \end{tabular}
+  \vfill
+  \begin{alertblock}{Off by default --- really?}
+    The official reason is the transition: multibyte IDs are still rolling
+    out. But \texttt{minimal} is all but false-positive-free, and one storm
+    burns a whole region's duty-cycle budget --- \emph{we'd default to
+    minimal}.
+  \end{alertblock}
+  {\footnotesize Sources: \texttt{docs.meshcore.io/cli\_commands} (Routing) ·
+   blog.meshcore.io ``Path Diagnostics Improvements'' (2026-03-06).}
+\end{frame}
+
 \end{document}

@@ -64,7 +64,9 @@ accumulates in the packet itself. The recipient's ACK floods back carrying
 that path; the sender stores it. Later DMs are source-routed along the
 stored path — **each direction keeps its own path** (outbound and return may
 differ). A failed direct route falls back to flooding automatically and the
-path is re-learned. Hard limit: **max 64 hops**.
+path is re-learned. Hard limit: the path field is capped at **64 bytes**
+(`MAX_PATH_SIZE`), so max hops depend on the ID width — **64 / 32 / 21** at
+1 / 2 / 3-byte path hashes (kiekr's "max 64 hops" is the 1-byte case).
 
 **Channels:** membership = knowing the shared key, no member list, no
 sign-up. No single recipient ⇒ channel messages **always flood**, and there
@@ -203,6 +205,45 @@ Structure and Types", and michaelhart/meshcore-decoder. Max packet 255 B
 (LoRa PHY); header 1 B (2 bits route type, 4 bits payload type, 2 bits
 version); optional 4 B transport codes on transport routes; path ≤64 B;
 payload ≤184 B. Skip unless the room likes wire formats.
+
+## Appendix 3 — loop detection
+
+**Normal loop prevention (why the mesh doesn't echo by design):** every
+packet is hashed (SHA-256 over payload type + payload) into a seen-packet
+cache (`hasSeen()`), so a repeater forwards each flood exactly once; the
+64-byte path field (`MAX_PATH_SIZE`) caps the hops at **64 / 32 / 21** for
+1 / 2 / 3-byte IDs (strictly 63 at 1 byte — the `path_len` hop count
+encodes 0–63); nearby repeaters also stagger retransmits with random
+delays to dodge collisions.
+
+**The storm:** one repeater running broken (forked/custom) firmware that
+*modifies* the payload before forwarding changes the packet's hash — dedup
+goes blind and the same message re-floods as "new", up to the hop
+ceiling, over and over. Documented by the core team as actually happening
+in the wild; `loop.detect` shipped in repeater firmware **1.14**
+(March 2026) as the mitigation.
+
+**The matrix** (drop a flood when the repeater's own ID already appears
+N+ times in the path): `minimal` = 4/2/1 for 1/2/3-byte IDs; `moderate` =
+2/1/1; `strict` = 1/1/1; **default `off`**. The thresholds scale with
+collision probability: a 1-byte ID has 256 values, so "my ID is in the
+path" is weak evidence at 1 byte and near-proof at 3 bytes.
+
+**Why off by default (official):** the multibyte-path rollout is still in
+progress; the blog tells operators to enable it if they see storms. The
+slide's editorial is ours: `minimal` is all but false-positive-free (it
+takes *four* 1-byte collisions on one path) while a single storm eats a
+region's duty-cycle budget — arguably the default belongs at `minimal`.
+Q&A nuance if pushed the other way: `strict` at 1-byte *would* false-drop
+legitimate floods (≈ n/256 chance per relay that another repeater on an
+n-hop path shares your ID) — that caution is presumably what "off" is
+protecting; it just overshoots.
+
+Sources: docs.meshcore.io/cli_commands ("Routing", `loop.detect`) ·
+blog.meshcore.io "Path Diagnostics Improvements" (2026-03-06) · DeepWiki
+7.2 "Routing and Path Discovery" (the `hasSeen` dedup) ·
+docs.meshcore.io/packet_format (`MAX_PATH_SIZE` 64 B, `path_len` 0–63) ·
+nodakmesh.org "Path Hash Modes Explained" (the 64/32/21 table).
 
 ---
 
