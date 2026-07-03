@@ -53,6 +53,34 @@ If connectivity allows, **switch to the live observer/app for ~30 s** — a
 real packet arcing across Vienna beats any screenshot. If not, say aloud:
 "this is live right now."
 
+## Routing (two slides: "flood once…" / "What always floods")
+
+Source: **kiekr.app/meshcore-explained** (German, excellent plain-language
+explainer — the two routing slides follow its structure).
+
+**DM lifecycle:** first message to a new contact floods (no path known);
+each repeater stamps its ID into the packet as it relays, so the route
+accumulates in the packet itself. The recipient's ACK floods back carrying
+that path; the sender stores it. Later DMs are source-routed along the
+stored path — **each direction keeps its own path** (outbound and return may
+differ). A failed direct route falls back to flooding automatically and the
+path is re-learned. Hard limit: **max 64 hops**.
+
+**Channels:** membership = knowing the shared key, no member list, no
+sign-up. No single recipient ⇒ channel messages **always flood**, and there
+is **no ACK** — offline recipients simply miss the message. Q&A nuance:
+sender names in channels are unverified text (unlike DMs, which are
+cryptographically tied to the contact's key).
+
+**Adverts:** two modes — zero-hop (direct neighbours only, cheap) and flood
+(region-wide via repeaters, expensive). Etiquette per kiekr: repeater
+operators should disable periodic flood adverts, or at most every 168 h.
+
+**Q&A ammo (region interaction):** a flood is scoped by the *sender's*
+configured region, but the ACK returns under the *recipient's* region
+setting — mismatched regions can silently break DM delivery even when the
+outbound message arrives.
+
 ## The region transport code
 
 **Construction (verified against the MeshCore source):**
@@ -63,10 +91,18 @@ repeaters filter by region without decrypting; recomputed per hop. Symmetric
 and 2 bytes wide ⇒ a routing/airtime filter, not a signature.
 
 Sources: meshcore-decoder `src/crypto/region-transport.ts` · DeepWiki 7.6
-"Region Filtering and Transport Codes"
+"Region Filtering and Transport Codes" · kiekr.app/why-regions (German —
+the airtime argument: the duty-cycle budget is per repeater and shared by
+*all* users, ~680 pkts/h ceiling at ~500–586 ms/packet; regions partition
+that budget, so "pick the smallest region that covers your recipients")
 
 **Austrian scheme** (meshcore-austria.at): `at` = Austria-wide; macro-regions
 `at-west` / `at-ost` / `at-sued`; cities nest below, e.g. `at-w` = Vienna.
+
+Repeaters usually have **several regions** configured (e.g. a Vienna repeater
+relays `at` + `at-ost` + `at-w`) — that's how the nesting works in practice:
+a packet is relayed if its code matches *any* of the repeater's regions.
+Hence the slide's plural: "a match with their own region**s**".
 
 ## Throughput
 

@@ -228,6 +228,51 @@
   \vfill
 \end{frame}
 
+% ------------------------------------------------------------------- routing
+% The mechanism behind "source-routed", unravelled: flood to discover, then
+% follow the remembered path. Two slides: the DM lifecycle, then what always
+% floods. Source: kiekr.app/meshcore-explained; details in speakers-notes.md
+% ("Routing").
+\begin{frame}{Routing --- flood once, then follow the path}
+  \begin{enumerate}
+    \item \textbf{First contact floods} --- no path exists yet, so every
+      repeater relays the message once, stamping its own ID into the packet
+      as it passes
+    \item \textbf{The ACK carries the path back} --- the delivery confirmation
+      returns with the accumulated route, and the sender remembers it
+    \item \textbf{Later messages follow the path} --- source-routed repeater by
+      repeater, no flooding (each direction keeps its own path)
+    \item \textbf{Stale path? Flood again} --- a failed route falls back to
+      flooding and the path is re-learned automatically
+  \end{enumerate}
+  \vfill
+  \begin{alertblock}{Where the routing table lives: nowhere}
+    Repeaters relay and forget --- the \textbf{sender holds the path}, per
+    contact and per direction. Discovery is \emph{reactive}: pay for one
+    flood, then ride the discovered path for free.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{What always floods}
+  \begin{itemize}
+    \item \textbf{Channel messages always flood} --- a channel is just a
+      shared key with no member list, so there is no single recipient to
+      route to
+    \item \textbf{And nobody ACKs them} --- no delivery confirmation exists,
+      whoever is offline simply misses the message
+    \item \textbf{Adverts flood too} --- the signed ``business card'' (name,
+      public key, position) goes \emph{zero-hop} to direct neighbours, or
+      region-wide via every repeater
+    \item \textbf{Flooding is the expensive mode} --- every repeater in reach
+      spends its scarce airtime on the packet, relevant to its users or not
+  \end{itemize}
+  \vfill
+  \begin{alertblock}{This is why regions exist}
+    A flood stops only where repeaters stop relaying. In a moment: how
+    MeshCore \textbf{fences the flood by agreement} --- the region code.
+  \end{alertblock}
+\end{frame}
+
 % The flip side of source routing: a real message and the path it travelled.
 % Content is top-aligned (not vfill-centred) so the captions sit directly under
 % the images, not pushed down to the slide edge.
@@ -265,16 +310,17 @@
   \begin{columns}[T]
     \begin{column}{0.66\textwidth}
       \begin{itemize}
-        \item MeshCore \textbf{floods} adverts and path discovery. Unchecked,
-          traffic from far away wastes everyone's scarce airtime
         \item A \textbf{region} is just an agreed name --- e.g.\ \textcolor{baRed}{\texttt{at}}
           for all of Austria, or \textcolor{baRed}{\texttt{at-west}} / \textcolor{baRed}{\texttt{at-ost}}
           / \textcolor{baRed}{\texttt{at-sued}} for its three macro-regions (right)
-        \item Every packet carries a 2-byte \textbf{transport code}, derived from
-          a hash of the region name and the message body; a repeater relays a
-          packet only if the code matches its own region
+        \item Every packet carries a 2-byte \textbf{transport code} --- a hash
+          over region name and message body: repeaters relay only on a match
+          with their own regions
         \item The mesh is thus \textbf{geofenced by agreement} --- no registry,
           no coordinates, no permission: just a name the locals share
+        \item Usage rule: \textbf{pick the smallest region} that covers your
+          recipients --- village chatter posted \texttt{at}-wide burns the
+          whole country's airtime
       \end{itemize}
     \end{column}
     \begin{column}{0.32\textwidth}
