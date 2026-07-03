@@ -18,6 +18,42 @@ file edits.
 
 This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [v1.4] — 2026-07-03
+
+### Added
+- **Routing unravelled into two slides** (before "How a message reaches me",
+  which now pays off a mechanism the audience has seen explained). Structure
+  follows [kiekr.app/meshcore-explained](https://kiekr.app/meshcore-explained):
+  - **"Routing — flood once, then follow the path"** — the DM lifecycle as a
+    numbered sequence: first contact floods (repeaters stamp their IDs into the
+    packet), the ACK carries the accumulated path back, later messages are
+    source-routed (each direction keeps its own path), stale paths fall back to
+    flooding and re-learn. The callout lands the conceptual point: there is
+    **no routing table** — repeaters relay and forget, the *sender* holds the
+    path, discovery is reactive.
+  - **"What always floods"** — channels flood because a shared key with no
+    member list has no single recipient to route to, channel messages get
+    **no ACKs** (offline = missed), adverts flood region-wide, and flooding
+    burns every repeater's airtime — handing off to the region section
+    ("this is why regions exist").
+- **Speaker notes: a sourced "Routing" section** — the 64-hop limit, unverified
+  sender names in channels (vs cryptographically-tied DMs), advert etiquette
+  (repeater operators: no periodic flood adverts, or ≥168 h), and Q&A ammo:
+  a flood is scoped by the *sender's* region but the ACK returns under the
+  *recipient's* — mismatched regions can silently break DM delivery. Also cites
+  [kiekr.app/why-regions](https://kiekr.app/why-regions) in the region section
+  (the per-repeater shared duty-cycle budget, ~680 pkts/h ceiling).
+
+### Changed
+- **Region-code slide sharpened.** The motivation bullet ("flooding wastes
+  airtime") is gone — "What always floods" now carries that job — so the slide
+  opens directly with "a **region** is just an agreed name". Added kiekr's
+  usage rule as the closing bullet: **pick the smallest region** that covers
+  your recipients (village chatter posted `at`-wide burns the whole country's
+  airtime). Repeaters match against their region**s**, plural — they usually
+  relay several nested ones (e.g. a Vienna repeater: `at` + `at-ost` + `at-w`),
+  now explained in the notes.
+
 ## [v1.3] — 2026-07-02
 
 ### Added
@@ -512,7 +548,8 @@ First complete draft of the talk — end to end, buildable, releasable.
   the scope.
 - MeshCore launch framed as **late 2024** per Wikipedia, not "early 2025".
 
-[Unreleased]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/compare/v1.3...HEAD
+[Unreleased]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/compare/v1.4...HEAD
+[v1.4]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v1.4
 [v1.3]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v1.3
 [v1.2]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v1.2
 [v1.1]: https://github.com/bitcoinaustria/meshcore-for-bitcoiners/releases/tag/v1.1
