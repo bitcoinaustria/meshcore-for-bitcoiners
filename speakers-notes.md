@@ -7,6 +7,15 @@ or staging change, update this file in the same commit.
 Last full fact-check: **2026-07-02** (all claims re-verified against primary
 sources; LoRa time-on-air recomputed independently).
 
+Upstream re-check: **2026-08-12** — current firmware is **1.17.0**
+(2026-08-09); 1.17 is hardware/power/stability only, **no protocol change**, so
+every "firmware 1.14+" statement in the deck still describes when a feature
+shipped, not the current release. Re-verified live: `loop.detect` still
+defaults to `off`, the threshold matrix is unchanged, and `path.hash.mode`
+still defaults to `0` (1-byte) — the multibyte rollout really is still in
+progress. New since the deck was written: the `flood.max.*` hop budget
+(firmware 1.16) and the trademark opposition filing (both below).
+
 ---
 
 ## Opening — before "The one-line version"
@@ -38,6 +47,29 @@ Sources: blog.meshcore.io/2026/04/23/the-split ·
 meshcoreeurope.org "MeshCore Splits Over Trademark, AI Code, and Team
 Breakdown" (2026-04-27) · lwn.net/Articles/1070218 ·
 en.wikipedia.org/wiki/MeshCore
+
+**Where it stands now (verified 2026-08-12) — the fourth bullet.** The dispute
+is *live* as you speak, which is the point of saying it out loud:
+
+- **2026-03-29** Kirby files the UK mark in secret; confronted in April, he
+  refuses to withdraw. **2026-04-10/11** the core team incorporates *MeshCore
+  Technologies Limited* and counter-files. May–June: lawyers' letters, all
+  demands refused; the opposition deadline is extended to **2026-07-17**.
+- **2026-07-04** Powell and Cottle publish "Help Us Save MeshCore": ~**$18k**
+  estimated legal costs, **>$15k already paid out of their own pockets**, and
+  the crowdfunder standing at only ~$1.8k.
+- **2026-07-28** "Thank You": the community funded it — large donations,
+  many small ones, anonymous *manufacturer* donors, new GitHub sponsors. The
+  UK lawyer **filed the opposition**; the mark is now in **opposed status**.
+  No hearing date. Their line: *"the tech goes on regardless."*
+
+Spoken framing for a Bitcoin room — the parallel is the *funding*, not just
+the fork: nobody could capture the protocol (MIT), so the attack landed on the
+only capturable thing, **the name** — and a voluntary whip-round defended it.
+If asked "who wins?": genuinely unknown, it's with the UK IPO.
+
+Sources: blog.meshcore.io/2026/07/04/help-us-save-meshcore ·
+blog.meshcore.io/2026/07/28/thankyou
 
 ## The hardware
 
@@ -241,6 +273,20 @@ N+ times in the path): `minimal` = 4/2/1 for 1/2/3-byte IDs; `moderate` =
 collision probability: a 1-byte ID has 256 values, so "my ID is in the
 path" is weak evidence at 1 byte and near-proof at 3 bytes.
 
+**The hop budget (firmware 1.16, June 2026) — the fourth bullet.** Separate
+from `loop.detect`: an explicit cap on how far a flood travels, rather than a
+test for whether it is circling. `flood.max` = max flood hop count (0–64,
+default **64**, i.e. the same ceiling the 64-byte path already imposes — so no
+change unless an operator lowers it). `flood.max.advert` = the same for advert
+packets, default **8** — this one *is* a real default, so adverts no longer
+ride to the path-length ceiling. `flood.max.unscoped` = for traffic with no
+region scope, default 64/`0xFF` (unset ≈ disabled); the docs pitch it as the
+gentler alternative to `region denyf *` — set it to e.g. **3** and local
+unscoped chatter still works while a noisy neighbour can't flood your region.
+Q&A: yes, this partly overlaps the region code — region filtering fences by
+*agreement*, the hop budget fences by *distance*, and unscoped packets carry no
+region code to filter on, which is exactly the gap `flood.max.unscoped` closes.
+
 **Why off by default (official):** the multibyte-path rollout is still in
 progress; the blog tells operators to enable it if they see storms. The
 slide's editorial is ours: `minimal` is all but false-positive-free (it
@@ -251,7 +297,10 @@ legitimate floods (≈ n/256 chance per relay that another repeater on an
 n-hop path shares your ID) — that caution is presumably what "off" is
 protecting; it just overshoots.
 
-Sources: docs.meshcore.io/cli_commands ("Routing", `loop.detect`) ·
+Sources: docs.meshcore.io/cli_commands ("Routing", `loop.detect`,
+`flood.max` / `flood.max.advert` / `flood.max.unscoped`, re-checked
+2026-08-12) · blog.meshcore.io "Release 1.16.0" (2026-06-06, where the
+flood caps shipped) ·
 blog.meshcore.io "Path Diagnostics Improvements" (2026-03-06) · DeepWiki
 7.2 "Routing and Path Discovery" (the `hasSeen` dedup) ·
 docs.meshcore.io/packet_format (`MAX_PATH_SIZE` 64 B, `path_len` 0–63) ·

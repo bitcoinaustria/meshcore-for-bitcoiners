@@ -18,6 +18,40 @@ file edits.
 
 This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [v1.6] — 2026-08-12
+
+Pre-stage freshness pass: re-checked every version-dependent claim against
+upstream. Current firmware is **1.17.0** (2026-08-09) and is hardware/power
+only — **no protocol change**, so the deck's "firmware 1.14+" statements
+(routing prefix, `loop.detect`) still correctly date *when a feature shipped*
+and needed no edit. `loop.detect` still defaults to `off` and the threshold
+matrix is unchanged, so Appendix 3's editorial stands; `path.hash.mode` still
+defaults to `0` (1-byte), so "multibyte IDs are still rolling out" is still
+true. All deck URLs verified live. Two things had genuinely moved:
+
+### Added
+- **The trademark fight has a live status now** ("Where it comes from"). The
+  slide used to stop at "the core team broke with him"; a fourth bullet carries
+  it to the present: the community **crowdfunded the legal defence** in July,
+  the opposition is filed, and the mark sits in **opposed** status awaiting a
+  UK IPO ruling — unresolved as the talk is given. The alertblock sharpens the
+  Bitcoin parallel: the code stayed free (MIT), so the attack could only land
+  on **a name**. Speaker notes gain the full timeline (secret filing
+  2026-03-29 → MeshCore Technologies Ltd counter-filing 2026-04-10/11 →
+  ~$18k legal costs with >$15k paid personally → the community whip-round →
+  opposition filed, no hearing date), the spoken framing, and the honest
+  "who wins? genuinely unknown" answer for Q&A.
+- **The `flood.max.*` hop budget** (Appendix 3, fourth bullet) — new in
+  firmware **1.16** (2026-06-06) and therefore absent from the v1.5 appendix.
+  Distinct from `loop.detect`: a cap on how *far* a flood travels rather than a
+  test for whether it is *circling*. **`flood.max.advert` defaults to 8 hops**
+  — a real behaviour change, adverts no longer ride to the path-length ceiling
+  — and `flood.max.unscoped` fences region-less traffic (the docs' gentler
+  alternative to `region denyf *`). Notes carry the defaults, the
+  `flood.max` = 64 no-op caveat, and the Q&A nuance on how this overlaps region
+  filtering (agreement vs. distance; unscoped packets have no region code to
+  filter on).
+
 ## [v1.5] — 2026-07-03
 
 ### Added

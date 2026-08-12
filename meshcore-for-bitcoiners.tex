@@ -133,13 +133,17 @@
     \item \textbf{MIT-licensed}, so the grab couldn't capture the protocol: the
       team kept shipping at \textbf{meshcore.io} (Kirby kept the old
       \texttt{.co.uk})
+    \item \textbf{Still open, as we speak:} the community \textbf{crowdfunded
+      the legal defence} in July, the opposition is filed --- the mark sits in
+      \textbf{opposed} status, awaiting a ruling
   \end{itemize}
   \vfill
   \begin{alertblock}{A familiar story}
     Permissionless tech, a \textbf{brand-capture attempt} --- the
     \texttt{.co.uk} holder trademarking the name, much as \textbf{bitcoin.com}
     marketed Bitcoin Cash as ``Bitcoin'' --- and the community just
-    \textbf{routes around it}. Bitcoiners have seen this movie.
+    \textbf{routes around it}: the code stayed free, so the fight is only over
+    \emph{a name}. Bitcoiners have seen this movie.
   \end{alertblock}
 \end{frame}
 
@@ -918,8 +922,9 @@
 % (store-and-forward floods: why no endless echo?). Real packet storms from one
 % bad repeater firmware led to loop.detect in firmware 1.14. Matrix verified
 % against docs.meshcore.io/cli_commands ("Routing"); the off-by-default
-% editorial is ours. Sources & false-positive math: speakers-notes.md
-% ("Appendix 3").
+% editorial is ours (re-checked against the docs 2026-08-12: still `off`).
+% The flood.max.* hop budget is newer (firmware 1.16, June 2026).
+% Sources & false-positive math: speakers-notes.md ("Appendix 3").
 \begin{frame}[noframenumbering]{Appendix 3: Why floods don't echo forever}
   \small
   \begin{itemize}
@@ -929,19 +934,20 @@
       1\,/\,2\,/\,3-byte IDs)
     \item \textbf{One bad repeater defeats both} --- if it \emph{modifies} the
       payload before forwarding, the hash changes, the cache goes blind, and
-      the same message storms the mesh as ``new'' (seen in the wild, blamed on
-      forked firmware)
+      the same message storms the mesh as ``new'' (seen in the wild)
     \item \textbf{The v1.14 backstop:} \texttt{loop.detect} --- count
       \emph{your own ID} in the packet's path, drop past a threshold that
       scales with ID width (1-byte IDs collide --- ``me'' in the path may be
       someone else)
+    \item \textbf{And a hop budget since v1.16:} \texttt{flood.max.advert}
+      caps adverts at \textbf{8 hops} by default
   \end{itemize}
   \vfill
   \centering
-  Drop the flood packet when the repeater's own ID already appears\,\dots\\[-0.15em]
+  \renewcommand{\arraystretch}{0.92}%
   \begin{tabular}{lccc}
     \toprule
-    \texttt{loop.detect} & 1-byte IDs & 2-byte IDs & 3-byte IDs \\
+    \texttt{loop.detect} --- drop at & 1-byte IDs & 2-byte IDs & 3-byte IDs \\
     \midrule
     \texttt{off} \emph{(default)} & never & never & never \\
     \texttt{minimal}  & $\geq4\times$ & $\geq2\times$ & $\geq1\times$ \\
