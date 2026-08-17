@@ -18,6 +18,51 @@ file edits.
 
 This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [v1.7] — 2026-08-17
+
+Adds the prehistory of the radio layer: where LoRa came from, and the paper
+that finally described it — the Bitcoin whitepaper's mirror image.
+
+### Added
+- **LoRa's prehistory — two new slides before "Origins of MeshCore".** The deck
+  compared MeshCore to Bitcoin but never asked where the *radio underneath* came
+  from, and that story is Bitcoin's mirror image. **Slide 1, "Before MeshCore:
+  where LoRa comes from":** Cycleo in Grenoble (2009/10, Sornin / Seller /
+  Sforza) applying an old radar trick; **Semtech buying it in 2012** for $5 M
+  cash plus a $16 M earn-out; the **LoRa Alliance opening only the upper layer**
+  in 2015 while the radio layer stayed patented and undocumented; and the point
+  for this audience — **MeshCore uses none of LoRaWAN**, no network server, no
+  join keys, no operator. The alertblock names the honest split: a proprietary,
+  effectively single-vendor *chip* carrying an MIT-licensed, forkable stack.
+  **Slide 2, "LoRa's whitepaper — eight years late":** the equivalent document
+  arriving the other way round — the patent that "does not provide the details,
+  in term of equations and signal processing", **Matt Knight's blind SDR reverse
+  engineering (2016, `gr-lora`)**, and **Vangelista's 2017 IEEE paper**, the
+  first rigorous description, with its **front page as the visual** — the
+  Bitcoin whitepaper's counterpart, published *after* the chips shipped and by a
+  university rather than the owner. A cropped **Eq. (16)** carries the technical
+  payoff: multiply by the down-chirp, take a DFT, the loudest bin is the symbol.
+- **Appendix 2 gains the formal name:** LoRa's PHY is *Frequency Shift Chirp
+  Modulation* — one symbol is a chirp shifted to one of 2^SF starting
+  frequencies (SF bits per symbol), demodulated by conjugate-multiply $+$ FFT.
+- **References:** the Vangelista paper (DOI) and Knight & Seeber's "Decoding
+  LoRa" / `gr-lora` under "Hardware & radio".
+- **The lineage line on "Origins of MeshCore":** **LoRa (2009, a chip) →
+  Meshtastic (2020, a mesh) → MeshCore (2024)** — same radio layer, a new
+  network on top each time. It pays off the two new LoRa slides and sets up the
+  MeshCore-vs-Meshtastic comparison that follows.
+- **Speaker's notes:** a full "Before MeshCore — where LoRa comes from" section
+  — verified dates and acquisition terms (incl. the March-vs-May 2012
+  announcement/close discrepancy), the founding patent US 8,406,275 (Sforza,
+  priority 2009, Semtech, expiry ~2031), the FSCM maths in plain language, and
+  Q&A ammo on "is LoRa open now?", the permissionless-at-which-layer question,
+  and the image's citation provenance.
+
+### Changed
+- **"Where it comes from" → "Origins of MeshCore".** With LoRa's prehistory now
+  sitting directly in front of it, "it" was ambiguous — the title has to say
+  *whose* origins.
+
 ## [v1.6] — 2026-08-12
 
 Pre-stage freshness pass: re-checked every version-dependent claim against

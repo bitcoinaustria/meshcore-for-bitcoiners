@@ -117,11 +117,78 @@
   \end{alertblock}
 \end{frame}
 
+% ------------------------------------------------ LoRa prehistory (2 slides)
+% The layer *underneath* MeshCore has its own origin story, and it is Bitcoin's
+% mirror image: silicon first, patented, the maths published years later by
+% outsiders. Slide 1 = the company history; slide 2 = the "whitepaper" beat,
+% with the Vangelista paper's front page as the visual.
+% Facts & sources: speakers-notes.md ("Before MeshCore --- where LoRa comes from").
+\begin{frame}{Before MeshCore: where LoRa comes from}
+  \begin{itemize}
+    \item \textbf{2009/10, Grenoble:} three engineers --- Sornin, Seller,
+      Sforza --- found \textbf{Cycleo} and put an old radar trick (chirps ---
+      also how bats hunt) to work as a cheap long-range data link
+    \item \textbf{2012:} \textbf{Semtech buys Cycleo} --- \$5\,M cash plus up
+      to \$16\,M earn-out --- and the modulation becomes one company's silicon
+    \item \textbf{2015:} the LoRa Alliance opens the \emph{upper} layer ---
+      LoRaWAN's spec is public, but the \textbf{radio layer stays patented} and
+      undocumented
+    \item \textbf{MeshCore uses none of LoRaWAN} --- no network server, no join
+      keys, no operator: it takes the raw LoRa radio layer and meshes on top
+  \end{itemize}
+  \vfill
+  \begin{alertblock}{Two layers, two philosophies}
+    The \emph{chip} is proprietary and effectively single-vendor; everything
+    above it --- firmware, routing, apps --- is \textbf{MIT-licensed and
+    forkable}. MeshCore is permissionless \emph{on top of} a patented physical
+    layer.
+  \end{alertblock}
+\end{frame}
+
+% The Bitcoin-whitepaper beat: the equivalent document, arriving the other way
+% round. Quotes are verbatim from the paper's intro/abstract; the equation crop
+% is Eq. (15)/(16) --- the efficient demodulator. Sources: speakers-notes.md.
+% The paper's front page is floated with \cornerimage instead of living in a
+% column: it breaks out of the content box, rides up level with the headline
+% band and out to the page edge, so it reads as an exhibit rather than a figure.
+\cornerimage[width=0.30\paperwidth,height=0.66\paperheight,topclear=13pt,%
+  hmargin=9pt,caption={\scriptsize L.\ Vangelista, \emph{Frequency Shift Chirp
+  Modulation: the LoRa Modulation},\\ IEEE Signal Processing Letters, 2017}]%
+  {lora-paper-vangelista}
+\begin{frame}{LoRa's whitepaper --- eight years late}
+  \begin{minipage}[t]{0.66\textwidth}
+    \begin{itemize}
+      \item The patent claims the idea but ``\emph{does not provide the
+        details, in term of equations and signal processing}''
+      \item \textbf{2016:} Matt Knight \textbf{reverse-engineers} the radio
+        layer blind with an SDR (\texttt{gr-lora})
+      \item \textbf{2017:} Vangelista publishes ``the first rigorous
+        mathematical description'' --- LoRa is \textbf{Frequency Shift Chirp
+        Modulation}
+    \end{itemize}
+    \vskip0.1em
+    \centering
+    \includegraphics[width=0.46\linewidth]{lora-efficient-inner-product-formula-16}\\[0.1em]
+    {\scriptsize Multiply by the \textbf{down-chirp}, then \textbf{DFT} ---
+     the loudest bin \emph{is} the symbol.}
+  \end{minipage}
+  \vfill
+  \begin{alertblock}{The equivalent document --- arriving the other way round}
+    Satoshi published \textbf{before} anyone used it; LoRa's description came
+    \emph{after} the chips shipped --- from a university, \textbf{not the
+    owner}.
+  \end{alertblock}
+\end{frame}
+
 % The 2026 fork is on-theme for a Bitcoin crowd: MIT firmware, a brand-capture
 % attempt, the community routing around it. We stick to the core team's .io
 % domain throughout. Facts verified --- details, sources, and the spoken
-% punchline lead-in: speakers-notes.md ("Where it comes from").
-\begin{frame}{Where it comes from}
+% punchline lead-in: speakers-notes.md ("Origins of MeshCore").
+\begin{frame}{Origins of MeshCore}
+  \textbf{LoRa} (2009, a chip) $\to$ \textbf{Meshtastic} (2020, a mesh) $\to$
+  \textbf{MeshCore} (2024) --- the same radio layer, a new network on top each
+  time.
+  \vskip0.4em
   \begin{itemize}
     \item Grew out of the \textbf{Meshtastic} world, then rebuilt from scratch
       --- a separate network, \emph{not} interoperable
@@ -840,6 +907,13 @@
           --- the LoRa radio IC (chirp spread spectrum in silicon)
         \item \href{https://www.st.com/en/microcontrollers-microprocessors/stm32wl5x-ex.html}{ST STM32WL}
           --- the same SX126x radio IP on an MCU die
+        \item \href{https://doi.org/10.1109/LSP.2017.2762960}{Vangelista,
+          ``Frequency Shift Chirp Modulation: the LoRa Modulation''} (IEEE SPL,
+          2017) --- the first rigorous description of the PHY
+        \item \href{https://pubs.gnuradio.org/index.php/grcon/article/view/8}{Knight
+          \& Seeber, ``Decoding LoRa''} (GRCon 2016) $+$
+          \href{https://github.com/BastilleResearch/gr-lora}{gr-lora} --- the
+          blind reverse engineering
       \end{itemize}
     \end{column}
     \begin{column}{0.5\textwidth}
@@ -915,7 +989,12 @@
     \end{column}
   \end{columns}
   \vfill
-  {\scriptsize Diagrams: \href{https://www.mokosmart.com/lora-frequency/}{mokosmart.com/lora-frequency}}
+  {\scriptsize The formal name (Vangelista 2017): \textbf{Frequency Shift Chirp
+   Modulation} --- one symbol is a chirp cyclically shifted to one of
+   $2^{SF}$ starting frequencies, so a spreading factor of SF carries SF bits;
+   the optimum receiver multiplies by the conjugate chirp and takes an
+   \textbf{FFT}, then picks the largest bin.\par\smallskip
+   Diagrams: \href{https://www.mokosmart.com/lora-frequency/}{mokosmart.com/lora-frequency}}
 \end{frame}
 
 % Appendix 3: loop detection --- answers the question the routing slides plant

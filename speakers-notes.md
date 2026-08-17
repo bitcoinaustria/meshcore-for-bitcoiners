@@ -16,6 +16,10 @@ still defaults to `0` (1-byte) — the multibyte rollout really is still in
 progress. New since the deck was written: the `flood.max.*` hop budget
 (firmware 1.16) and the trademark opposition filing (both below).
 
+LoRa prehistory added **2026-08-17** (v1.7): Cycleo/Semtech dates, the founding
+patent, and the Knight/Vangelista publications verified against primary sources
+that day — see "Before MeshCore — where LoRa comes from".
+
 ---
 
 ## Opening — before "The one-line version"
@@ -27,7 +31,104 @@ Put the stakes in the room *before* revealing the slide:
 
 The closing slide answers it (#bitcoin-wien is already up) — don't spoil that.
 
-## Where it comes from
+## Before MeshCore — where LoRa comes from (2 slides)
+
+The prehistory of the layer *underneath* MeshCore, added because it is the
+mirror image of Bitcoin's origin: **silicon first, paper later**. Slide 1 is
+the company story, slide 2 is the "whitepaper" beat.
+
+**Spoken lead-in** (after "The catch"):
+
+> "MeshCore is two years old. The radio it runs on is fifteen — and its story
+> is the exact opposite of Bitcoin's."
+
+**Facts (verified 2026-08-17):**
+
+- **Cycleo**, Grenoble (France). Nicolas Sornin and Olivier Seller started the
+  work in **2009**, met François Sforza in **2010**, and the three founded the
+  company. They did *not* invent chirp spread spectrum — CSS comes from radar
+  and sonar (and bats/dolphins do it in nature); they applied it to cheap
+  long-range data. (Semtech's own retelling, "A Brief History of LoRa".)
+- **Semtech acquires Cycleo, 2012:** **$5 M cash at closing plus up to $16 M
+  earn-out** over four years, per the press release of **2012-03-07**.
+  *Discrepancy to know:* Semtech's blog says "May 2012" — announcement vs.
+  close. The slide says just "2012".
+- **The founding patent:** US **8,406,275** B2 "Communications system"
+  (inventor **François Sforza**, priority **2009-07-02**, filed 2010-03-09,
+  granted 2013-03-26, now assigned to **Semtech International AG**; Google
+  Patents gives an anticipated expiry of **2031-04-23**). Vangelista's verdict
+  on it, verbatim: *"The patent [4], indeed, does not provide the details, in
+  term of equations and signal processing."*
+- **LoRa Alliance, founded February 2015**, maintains **LoRaWAN** — the MAC /
+  network layer. The **PHY was never part of it**. Vangelista, first page:
+  *"Strictly speaking, LoRa is the physical layer of the LoRaWAN system, whose
+  specification is maintained by the LoRa Alliance. The LoRa modulation is
+  patented and has never been described theoretically."*
+- **MeshCore (like Meshtastic) uses no LoRaWAN at all** — no network server, no
+  join server, no DevEUI/AppKey provisioning, no operator. It drives the raw
+  LoRa PHY and does its own mesh on top. That's the permissionless point: the
+  *operator* model was never adopted, only the modem.
+- **2016 — the reverse engineering:** Matt Knight (with Balint Seeber),
+  *"Decoding LoRa: Realizing a Modern LPWAN with SDR"*, GNU Radio Conference
+  2016 — a **blind** analysis with an Ettus B210 and a Microchip RN2903 mote,
+  released as the open-source GNU Radio module **`gr-lora`**
+  (github.com/BastilleResearch/gr-lora).
+- **2017 — the academic description:** Lorenzo Vangelista (University of
+  Padova), *"Frequency Shift Chirp Modulation: the LoRa Modulation"*, IEEE
+  Signal Processing Letters, DOI **10.1109/LSP.2017.2762960**. Claims
+  "**the first rigorous mathematical signal processing description**".
+
+**The technical core (the cropped formula on slide 2 — Eq. (15)/(16)):**
+a symbol is a chirp cyclically shifted to one of 2^SF starting frequencies, so
+SF bits ride per symbol ("the chirp is similar to a kind of a carrier" — hence
+*frequency shift chirp* modulation, FSCM). Projecting the received signal onto
+the basis reduces to **two steps**: (1) multiply sample-by-sample by
+`e^(−j2π k²/2^SF)` — the **down-chirp** — and (2) take the **DFT** of the
+result and pick the output index; the underbraced `d(nTs+kT)` in Eq. (16) *is*
+the de-chirped vector. That's why a cheap MCU can demodulate it at all.
+Performance result: same uncoded BER as FSK in AWGN, **better in a
+frequency-selective channel** (the chirp sweeps the whole band and averages
+the fading).
+
+**Q&A ammo:**
+
+- *"Is LoRa open now?"* No. LoRaWAN is an open spec (and ITU-T standardised);
+  the **PHY is still Semtech IP**. What's open is the *understanding* — thanks
+  to Knight and Vangelista — plus SDR implementations. Silicon still comes from
+  Semtech or its licensees (ST's STM32WL packs the same SX126x radio IP; ASR's
+  ASR6601 is a licensed second source).
+- *"So MeshCore isn't really permissionless?"* Distinguish the layers: you need
+  nobody's permission to *transmit* (licence-free ISM band) or to *join* (a
+  keypair). You do depend on one vendor's chip design to *modulate*. That's a
+  supply-chain dependency, not a gatekeeper — but it is the one layer of the
+  stack you cannot fork.
+- *"Why eight years?"* 2009 (Cycleo starts) → 2017 (the paper). Or "five years
+  after Semtech bought it". Either framing is fine; don't say "eight years
+  after the patent".
+- *Image provenance:* the front page on the slide is page 1 of the accepted
+  version of the IEEE paper, reproduced with author, title, venue and DOI
+  credited — citation use in a non-commercial talk, same footing as the
+  mokosmart diagrams in Appendix 2.
+
+Sources: blog.semtech.com "A Brief History of LoRa: Three Inventors Share
+Their Personal Story" · design-reuse.com/news/28706 (Semtech/Cycleo press
+release, 2012-03-07) · patents.google.com/patent/US8406275B2 ·
+pubs.gnuradio.org (GRCon 2016, "Decoding LoRa") ·
+doi.org/10.1109/LSP.2017.2762960 (the paper itself, read in full)
+
+## Origins of MeshCore
+
+*(Slide was titled "Where it comes from" until 2026-08-17 — renamed because
+"it" was ambiguous once the LoRa prehistory sits in front of it.)*
+
+**The lead-in line — the lineage.** The slide opens with
+**LoRa (2009, a chip) → Meshtastic (2020, a mesh) → MeshCore (2024)**: same
+radio layer, a new network on top each time. Meshtastic was created by **Kevin
+Hester in early 2020** (hobby repo from 2019) and is what MeshCore's authors
+knew before rebuilding — LoRa P2P on ESP32 / nRF52840 boards, i.e. the *same*
+cheap hardware. Say the chain out loud; it pays off the two LoRa slides and
+sets up the MeshCore-vs-Meshtastic comparison later.
+Source: en.wikipedia.org/wiki/Meshtastic.
 
 Lead spoken, with the punchline first:
 

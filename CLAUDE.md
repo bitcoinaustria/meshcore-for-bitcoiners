@@ -71,7 +71,7 @@ it and prints this hint.
 Tag `v*` → CI builds the PDF and creates a GitHub Release. Push/PR to `main`
 builds the PDF as a CI artifact. CI checks out submodules (`submodules: recursive`).
 
-Latest: **v1.5** (2026-07-03). Record every release in `CHANGELOG.md` — it's a
+Latest: **v1.7** (2026-08-17). Record every release in `CHANGELOG.md` — it's a
 changelog for the *slides* (what changed on stage), so update it whenever you
 cut a tag.
 
