@@ -18,6 +18,35 @@ file edits.
 
 This format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [v1.8] — 2026-08-17
+
+A pass over the new LoRa slides: one joke, one fact-check.
+
+### Added
+- **The fiat twist on LoRaWAN** ("Before MeshCore: where LoRa comes from", the
+  2015 bullet). A short aside names what a Bitcoin room recognises instantly:
+  LoRaWAN is radio's **fiat money and credit cards** — same radio as MeshCore,
+  opposite politics. The slide leaves it at the punchline; the notes carry the
+  mechanics (DevEUI / join server / network server), the "say it as a joke, not
+  a sneer" staging, and the Q&A trap: *"but The Things Network is free!"* —
+  free account ≠ no issuer.
+- **The founding LoRa patent on the references slide** (under "Hardware &
+  radio"): **US 8,406,275 B2, "Communications system"** — Sforza, 2009;
+  Semtech; active to 2031. The deck now carries its own evidence for the
+  "patented physical layer" line: the claim, the paper that independently
+  confirms it, and the patent to look up.
+
+### Verified
+- **"Patented physical layer" is literal, not rhetorical.** Re-checked against
+  the patent itself: priority 2009-07-02, granted 2013-03-26, original assignee
+  Nanoscale Labs → now **Semtech International AG**, legal status **active**,
+  anticipated expiry **2031-04-23**, and the claims cover **both** modulator
+  and demodulator. Corroborated by Vangelista's opening line, *"The LoRa
+  modulation is patented and has never been described theoretically"*. Notes
+  gain the two honest caveats for Q&A: patents expire (~2031), and Semtech
+  **licenses** the IP (ST, ASR) rather than hoarding it — patented and
+  effectively single-vendor, not secret and locked.
+
 ## [v1.7] — 2026-08-17
 
 Adds the prehistory of the radio layer: where LoRa came from, and the paper

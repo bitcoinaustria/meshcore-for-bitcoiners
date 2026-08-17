@@ -53,12 +53,23 @@ the company story, slide 2 is the "whitepaper" beat.
   earn-out** over four years, per the press release of **2012-03-07**.
   *Discrepancy to know:* Semtech's blog says "May 2012" — announcement vs.
   close. The slide says just "2012".
-- **The founding patent:** US **8,406,275** B2 "Communications system"
-  (inventor **François Sforza**, priority **2009-07-02**, filed 2010-03-09,
-  granted 2013-03-26, now assigned to **Semtech International AG**; Google
-  Patents gives an anticipated expiry of **2031-04-23**). Vangelista's verdict
-  on it, verbatim: *"The patent [4], indeed, does not provide the details, in
-  term of equations and signal processing."*
+- **The founding patent** (re-verified 2026-08-17, because "patented physical
+  layer" is a load-bearing claim in the alertblock): US **8,406,275** B2
+  "Communications system", inventor **François Sforza**, priority
+  **2009-07-02**, filed 2010-03-09, granted 2013-03-26. Original assignee
+  **Nanoscale Labs**, current assignee **Semtech International AG**. Legal
+  status **active**, anticipated expiry **2031-04-23**. The claims cover
+  **both ends** — "a modulator for generating a chirp signal" *and* "a
+  demodulator for receiving a chirp signal". Independent corroboration from a
+  peer-reviewed source, Vangelista's first page: *"The LoRa modulation is
+  patented and has never been described theoretically"*, and on the patent
+  itself: *"The patent [4], indeed, does not provide the details, in term of
+  equations and signal processing."*
+  *So yes — "patented" is literal, not rhetorical.* Two honest caveats if
+  pushed: patents **expire** (this family runs out around 2031, after which the
+  modulation is anyone's to implement), and Semtech **licenses** the IP rather
+  than hoarding it (ST's STM32WL, ASR's ASR6601) — so it is patented and
+  single-vendor-ish, not secret and locked.
 - **LoRa Alliance, founded February 2015**, maintains **LoRaWAN** — the MAC /
   network layer. The **PHY was never part of it**. Vangelista, first page:
   *"Strictly speaking, LoRa is the physical layer of the LoRaWAN system, whose
@@ -68,6 +79,17 @@ the company story, slide 2 is the "whitepaper" beat.
   join server, no DevEUI/AppKey provisioning, no operator. It drives the raw
   LoRa PHY and does its own mesh on top. That's the permissionless point: the
   *operator* model was never adopted, only the modem.
+- **The fiat twist on the 2015 bullet** (the bold parenthetical). LoRaWAN is
+  what a Bitcoin room instinctively recognises: a device is **registered**
+  (DevEUI / JoinEUI / AppKey), **activated through a join server**, and its
+  traffic runs through a **network server** somebody operates — telcos and
+  cloud providers sell it as a subscription. Same radio, opposite politics:
+  **MeshCore is cash, LoRaWAN is the card rails**. Say it as a joke, not a
+  sneer — LoRaWAN is genuinely good at what it is for (metering, logistics).
+  *Q&A trap:* "but The Things Network is free!" — true, TTN is a community
+  network, but you still **register the device with a join server** and route
+  through someone's infrastructure. Free account ≠ no issuer; it's the
+  free-checking-account version of the same model, not cash.
 - **2016 — the reverse engineering:** Matt Knight (with Balint Seeber),
   *"Decoding LoRa: Realizing a Modern LPWAN with SDR"*, GNU Radio Conference
   2016 — a **blind** analysis with an Ettus B210 and a Microchip RN2903 mote,
